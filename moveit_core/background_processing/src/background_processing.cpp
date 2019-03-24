@@ -43,7 +43,7 @@ namespace tools
 {
 
 // Logger
-rclcpp::Logger logger_background_processing = rclcpp::get_logger("background_processing");
+rclcpp::Logger LOGGER = rclcpp::get_logger("background_processing");
 
 BackgroundProcessing::BackgroundProcessing()
 {
@@ -81,13 +81,13 @@ void BackgroundProcessing::processingThread()
       action_lock_.unlock();
       try
       {
-        RCLCPP_DEBUG(logger_background_processing, "Begin executing '%s'", action_name.c_str());
+        RCLCPP_DEBUG(LOGGER, "Begin executing '%s'", action_name.c_str());
         fn();
-        RCLCPP_DEBUG(logger_background_processing, "Done executing '%s'", action_name.c_str());
+        RCLCPP_DEBUG(LOGGER, "Done executing '%s'", action_name.c_str());
       }
       catch (std::exception& ex)
       {
-        RCLCPP_ERROR(logger_background_processing, "Exception caught while processing action '%s': %s",
+        RCLCPP_ERROR(LOGGER, "Exception caught while processing action '%s': %s",
                         action_name.c_str(), ex.what());
       }
       processing_ = false;
