@@ -59,3 +59,35 @@ repositories:
     type: git
     url: https://github.com/ros/angles
     version: ros2
+  mara:
+    type: git
+    url: https://github.com/acutronicrobotics/MARA.git
+    version: master
+  HRIM:
+    type: git
+    url: https://github.com/erlerobot/HRIM.git
+    version: master
+  control_msgs:
+    type: git
+    url: https://github.com/erlerobot/control_msgs.git
+    version: crystal
+  vision_opencv:
+    type: git
+    url: https://github.com/ros-perception/vision_opencv.git
+    version: ros2
+  mara_examples:
+    type: git
+    url: https://github.com/AcutronicRobotics/mara_examples.git
+    version: master
+  gazebo_ros_pkgs:
+    type: git
+    url: https://github.com/ros-simulation/gazebo_ros_pkgs.git
+    version: ros2
+  robotiq_modular_gripper:
+    type: git
+    url: https://github.com/AcutronicRobotics/robotiq_modular_gripper.git
+    version: master
+  hans_modular_servomotor:
+    type: git
+    url: https://github.com/AcutronicRobotics/hans_modular_servomotor.git
+    version: master
