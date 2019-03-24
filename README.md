@@ -94,6 +94,9 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
   - [ ] Tutorials for MoveIt2
   - [ ] Create tutorial on using ros1/ros2 bridge to support ros1 hardware drivers
   - [ ] Move install instructions to moveit.ros.org
+
+<details><summary>Major refactoring and divergence from moveit2 (<b>not started</b>)</summary>
+
 - [ ] Major refactoring and divergence from moveit2
   - [ ] Run ROS2 C++ and python linters
   - [ ] Delete excesses packages that are left over from rosbuild stacks: moveit_runtime, moveit_plugins, moveit_ros
@@ -117,7 +120,7 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
     - [ ] DELETE: moveit_kinematics_tests
   - [ ] Remove large binaries from moveit repo
   - [ ] Add gitlfs?
-
+</details>
 
 ## Continuous Integration Status
 [![Build Status](https://travis-ci.org/AcutronicRobotics/moveit2.svg?branch=master)](https://travis-ci.org/AcutronicRobotics/moveit2)
