@@ -38,7 +38,6 @@
 #include <moveit/robot_state/robot_state.h>
 #include <moveit/utils/robot_model_test_utils.h>
 #include <eigen_stl_containers/eigen_stl_containers.h>
-#include <gtest/gtest.h>
 #include <chrono>
 
 // Helper class to measure time within a scoped block and output the result

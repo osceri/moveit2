@@ -49,8 +49,11 @@ install(DIRECTORY include/ DESTINATION include)
 #   ament_target_dependencies(test_robot_state_complex
 #     moveit_test_utils
 #     ${MOVEIT_LIB_NAME}
+#     ${Boost_LIBRARIES}
+#     ${rclcpp_LIBRARIES}
 #     urdf
 #     visualization_msgs
+#     geometric_shapes
 #   )
 #
 #   ament_add_gtest(test_aabb test/test_aabb.cpp)
