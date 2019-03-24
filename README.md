@@ -4,14 +4,16 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
 
 - [Milestones](#milestones)
 - [Overview of MoveIt!](http://moveit.ros.org)
-- [Installation Instructions](https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install)
+- [Installation instructions for MoveIt 2](https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install)
+  - [Ubuntu 18.04](https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install/ubuntu)
+  - [OS X 10.14](https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install/osx)
 - [Documentation](http://moveit.ros.org/documentation/)
 - [Get Involved](http://moveit.ros.org/documentation/contributing/)
 
 ## Milestones
-- [ ] Install instructions
-  - [ ] Ubuntu 18.04
-  - [ ] OS X 10.14
+- [x] Install instructions
+  - [x] [Ubuntu 18.04](https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install/ubuntu)
+  - [x] [OS X 10.14](https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install/osx)
 - [x] Upgrade continuous integration for ROS 2.0
 - [ ] Convert moveit packages to ROS 2.0
   - [x] Update/setup infrastructure for development
@@ -75,26 +77,6 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
          -   [ ] moveit_ros_move_group
              -   [ ] moveit_core
              -   [ ] moveit_ros_planning
-  - [ ] Other pending dependencies in moveit2
-    - [ ] Convert moveit_kinematics
-    - [ ] Convert moveit_planners_ompl
-    - [ ] Convert moveit_ros_planning
-    - [ ] Convert moveit_ros_planning_interface
-    - [ ] Convert moveit_ros_benchmarks
-    - [ ] Convert moveit_ros_control_interface
-    - [ ] Convert moveit_ros_manipulation
-    - [ ] Convert moveit_ros_move_group
-    - [ ] Convert moveit_ros_perception
-    - [ ] Convert moveit_ros_robot_interaction
-    - [ ] Convert moveit_ros_visualization
-    - [ ] Convert moveit_ros_warehouse
-    - [ ] Convert moveit_setup_assistant
-    - [ ] Convert moveit_simple_controller_manager
-    - [ ] Convert moveit_visual_tools
-    - [ ] Convert moveit_task_constructor
-    - [ ] Convert moveit_resources
-    - [ ] Convert moveit_commander
-    - [ ] Convert moveit_fake_controller_manager
 - [ ] New features in ROS 2.0
   - [ ] Migrate plugin architecture to ROS2 nodelets
 - [ ] Documentation
