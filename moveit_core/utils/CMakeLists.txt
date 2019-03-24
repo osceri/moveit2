@@ -20,7 +20,7 @@ if(BUILD_TESTING)
   set(MOVEIT_TEST_LIB_NAME moveit_test_utils)
   add_library(${MOVEIT_TEST_LIB_NAME}
     src/robot_model_test_utils.cpp)
-  
+
   ament_target_dependencies(${MOVEIT_TEST_LIB_NAME}
     ${rclcpp_LIBRARIES}
     ${rmw_implementation_LIBRARIES}
@@ -30,7 +30,7 @@ if(BUILD_TESTING)
     urdfdom_headers)
 
   include_directories(${moveit_resources_INCLUDE_DIRS})
-  target_link_libraries(${MOVEIT_TEST_LIB_NAME} ${rclcpp_LIBRARIES} ${rmw_implementation_LIBRARIES} ${urdfdom_LIBRARIES} ${urdfdom_headers_LIBRARIES} ${Boost_LIBRARIES})
+  ament_target_dependencies(${MOVEIT_TEST_LIB_NAME} ${rclcpp_LIBRARIES} ${rmw_implementation_LIBRARIES} ${urdfdom_LIBRARIES} ${urdfdom_headers_LIBRARIES} ${Boost_LIBRARIES})
   set_target_properties(${MOVEIT_TEST_LIB_NAME} PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
 
   install(TARGETS ${MOVEIT_TEST_LIB_NAME}
