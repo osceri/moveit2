@@ -74,6 +74,8 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
 
 - [ ] moveit_ros
     - [x] planning_interface
+
+<details><summary>Necessary for a Minimal Working Example</summary>
 - [ ] Necessary for a Minimal Working Example
     - [ ] moveit_ros_planning_interface
    -  [ ] moveit_ros_planning
@@ -88,6 +90,8 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
        -   [ ] moveit_ros_move_group
            -   [ ] moveit_core
            -   [ ] moveit_ros_planning
+</details>
+
 - [ ] New features in ROS 2.0
   - [ ] Migrate plugin architecture to ROS2 nodelets
 - [ ] Documentation
