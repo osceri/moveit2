@@ -76,6 +76,7 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
     - [x] planning_interface
 
 <details><summary>Necessary for a Minimal Working Example</summary>
+  
 - [ ] Necessary for a Minimal Working Example
     - [ ] moveit_ros_planning_interface
    -  [ ] moveit_ros_planning
