@@ -77,20 +77,28 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
 
 <details><summary>Necessary for a Minimal Working Example</summary>
   
-- [ ] Necessary for a Minimal Working Example
-    - [ ] moveit_ros_planning_interface
-   -  [ ] moveit_ros_planning
-       -   [ ] moveit_core
-       -   [ ] moveit_ros_perception
-   -  [ ] moveit_ros_warehouse
-     -  [ ] moveit_ros_planning
-     -  [ ] warehouse_ros
-   -  [ ] moveit_ros_manipulation
-       -   [ ] moveit_core
-       -   [ ] moveit_ros_planning
-       -   [ ] moveit_ros_move_group
-           -   [ ] moveit_core
-           -   [ ] moveit_ros_planning
+- [ ] Necessary for a Minimal Working Example (This list can vary, they are the initial includes for the *planning_interface/move_group_interface* that is what we need for a **plan** and **execute**)
+  - [x] moveit_ros_perception
+    - [x] occupancy_map_monitor
+  - [ ] move_group
+    - [ ] capability_names
+  - [ ] planning
+    - [x] collision_plugin_loader
+    - [x] planning_scene_monitor
+      - [x] current_state_monitor
+      - [x] planning_scene_monitor
+      - [x] trajectory_monitor
+    - [ ] trajectory_execution_manager
+      - [ ] trajectory_execution_manager
+    - [ ] common_planning_interface_objects
+      - [ ] common_objects
+  - [ ] planning_interface
+    - [ ] planning_scene_interface
+      - [ ] planning_scene_interface
+  - [ ] moveit_ros_manipulation
+    - [ ] move_group_pick_place_capability
+      - [ ] capability_names.h
+
 </details>
 
 - [ ] New features in ROS 2.0
