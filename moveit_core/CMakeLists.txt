@@ -52,6 +52,7 @@ find_package(visualization_msgs REQUIRED)
 find_package(common_interfaces REQUIRED)
 # find_package(xmlrpcpp REQUIRED)
 find_package(rcutils REQUIRED)
+find_package(pluginlib REQUIRED)
 
 set(VERSION_FILE_PATH ${CMAKE_BINARY_DIR}/include)
 # Pass the folder of the generated version.h to catkin_package() for export in devel-space
