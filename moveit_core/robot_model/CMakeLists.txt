@@ -36,6 +36,7 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_robot_model test/test.cpp)
   ament_target_dependencies(test_robot_model
+    moveit_test_utils
     Boost
     rclcpp
     rmw_implementation
@@ -45,9 +46,7 @@ if(BUILD_TESTING)
     srdf
     urdf
     geometric_shapes
-    ${MOVEIT_LIB_NAME}
     moveit_robot_model
-    moveit_utils
-    moveit_test_utils
+    ${MOVEIT_LIB_NAME}
   )
 endif()

@@ -12,7 +12,6 @@ set_target_properties(${MOVEIT_LIB_NAME} PROPERTIES VERSION "${${PROJECT_NAME}_V
 install(TARGETS ${MOVEIT_LIB_NAME}
         LIBRARY DESTINATION "lib"
         ARCHIVE DESTINATION "lib")
-install(DIRECTORY include/ DESTINATION "include")
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
@@ -34,5 +33,6 @@ if(BUILD_TESTING)
             ${MOVEIT_TEST_LIB_NAME}
           LIBRARY DESTINATION "lib"
           ARCHIVE DESTINATION "lib")
-  install(DIRECTORY include/ DESTINATION "include")
 endif()
+
+install(DIRECTORY include/ DESTINATION "include")
