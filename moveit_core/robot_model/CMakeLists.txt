@@ -23,29 +23,31 @@ ament_target_dependencies(${MOVEIT_LIB_NAME}
   moveit_exceptions
   moveit_kinematics_base)
 
-# if(BUILD_TESTING)
-#   find_package(ament_cmake_gtest REQUIRED)
-#   find_package(moveit_resources REQUIRED)
-#   find_package(moveit_core REQUIRED)
-#   find_package(geometric_shapes REQUIRED)
-#   include_directories(${moveit_resources_INCLUDE_DIRS})
-#
-#   ament_add_gtest(test_robot_model test/test.cpp)
-#   ament_target_dependencies(test_robot_model
-#     ${MOVEIT_LIB_NAME}
-#     ${Boost_LIBRARIES}
-#     ${rclcpp_LIBRARIES}
-#     ${rmw_implementation_LIBRARIES}
-#     ${urdfdom_LIBRARIES}
-#     ${urdfdom_headers_LIBRARIES}
-#     moveit_test_utils
-#     random_numbers
-#     srdf
-#     urdf
-#     geometric_shapes)
-# endif()
-
 install(TARGETS ${MOVEIT_LIB_NAME}
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include)
+
+if(BUILD_TESTING)
+  find_package(ament_cmake_gtest REQUIRED)
+  find_package(moveit_resources REQUIRED)
+  find_package(geometric_shapes REQUIRED)
+  include_directories(${moveit_resources_INCLUDE_DIRS})
+
+  ament_add_gtest(test_robot_model test/test.cpp)
+  ament_target_dependencies(test_robot_model
+    Boost
+    rclcpp
+    rmw_implementation
+    urdfdom
+    urdfdom_headers
+    random_numbers
+    srdf
+    urdf
+    geometric_shapes
+    ${MOVEIT_LIB_NAME}
+    moveit_robot_model
+    moveit_utils
+    moveit_test_utils
+  )
+endif()

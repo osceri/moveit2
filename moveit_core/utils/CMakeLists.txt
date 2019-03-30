@@ -33,7 +33,9 @@ if(BUILD_TESTING)
   ament_target_dependencies(${MOVEIT_TEST_LIB_NAME} ${rclcpp_LIBRARIES} ${rmw_implementation_LIBRARIES} ${urdfdom_LIBRARIES} ${urdfdom_headers_LIBRARIES} ${Boost_LIBRARIES})
   set_target_properties(${MOVEIT_TEST_LIB_NAME} PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
 
-  install(TARGETS ${MOVEIT_TEST_LIB_NAME}
+  install(TARGETS
+            ${MOVEIT_TEST_LIB_NAME}
           LIBRARY DESTINATION "lib"
-        ARCHIVE DESTINATION "lib")
+          ARCHIVE DESTINATION "lib")
+  install(DIRECTORY include/ DESTINATION "include")
 endif()

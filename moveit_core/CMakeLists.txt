@@ -128,6 +128,7 @@ set(libraries
   moveit_kinematics_metrics
   moveit_dynamics_solver
   moveit_utils
+  moveit_test_utils
 )
 
 set(THIS_PACKAGE_INCLUDE_DEPENDS
