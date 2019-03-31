@@ -72,6 +72,8 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
   - [x] utils
 </details>
 
+<details><summary>Other moveit packages (e.g. moveit_ros, ...)</summary>
+
 - [ ] moveit_ros
     - [x] moveit_ros_planning_interface (*dummy interface for now*)
         - [ ] py_bindings_tools
@@ -80,6 +82,7 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
         - [ ] move_group_interface
         - [ ] robot_interface
         - [ ] test
+</details>
 
 <details><summary>Necessary for a Minimal Working Example</summary>
 
