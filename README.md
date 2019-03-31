@@ -15,6 +15,7 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
   - [x] [Ubuntu 18.04](https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install/ubuntu)
   - [x] [OS X 10.14](https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install/osx)
 - [x] Upgrade continuous integration for ROS 2.0
+- [x] Convert all headers and link it to HRIM (contributed by @ibaiape)
 <details><summary>Update/setup infrastructure for development</summary>
 
 - [x] Update/setup infrastructure for development
@@ -23,7 +24,6 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
   - [x] Refactor/cleanup folder hierarchy
 </details>
 
-- [x] Convert all headers and link it to HRIM (contributed by @ibaiape)
 <details><summary>Dependencies on other packages</summary>
 
 - [x] Dependencies on other packages
@@ -107,12 +107,18 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
 
 </details>
 
+<details><summary>New features in ROS 2.0</summary>
+
 - [ ] New features in ROS 2.0
   - [ ] Migrate plugin architecture to ROS2 nodelets
+</details>
+
+<details><summary>Documentation</summary>
 - [ ] Documentation
   - [ ] Tutorials for MoveIt2
   - [ ] Create tutorial on using ros1/ros2 bridge to support ros1 hardware drivers
   - [ ] Move install instructions to moveit.ros.org
+</details>
 
 <details><summary>Major refactoring and divergence from moveit2 (<b>not started</b>)</summary>
 
