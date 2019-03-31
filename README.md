@@ -73,10 +73,16 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
 </details>
 
 - [ ] moveit_ros
-    - [x] planning_interface
+    - [x] moveit_ros_planning_interface (*dummy interface for now*)
+        - [ ] py_bindings_tools
+        - [ ] common_planning_interface_objects
+        - [ ] planning_scene_interface
+        - [ ] move_group_interface
+        - [ ] robot_interface
+        - [ ] test
 
 <details><summary>Necessary for a Minimal Working Example</summary>
-  
+
 - [ ] Necessary for a Minimal Working Example (This list can vary, they are the initial includes for the *planning_interface/move_group_interface* that is what we need for a **plan** and **execute**)
   - [x] moveit_ros_perception
     - [x] occupancy_map_monitor
