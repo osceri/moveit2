@@ -85,6 +85,7 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
     - [ ] move_group
     - [ ] planning
         - [x] collision_plugin_loader https://github.com/ros-planning/moveit2/pull/69
+        - [x] rdf_loader https://github.com/ros-planning/moveit2/pull/71
     - [x] moveit_ros_perception
         - [x] occupancy_map_monitor
         - [ ] lazy_free_space_updater
