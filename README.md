@@ -82,6 +82,19 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
         - [ ] move_group_interface
         - [ ] robot_interface
         - [ ] test
+    - [ ] move_group
+    - [ ] planning
+    - [x] moveit_ros_perception
+        - [x] occupancy_map_monitor
+        - [ ] lazy_free_space_updater
+        - [ ] point_containment_filter
+        - [ ] pointcloud_octomap_updater
+        - [ ] mesh_filter
+        - [ ] depth_image_octomap_updater
+        - [ ] semantic_world
+    - [ ] moveit_ros_manipulation
+      - [ ] move_group_pick_place_capability
+
 </details>
 
 <details><summary>Necessary for a Minimal Working Example</summary>
