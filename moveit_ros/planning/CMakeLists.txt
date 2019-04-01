@@ -24,6 +24,7 @@ find_package(tf2_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(moveit_core REQUIRED)
+find_package(ament_index_cpp REQUIRED)
 
 # generate_dynamic_reconfigure_options(
 #   "planning_scene_monitor/cfg/PlanningSceneMonitorDynamicReconfigure.cfg"
