@@ -74,7 +74,7 @@ include_directories(SYSTEM
                     ${EIGEN3_INCLUDE_DIRS}
 )
 
-# add_subdirectory(rdf_loader)
+add_subdirectory(rdf_loader)
 add_subdirectory(collision_plugin_loader)
 # add_subdirectory(kinematics_plugin_loader)
 # add_subdirectory(robot_model_loader)
