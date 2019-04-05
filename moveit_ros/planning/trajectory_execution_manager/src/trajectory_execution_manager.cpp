@@ -1775,10 +1775,24 @@ bool TrajectoryExecutionManager::ensureActiveControllers(const std::vector<std::
 void TrajectoryExecutionManager::loadControllerParams()
 {
   manage_controllers_parameters = std::make_shared<rclcpp::SyncParametersClient>(node_);
-
-  if(manage_controllers_parameters->has_parameter({"controller_list"})){
-
-  }
+  //TODO (anasarrak): review these changes, ill be using a yaml to reproduce this, but needs further work
+  //if(manage_controllers_parameters->has_parameter({"controller_list"})){
+    if(manage_controllers_parameters->has_parameter({"controller_list.name"})){
+      std::vector<std::string> controller_list = node_->get_parameter("controller_list.name").as_string_array();
+      for (int i = 0; i < controller_list.size(); ++i){
+        if(manage_controllers_parameters->has_parameter({"allowed_execution_duration_scaling"})){
+          double execution_duration = node_->get_parameter("controller_list.name").as_double();
+          controller_allowed_execution_duration_scaling_[std::string(controller_list[i])] =
+              execution_duration;
+          }
+        if(manage_controllers_parameters->has_parameter({"allowed_goal_duration_margin"})){
+          double goal_duration = node_->get_parameter("controller_list.name").as_double();
+          controller_allowed_goal_duration_margin_[std::string(controller_list[i])] =
+              goal_duration;
+        }
+      }
+      }
+    //}
 
   // XmlRpc::XmlRpcValue controller_list;
   // if (node_handle_.getParam("controller_list", controller_list) &&
