@@ -176,11 +176,9 @@ void TrajectoryExecutionManager::initialize()
 
   // other configuration steps
   reloadControllerInformation();
-  //TODO (anasarrak): fix the subscriber
-  // event_topic_subscriber_ = node_->create_subscription<std_msgs::msg::String>(
-  //   EXECUTION_EVENT_TOPIC, std::bind(&TrajectoryExecutionManager::receiveEvent, this));
-      // root_node_handle_.subscribe(EXECUTION_EVENT_TOPIC, 100, &TrajectoryExecutionManager::receiveEvent, this);
-
+  event_topic_subscriber_ = node_->create_subscription<std_msgs::msg::String>(
+    EXECUTION_EVENT_TOPIC, std::bind(&TrajectoryExecutionManager::receiveEvent, this, std::placeholders::_1));
+    
   reconfigure_impl_ = new DynamicReconfigureImpl(this);
 
   if (manage_controllers_){
@@ -239,7 +237,7 @@ void TrajectoryExecutionManager::processEvent(const std::string& event)
     RCLCPP_WARN(node_->get_logger(), "Unknown event type: '%s'", event.c_str());
 }
 
-void TrajectoryExecutionManager::receiveEvent(const std_msgs::msg::String::ConstPtr& event)
+void TrajectoryExecutionManager::receiveEvent(const std_msgs::msg::String::SharedPtr event)
 {
   RCLCPP_INFO(node_->get_logger(), "Received event '%s'",event->data.c_str());
   processEvent(event->data);
