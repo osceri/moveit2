@@ -288,7 +288,7 @@ bool TrajectoryExecutionManager::push(const moveit_msgs::msg::RobotTrajectory& t
       ss << "]:" << std::endl;
       for (std::size_t i = 0; i < context->trajectory_parts_.size(); ++i){
         //TODO (anasarrak): no printable msg moveit_msgs::msg::RobotTrajectory
-        ss << /*context->trajectory_parts_[i] <<*/ std::endl;
+        ss << context->trajectory_parts_[i].joint_trajectory.header.frame_id << std::endl;
       }
       RCLCPP_INFO(node_->get_logger(), ss.str().c_str());
     }
