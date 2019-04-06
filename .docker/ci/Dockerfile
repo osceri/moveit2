@@ -1,12 +1,10 @@
 FROM ubuntu:bionic
 
-LABEL maintainer="Dave Coleman dave@picknik.ai"
+LABEL maintainer="Lander Usategui lander@erlerobotics.com"
 
 ENV TERM xterm
-
 ENV ROS_WS /root/ws_moveit
 ENV ROS_DISTRO crystal
-
 WORKDIR $ROS_WS
 
 ENV LANG C.UTF-8
