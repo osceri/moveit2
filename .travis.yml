@@ -1,3 +1,12 @@
+# This config file for Travis CI utilizes https://github.com/ros-planning/moveit_ci/ package.
+sudo: required
+dist: trusty  # distro used by Travis, moveit_ci uses the docker image's distro
+services:
+  - docker
+language: cpp
+cache: ccache
+compiler: gcc
+
 notifications:
   email:
     recipients:
