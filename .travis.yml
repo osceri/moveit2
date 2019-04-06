@@ -12,7 +12,6 @@ notifications:
     recipients:
       - lander@erlerobotics.com
       - anasarrak@erlerobotics.com
-      - victor@erlerobotics.com
 
 env:
   global:
