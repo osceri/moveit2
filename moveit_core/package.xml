@@ -39,7 +39,7 @@
   <build_depend>octomap_msgs</build_depend>
   <build_depend>random_numbers</build_depend>
   <build_depend>roslib</build_depend>
-  <build_depend>rostime</build_depend>
+  <!-- <build_depend>rostime</build_depend> -->
   <!-- <build_depend>rosconsole</build_depend> -->
   <build_depend>sensor_msgs</build_depend>
   <build_depend>shape_msgs</build_depend>
@@ -69,7 +69,7 @@
   <exec_depend>octomap</exec_depend>
   <exec_depend>octomap_msgs</exec_depend>
   <exec_depend>random_numbers</exec_depend>
-  <exec_depend>rostime</exec_depend>
+  <!-- <exec_depend>rostime</exec_depend> -->
   <!-- <exec_depend>rosconsole</exec_depend> -->
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>srdfdom</exec_depend>
