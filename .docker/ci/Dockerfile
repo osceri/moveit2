@@ -76,12 +76,13 @@ RUN \
 RUN cd $ROS_WS && \
     rm -rf src/
 
+
 # Continous Integration Setting
 ENV IN_DOCKER 1
 ENV DOCKER 1 # old version, keep for now
 
 # setup entrypoint
-COPY ./ros_entrypoint.sh /
+COPY ./docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
-ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
