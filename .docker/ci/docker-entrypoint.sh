@@ -7,6 +7,7 @@ set -e
 #               && touch /root/ws_moveit/src/image_common/camera_info_manager/COLCON_IGNORE \
 #               && colcon build --merge-install"
 
+
 # setup ros2 environment
 source "/opt/ros/$ROS_DISTRO/setup.bash"
 exec "$@"
