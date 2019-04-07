@@ -82,8 +82,8 @@ ENV IN_DOCKER 1
 ENV DOCKER 1 # old version, keep for now
 
 # setup entrypoint https://github.com/docker/hub-feedback/issues/811
-COPY --from=0 docker-entrypoint.sh /
+RUN echo '#!/bin/bash\nset -e\nsource "/opt/ros/$ROS_DISTRO/setup.bash"\nexec "$@"' > /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+#ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["bash"]
