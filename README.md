@@ -11,12 +11,20 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
 - [Get Involved](http://moveit.ros.org/documentation/contributing/)
 
 ## Milestones
+
+- [Official announcement of the port and commitment from Acutronic Robotics to allocate PMs and fund PickNik](https://acutronicrobotics.com/news/ros-2-moveit-robotic-motion-planning/)
+- [Why MoveIt 2 and approach](https://acutronicrobotics.com/news/moveit-2-planning-framework-why/)
+
+### Progress
+
 - [x] Install instructions
   - [x] [Ubuntu 18.04](https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install/ubuntu)
   - [x] [OS X 10.14](https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install/osx)
 <details><summary>Update/setup infrastructure for development</summary>
 
 - [x] Upgrade continuous integration for ROS 2.0
+  - [x] Simple CI with Travis (Linux and OS X)
+  - [x] moveit_ci https://github.com/AcutronicRobotics/moveit_ci/tree/ros2
 - [x] Convert all headers and link it to HRIM (contributed by @ibaiape)
 - [x] Update/setup infrastructure for development
   - [x] Delete metapackages
