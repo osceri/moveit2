@@ -1,4 +1,4 @@
-<img src="https://github.com/AcutronicRobotics/moveit2/raw/master/.logo/moveit2_logo-black.png" alt="MoveIt 2 Logo" width="200"/>
+<img src="https://github.com/AcutronicRobotics/moveit2/raw/master/.logo/official/moveit2_logo-black.png" alt="MoveIt 2 Logo" width="200"/>
 
 The MoveIt! Motion Planning Framework **for ROS 2.0**
 
