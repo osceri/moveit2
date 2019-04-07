@@ -12,8 +12,8 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
 
 ## Milestones
 
-1. [Official announcement, commitment from Acutronic Robotics to allocate PMs and fund PickNik](https://acutronicrobotics.com/news/ros-2-moveit-robotic-motion-planning/)
-2. [Why MoveIt 2 and approach](https://acutronicrobotics.com/news/moveit-2-planning-framework-why/)
+0. [Official announcement, commitment from Acutronic Robotics to allocate PMs and fund PickNik](https://acutronicrobotics.com/news/ros-2-moveit-robotic-motion-planning/)
+1. [Why MoveIt 2 and approach](https://acutronicrobotics.com/news/moveit-2-planning-framework-why/)
 
 ### Progress
 
