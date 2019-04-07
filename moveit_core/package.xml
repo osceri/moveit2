@@ -50,7 +50,6 @@
   <build_depend>tf2_geometry_msgs</build_depend>
   <build_depend>trajectory_msgs</build_depend>
   <build_depend>visualization_msgs</build_depend>
-  <build_depend>xmlrpcpp</build_depend>
   <build_depend>rcutils</build_depend>
 
   <exec_depend>angles</exec_depend>
@@ -80,7 +79,6 @@
   <exec_depend>tf2_geometry_msgs</exec_depend>
   <exec_depend>trajectory_msgs</exec_depend>
   <exec_depend>visualization_msgs</exec_depend>
-  <exec_depend>xmlrpcpp</exec_depend>
   <exec_depend>rcutils</exec_depend>
 
   <test_depend>ament_cmake_gtest</test_depend>
