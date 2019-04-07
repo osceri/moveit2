@@ -3,8 +3,8 @@ FROM ubuntu:bionic
 LABEL maintainer="Lander Usategui lander@erlerobotics.com"
 
 ENV TERM xterm
-ENV ROS_WS /root/ws_moveit
 ENV ROS_DISTRO crystal
+ENV ROS_WS=/opt/ws_moveit
 WORKDIR $ROS_WS
 
 ENV LANG C.UTF-8
@@ -25,6 +25,8 @@ RUN \
          python3-colcon-common-extensions \
          python3-pip \
          python3-vcstool \
+         python3-wstool \
+         python-rosdep \
          wget \
       	 libboost-all-dev \
          libglew-dev \
@@ -40,10 +42,40 @@ RUN \
          ros-$ROS_DISTRO-message-filters \
          ros-$ROS_DISTRO-rclcpp-action \
          ros-$ROS_DISTRO-resource-retriever \
-      && rm -rf /var/lib/apt/lists/* \
-      && mkdir -p $ROS_WS/src \
-      && wget https://raw.githubusercontent.com/AcutronicRobotics/moveit2/master/moveit2.repos \
-      && vcs import src < moveit2.repos
-COPY ./docker-entrypoint.sh /
+      && rm -rf /var/lib/apt/lists/*
+      # && mkdir -p $ROS_WS/src \
+      # && wget https://raw.githubusercontent.com/AcutronicRobotics/moveit2/master/moveit2.repos \
+      # && vcs import src < moveit2.repos
+
+# Install Fast-RTPS dependencies
+RUN apt-get -qq update && \
+        apt-get install -qq --no-install-recommends -y \
+            libasio-dev \
+            libtinyxml2-dev \
+            && \
+            # Clear apt-cache to reduce image size
+            rm -rf /var/lib/apt/lists/*
+
+# Download moveit source, so that we can get necessary dependencies
+RUN mkdir -p $ROS_WS/src \
+    && wget https://raw.githubusercontent.com/AcutronicRobotics/moveit2/master/moveit2.repos \
+    && vcs import src < moveit2.repos
+    # wstool init --shallow . https://raw.githubusercontent.com/ros-planning/moveit2/master/moveit.rosinstall
+
+# Download all MoveIt 2 dependencies
+RUN \
+    apt-get -qq update && \
+    rosdep init && \
+    rosdep update -q && \
+    rosdep install -q -y --from-paths . --ignore-src --rosdistro ${ROS_DISTRO} --as-root=apt:false || true && \
+    # Clear apt-cache to reduce image size
+    rm -rf /var/lib/apt/lists/*
+
+# Remove the source code from this container
+# TODO: in the future we may want to keep this here for further optimization of later containers
+RUN cd $ROS_WS && \
+    rm -rf src/
+
+# COPY ./docker-entrypoint.sh /
 ENV DOCKER 1
-ENTRYPOINT ["/docker-entrypoint.sh"]
+# ENTRYPOINT ["/docker-entrypoint.sh"]
