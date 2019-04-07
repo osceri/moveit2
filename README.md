@@ -12,8 +12,8 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
 
 ## Milestones
 
-- [Official announcement of the port and commitment from Acutronic Robotics to allocate PMs and fund PickNik](https://acutronicrobotics.com/news/ros-2-moveit-robotic-motion-planning/)
-- [Why MoveIt 2 and approach](https://acutronicrobotics.com/news/moveit-2-planning-framework-why/)
+1. [Official announcement, commitment from Acutronic Robotics to allocate PMs and fund PickNik](https://acutronicrobotics.com/news/ros-2-moveit-robotic-motion-planning/)
+2. [Why MoveIt 2 and approach](https://acutronicrobotics.com/news/moveit-2-planning-framework-why/)
 
 ### Progress
 
@@ -178,7 +178,7 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
 [![Build Status](https://travis-ci.org/AcutronicRobotics/moveit2.svg?branch=master)](https://travis-ci.org/AcutronicRobotics/moveit2)
 
 ## Docker Containers
-TODO [Create ROS2 Docker containers for MoveIt!](https://github.com/ros-planning/moveit2/issues/15)
+https://cloud.docker.com/u/acutronicrobotics/repository/docker/acutronicrobotics/moveit2
 
 ## ROS Buildfarm
 Debian releases of MoveIt2 will not be available during the alpha development stage. Check back May 2019.
