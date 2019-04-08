@@ -1,8 +1,7 @@
 set(MOVEIT_LIB_NAME moveit_plan_execution)
 
 add_library(${MOVEIT_LIB_NAME}
-  # TODO (anasarrak): once plan_execution is finished focus on this
-  # src/plan_with_sensing.cpp
+  src/plan_with_sensing.cpp
   src/plan_execution.cpp)
 set_target_properties(${MOVEIT_LIB_NAME} PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
 ament_target_dependencies(${MOVEIT_LIB_NAME}
