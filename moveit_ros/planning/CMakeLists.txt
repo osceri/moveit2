@@ -47,9 +47,9 @@ set(THIS_PACKAGE_INCLUDE_DIRS
 set(libraries
   moveit_rdf_loader
   moveit_kinematics_plugin_loader
-  moveit_robot_model_loader
-  moveit_constraint_sampler_manager_loader
-  moveit_planning_pipeline
+  # moveit_robot_model_loader
+  # moveit_constraint_sampler_manager_loader
+  # moveit_planning_pipeline
   moveit_trajectory_execution_manager
   moveit_plan_execution
   moveit_planning_scene_monitor
@@ -85,7 +85,7 @@ add_subdirectory(kinematics_plugin_loader)
 add_subdirectory(planning_scene_monitor)
 # add_subdirectory(planning_components_tools)
 add_subdirectory(trajectory_execution_manager)
-# add_subdirectory(plan_execution)
+add_subdirectory(plan_execution)
 
 install(
   FILES
