@@ -65,7 +65,7 @@ private:
   bool planUsingPlanningPipeline(const planning_interface::MotionPlanRequest& req,
                                  plan_execution::ExecutableMotionPlan& plan);
   rclcpp_action::GoalResponse handle_move_goal(const std::array<uint8_t, 16> & uuid,
-       std::shared_ptr <const moveit_msgs::action::MoveGroup::Goal> goal_handle);
+        std::shared_ptr<const moveit_msgs::action::MoveGroup::Goal> goal);
 
   rclcpp_action::CancelResponse handle_move_cancel(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
   void handle_move_accept(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);

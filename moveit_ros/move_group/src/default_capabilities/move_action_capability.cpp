@@ -55,34 +55,35 @@ void move_group::MoveGroupMoveAction::initialize()
   move_action_server_ = rclcpp_action::create_server<moveit_msgs::action::MoveGroup>(
     node_,
     MOVE_ACTION,
-    boost::bind(&MoveGroupMoveAction::handle_move_goal, this, std::placeholders::_1, std::placeholders::_2),
-    boost::bind(&MoveGroupMoveAction::handle_move_cancel, this, std::placeholders::_1),
-    boost::bind(&MoveGroupMoveAction::handle_move_accept, this, std::placeholders::_1));
+    boost::bind(&move_group::MoveGroupMoveAction::handle_move_goal, this, std::placeholders::_1, std::placeholders::_2),
+    boost::bind(&move_group::MoveGroupMoveAction::handle_move_cancel, this, std::placeholders::_1),
+    boost::bind(&move_group::MoveGroupMoveAction::handle_move_accept, this, std::placeholders::_1));
 
   // move_action_server_->registerPreemptCallback(boost::bind(&MoveGroupMoveAction::preemptMoveCallback, this));
   // move_action_server_->start();
 }
 rclcpp_action::GoalResponse move_group::MoveGroupMoveAction::handle_move_goal(const std::array<uint8_t, 16> & uuid,
-                                              std::shared_ptr< const moveit_msgs::action::MoveGroup::Goal> goal_handle)
+                                               std::shared_ptr <const moveit_msgs::action::MoveGroup::Goal> goal)
 {
   (void)uuid;
   //TODO (anasarrak): Add a REJECT
   return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
 }
 
-rclcpp_action::CancelResponse move_group::MoveGroupMoveAction::handle_move_cancel(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle)
+rclcpp_action::CancelResponse move_group::MoveGroupMoveAction::handle_move_cancel(
+    const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle)
 {
-  // RCLCPP_INFO(move_group::MoveGroupMoveAction::node_->get_logger(), "Got request to cancel goal");
   RCLCPP_INFO(rclcpp::get_logger("move_action_capability"), "Got request to cancel goal");
   (void)goal_handle;
 
   return rclcpp_action::CancelResponse::ACCEPT;
 }
 
-void move_group::MoveGroupMoveAction::handle_move_accept(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle)
+void move_group::MoveGroupMoveAction::handle_move_accept(
+  const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle)
 {
   // this needs to return quickly to avoid blocking the executor, so spin up a new thread
-  std::thread(&MoveGroupMoveAction::executeMoveCallback, this, goal_handle).detach();
+  std::thread(&move_group::MoveGroupMoveAction::executeMoveCallback, this, goal_handle).detach();
 }
 
 void move_group::MoveGroupMoveAction::executeMoveCallback(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle)
