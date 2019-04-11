@@ -93,8 +93,6 @@ protected:
   moveit_msgs::msg::PlanningScene clearSceneRobotState(const moveit_msgs::msg::PlanningScene& scene) const;
   bool performTransform(geometry_msgs::msg::PoseStamped& pose_msg, const std::string& target_frame) const;
 
-  // ros::NodeHandle root_node_handle_;
-  // ros::NodeHandle node_handle_;
   std::shared_ptr<rclcpp::Node> node_;
   std::string capability_name_;
   MoveGroupContextPtr context_;
