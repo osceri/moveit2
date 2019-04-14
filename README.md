@@ -123,7 +123,7 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
       - [x] planning_scene_monitor
       - [x] trajectory_monitor
     - [ ] trajectory_execution_manager
-      - [ ] trajectory_execution_manager
+    - [x] robot_model_loader
     - [ ] common_planning_interface_objects
       - [ ] common_objects
   - [ ] planning_interface
