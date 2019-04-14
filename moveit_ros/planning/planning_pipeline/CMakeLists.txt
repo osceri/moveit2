@@ -4,6 +4,8 @@ add_library(${MOVEIT_LIB_NAME} src/planning_pipeline.cpp)
 set_target_properties(${MOVEIT_LIB_NAME} PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
 
 ament_target_dependencies(${MOVEIT_LIB_NAME}
+  urdf
+  pluginlib
   rclcpp
   Boost)
 
