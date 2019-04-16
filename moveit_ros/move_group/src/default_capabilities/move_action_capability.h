@@ -53,24 +53,32 @@ public:
   void initialize() override;
 
 private:
-  void executeMoveCallback(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
-  void executeMoveCallbackPlanAndExecute(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle,
-                                         std::shared_ptr<moveit_msgs::action::MoveGroup::Result> action_res);
-  void executeMoveCallbackPlanOnly(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle,
-                                   std::shared_ptr<moveit_msgs::action::MoveGroup::Result> action_res);
-  void startMoveExecutionCallback(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
-  void startMoveLookCallback(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
+  void executeMoveCallback(
+      const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
+  void executeMoveCallbackPlanAndExecute(
+      const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle,
+      std::shared_ptr<moveit_msgs::action::MoveGroup::Result> action_res);
+  void executeMoveCallbackPlanOnly(
+      const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle,
+      std::shared_ptr<moveit_msgs::action::MoveGroup::Result> action_res);
+  void startMoveExecutionCallback(
+      const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
+  void startMoveLookCallback(
+      const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
   void preemptMoveCallback();
-  void setMoveState(MoveGroupState state,const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
-  bool planUsingPlanningPipeline(const planning_interface::MotionPlanRequest& req,
-                                 plan_execution::ExecutableMotionPlan& plan,
-                               const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
+  void setMoveState(MoveGroupState state,
+                    const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
+  bool planUsingPlanningPipeline(
+      const planning_interface::MotionPlanRequest& req, plan_execution::ExecutableMotionPlan& plan,
+      const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
 
-  rclcpp_action::GoalResponse handle_move_goal(const std::array<uint8_t, 16> & uuid,
-        std::shared_ptr<const moveit_msgs::action::MoveGroup::Goal> goal);
+  rclcpp_action::GoalResponse handle_move_goal(const std::array<uint8_t, 16>& uuid,
+                                               std::shared_ptr<const moveit_msgs::action::MoveGroup::Goal> goal);
 
-  rclcpp_action::CancelResponse handle_move_cancel(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
-  void handle_move_accept(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
+  rclcpp_action::CancelResponse handle_move_cancel(
+      const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
+  void handle_move_accept(
+      const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
   std::shared_ptr<rclcpp_action::Server<moveit_msgs::action::MoveGroup>> move_action_server_;
   std::shared_ptr<moveit_msgs::action::MoveGroup::Feedback> move_feedback_;
 
