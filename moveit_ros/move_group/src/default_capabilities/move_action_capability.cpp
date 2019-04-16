@@ -51,19 +51,19 @@ move_group::MoveGroupMoveAction::MoveGroupMoveAction()
 void move_group::MoveGroupMoveAction::initialize()
 {
   // start the move action server
-  // move_action_server_.reset();
+  move_action_server_.reset();
   move_action_server_ = rclcpp_action::create_server<moveit_msgs::action::MoveGroup>(
     node_,
     MOVE_ACTION,
-    boost::bind(&move_group::MoveGroupMoveAction::handle_move_goal, this, std::placeholders::_1, std::placeholders::_2),
-    boost::bind(&move_group::MoveGroupMoveAction::handle_move_cancel, this, std::placeholders::_1),
-    boost::bind(&move_group::MoveGroupMoveAction::handle_move_accept, this, std::placeholders::_1));
-
-  // move_action_server_->registerPreemptCallback(boost::bind(&MoveGroupMoveAction::preemptMoveCallback, this));
+    std::bind(&move_group::MoveGroupMoveAction::handle_move_goal, this, std::placeholders::_1, std::placeholders::_2),
+    std::bind(&move_group::MoveGroupMoveAction::handle_move_cancel, this, std::placeholders::_1),
+    std::bind(&move_group::MoveGroupMoveAction::handle_move_accept, this, std::placeholders::_1));
+  //TODO(anasarrak): Preempt on ros2 actions?
+  // move_action_server_->registerPreemptCallback(std::bind(&MoveGroupMoveAction::preemptMoveCallback, this));
   // move_action_server_->start();
 }
 rclcpp_action::GoalResponse move_group::MoveGroupMoveAction::handle_move_goal(const std::array<uint8_t, 16> & uuid,
-                                               std::shared_ptr <const moveit_msgs::action::MoveGroup::Goal> goal)
+                                               std::shared_ptr<const moveit_msgs::action::MoveGroup::Goal> goal)
 {
   (void)uuid;
   //TODO (anasarrak): Add a REJECT
@@ -88,8 +88,7 @@ void move_group::MoveGroupMoveAction::handle_move_accept(
 
 void move_group::MoveGroupMoveAction::executeMoveCallback(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle)
 {
-  //TODO(anasarrak)
-  // setMoveState(PLANNING, goal_handle);
+  setMoveState(PLANNING, goal_handle);
   // before we start planning, ensure that we have the latest robot state received...
   context_->planning_scene_monitor_->waitForCurrentRobotState(rclcpp::Clock().now());
   context_->planning_scene_monitor_->updateFrameTransforms();
@@ -160,16 +159,16 @@ void move_group::MoveGroupMoveAction::executeMoveCallbackPlanAndExecute(const st
   opt.replan_ = goal->planning_options.replan;
   opt.replan_attempts_ = goal->planning_options.replan_attempts;
   opt.replan_delay_ = goal->planning_options.replan_delay;
-  opt.before_execution_callback_ = boost::bind(&MoveGroupMoveAction::startMoveExecutionCallback, this);
+  opt.before_execution_callback_ = std::bind(&MoveGroupMoveAction::startMoveExecutionCallback, this, goal_handle);
 
   opt.plan_callback_ =
-      boost::bind(&MoveGroupMoveAction::planUsingPlanningPipeline, this, boost::cref(motion_plan_request), _1);
+      boost::bind(&MoveGroupMoveAction::planUsingPlanningPipeline, this, std::cref(motion_plan_request), _1, goal_handle);
   if (goal->planning_options.look_around && context_->plan_with_sensing_)
   {
     opt.plan_callback_ = boost::bind(&plan_execution::PlanWithSensing::computePlan, context_->plan_with_sensing_.get(),
                                      _1, opt.plan_callback_, goal->planning_options.look_around_attempts,
                                      goal->planning_options.max_safe_execution_cost);
-    context_->plan_with_sensing_->setBeforeLookCallback(boost::bind(&MoveGroupMoveAction::startMoveLookCallback, this));
+    context_->plan_with_sensing_->setBeforeLookCallback(std::bind(&MoveGroupMoveAction::startMoveLookCallback, this, goal_handle));
   }
 
   plan_execution::ExecutableMotionPlan plan;
@@ -226,9 +225,10 @@ void move_group::MoveGroupMoveAction::executeMoveCallbackPlanOnly(const std::sha
 }
 
 bool move_group::MoveGroupMoveAction::planUsingPlanningPipeline(const planning_interface::MotionPlanRequest& req,
-                                                                plan_execution::ExecutableMotionPlan& plan)
+                                                                plan_execution::ExecutableMotionPlan& plan,
+                                                                const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle)
 {
-  // setMoveState(PLANNING,goal_handle);
+  setMoveState(PLANNING,goal_handle);
 
   planning_scene_monitor::LockedPlanningSceneRO lscene(plan.planning_scene_monitor_);
   bool solved = false;
@@ -252,16 +252,18 @@ bool move_group::MoveGroupMoveAction::planUsingPlanningPipeline(const planning_i
   return solved;
 }
 
-void move_group::MoveGroupMoveAction::startMoveExecutionCallback()
+void move_group::MoveGroupMoveAction::startMoveExecutionCallback(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle)
 {
-  //TODO(anasarrak)
-  // setMoveState(MONITOR);
+  //TODO(anasarrak) remove the following error logs
+  RCLCPP_ERROR(node_->get_logger(),"Entering startMoveExecutionCallback");
+  setMoveState(MONITOR,goal_handle);
 }
 
-void move_group::MoveGroupMoveAction::startMoveLookCallback()
+void move_group::MoveGroupMoveAction::startMoveLookCallback(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle)
 {
-  //TODO(anasarrak)
-  // setMoveState(LOOK);
+  //TODO(anasarrak) remove the following error logs
+  RCLCPP_ERROR(node_->get_logger(),"Entering StartMoveLookCallback");
+  setMoveState(LOOK,goal_handle);
 }
 
 void move_group::MoveGroupMoveAction::preemptMoveCallback()

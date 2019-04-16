@@ -58,12 +58,14 @@ private:
                                          std::shared_ptr<moveit_msgs::action::MoveGroup::Result> action_res);
   void executeMoveCallbackPlanOnly(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle,
                                    std::shared_ptr<moveit_msgs::action::MoveGroup::Result> action_res);
-  void startMoveExecutionCallback();
-  void startMoveLookCallback();
+  void startMoveExecutionCallback(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
+  void startMoveLookCallback(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
   void preemptMoveCallback();
   void setMoveState(MoveGroupState state,const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
   bool planUsingPlanningPipeline(const planning_interface::MotionPlanRequest& req,
-                                 plan_execution::ExecutableMotionPlan& plan);
+                                 plan_execution::ExecutableMotionPlan& plan,
+                               const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle);
+
   rclcpp_action::GoalResponse handle_move_goal(const std::array<uint8_t, 16> & uuid,
         std::shared_ptr<const moveit_msgs::action::MoveGroup::Goal> goal);
 
