@@ -123,7 +123,7 @@ void planning_pipeline::PlanningPipeline::configure()
   {
     std::string classes_str = boost::algorithm::join(classes, ", ");
     RCLCPP_ERROR(node_->get_logger(),"Exception while loading planner '%s': %s"
-        "Available plugins: %s" ,planner_plugin_name_, ex.what(), classes_str.c_str());
+        "Available plugins: %s" ,planner_plugin_name_.c_str(), ex.what(), classes_str.c_str());
   }
 
   // load the planner request adapters
@@ -161,7 +161,7 @@ void planning_pipeline::PlanningPipeline::configure()
       adapter_chain_.reset(new planning_request_adapter::PlanningRequestAdapterChain());
       for (std::size_t i = 0; i < ads.size(); ++i)
       {
-        RCLCPP_ERROR(node_->get_logger(),"Using planning request adapter '%s'", ads[i]->getDescription());
+        RCLCPP_ERROR(node_->get_logger(),"Using planning request adapter '%s'", ads[i]->getDescription().c_str());
         adapter_chain_->addAdapter(ads[i]);
       }
     }
@@ -289,7 +289,7 @@ bool planning_pipeline::PlanningPipeline::generatePlan(const planning_scene::Pla
               ss << index[i] << " ";
             RCLCPP_ERROR(node_->get_logger(),"Computed path is not valid. Invalid states at index locations: [%s] out of "
                           "%ld. Explanations follow in command line. Contacts are published on %s",
-                             ss.str(), state_count, contacts_publisher_->get_topic_name());
+                             ss.str().c_str(), state_count, contacts_publisher_->get_topic_name());
 
             // call validity checks in verbose mode for the problematic states
             visualization_msgs::msg::MarkerArray arr;
