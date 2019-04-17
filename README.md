@@ -114,20 +114,24 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
 - [ ] Necessary for a Minimal Working Example (This list can vary, they are the initial includes for the *planning_interface/move_group_interface* that is what we need for a **plan** and **execute**)
   - [x] moveit_ros_perception
     - [x] occupancy_map_monitor
-  - [ ] move_group
+  - [ ] moveit_ros_move_group
     - [ ] capability_names
-  - [ ] planning
+      - [x] query_planners_service_capability
+      - [x] move_action_capability
+    - [x] move_group_capability
+  - [ ] moveit_ros_planning
+    - [x] rdf_loader
     - [x] collision_plugin_loader
-    - [x] planning_scene_monitor
-      - [x] current_state_monitor
-      - [x] planning_scene_monitor
-      - [x] trajectory_monitor
-    - [ ] trajectory_execution_manager
-    - [x] planning_pipeline
+    - [x] kinematics_plugin_loader
     - [x] robot_model_loader
+    - [x] planning_pipeline
+    - [x] planning_scene_monitor
+    - [x] trajectory_execution_manager
+    - [x] plan_execution
     - [ ] common_planning_interface_objects
       - [ ] common_objects
   - [ ] planning_interface
+    - [x] common_planning_interface_objects
     - [ ] planning_scene_interface
       - [ ] planning_scene_interface
   - [ ] moveit_ros_manipulation
