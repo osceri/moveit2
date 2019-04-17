@@ -157,7 +157,7 @@ void planning_scene_monitor::CurrentStateMonitor::startStateMonitor(const std::s
     }
     state_monitor_started_ = true;
     monitor_start_time_ = ros_clock.now();
-    RCLCPP_DEBUG(node_->get_logger(),"Listening to joint states on topic '%s'", joint_states_topic);
+    RCLCPP_DEBUG(node_->get_logger(),"Listening to joint states on topic '%s'", joint_states_topic.c_str());
   }
 }
 
@@ -249,7 +249,7 @@ bool planning_scene_monitor::CurrentStateMonitor::haveCompleteState(const rclcpp
     else if (it->second < old)
     {
       RCLCPP_DEBUG(node_->get_logger(),"Joint '%s' was last updated %0.3lf seconds ago (older than the allowed %0.3lf seconds)",
-                joint->getName().c_str(), (now - it->second) , age.seconds());
+                joint->getName().c_str(), (now - it->second).seconds() , age.seconds());
       result = false;
     }
   }
@@ -279,7 +279,7 @@ bool planning_scene_monitor::CurrentStateMonitor::haveCompleteState(const rclcpp
     else if (it->second < old)
     {
       RCLCPP_DEBUG(node_->get_logger(),"Joint '%s' was last updated %0.3lf seconds ago (older than the allowed %0.3lf seconds)",
-                joint->getName().c_str(), (now - it->second) , age.seconds());
+                joint->getName().c_str(), (now - it->second).seconds() , age.seconds());
       missing_states.push_back(joint->getName());
       result = false;
     }
@@ -462,7 +462,7 @@ void planning_scene_monitor::CurrentStateMonitor::tfCallback()
       {
         RCLCPP_WARN_ONCE(node_->get_logger(), "Unable to update multi-DOF joint '%s':"
                               "Failure to lookup transform between '%s'"
-                              "and '%s' with TF exception: ", joint->getName(), parent_frame.c_str(), child_frame.c_str(), ex.what());
+                              "and '%s' with TF exception: ", joint->getName().c_str(), parent_frame.c_str(), child_frame.c_str(), ex.what());
         continue;
       }
 
