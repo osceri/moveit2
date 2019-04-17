@@ -49,7 +49,7 @@
 #include <moveit/planning_scene_monitor/current_state_monitor.h>
 #include <moveit/planning_scene_monitor/planning_scene_monitor.h>
 // #include <moveit/planning_scene_interface/planning_scene_interface.h>
-// #include <moveit/trajectory_execution_manager/trajectory_execution_manager.h>
+#include <moveit/trajectory_execution_manager/trajectory_execution_manager.h>
 #include <moveit/common_planning_interface_objects/common_objects.h>
 #include <moveit/robot_state/conversions.h>
 #include <moveit_msgs/action/pickup.hpp>
@@ -139,7 +139,7 @@ public:
     //TODO (anasarrak): trajectory_execution_manager might be needed to be ported first, I'll harcode this for the
     // Minimal working example, reverting the change once trajectory_execution_manager is ported to ros2
     trajectory_event_publisher_ = node_handle_->create_publisher<std_msgs::msg::String>(
-      /*trajectory_execution_manager::TrajectoryExecutionManager::EXECUTION_EVENT_TOPIC*/"trajectory_execution_event",1);
+      trajectory_execution_manager::TrajectoryExecutionManager::EXECUTION_EVENT_TOPIC,1);
 
     attached_object_publisher_ = node_handle_->create_publisher<moveit_msgs::msg::AttachedCollisionObject>(
       planning_scene_monitor::PlanningSceneMonitor::DEFAULT_ATTACHED_COLLISION_OBJECT_TOPIC,1);
