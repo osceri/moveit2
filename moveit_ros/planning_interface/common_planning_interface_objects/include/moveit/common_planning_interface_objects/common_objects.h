@@ -38,6 +38,7 @@
 #define MOVEIT_PLANNING_INTERFACE_COMMON_OBJECTS_
 
 #include <moveit/planning_scene_monitor/current_state_monitor.h>
+#include "rclcpp/rclcpp.hpp"
 
 namespace moveit
 {
@@ -69,7 +70,7 @@ planning_scene_monitor::CurrentStateMonitorPtr getSharedStateMonitor(const robot
  */
 planning_scene_monitor::CurrentStateMonitorPtr getSharedStateMonitor(const robot_model::RobotModelConstPtr& robot_model,
                                                                      const std::shared_ptr<tf2_ros::Buffer>& tf_buffer,
-                                                                     const ros::NodeHandle& nh);
+                                                                     const std::shared_ptr<rclcpp::Node> node);
 
 }  // namespace planning interface
 }  // namespace moveit
