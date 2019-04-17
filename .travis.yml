@@ -32,8 +32,8 @@ matrix:
       #   - docker
       # sudo:
       #   - required
-     - os: osx
-       osx_image: xcode10.1
+    # - os: osx
+    #   osx_image: xcode10.1
 
 before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash ./osx-dependencies.sh; fi
