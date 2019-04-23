@@ -317,19 +317,33 @@ public:
   std::map<std::string, std::string> getPlannerParams(const std::string& planner_id, const std::string& group = "")
   {
     auto req = std::make_shared<moveit_msgs::srv::GetPlannerParams::Request>();
-    using ServiceResponse = rclcpp::Client<moveit_msgs::srv::GetPlannerParams>::SharedFuture;
+    auto res = std::make_shared<moveit_msgs::srv::GetPlannerParams::Response>();
     req->planner_config = planner_id;
     req->group = group;
 
-    auto res_callback = [this](ServiceResponse future){
     std::map<std::string, std::string> result;
-      auto res = future.get();
-        for (unsigned int i = 0, end = res->params.keys.size(); i < end; ++i)
-          result[res->params.keys[i]] = res->params.values[i];
-      return result;
-    };
 
-    auto future_result = get_params_service_->async_send_request(req,res_callback);
+    while (!query_service_->wait_for_service(std::chrono::seconds(1))) {
+      if (!rclcpp::ok()) {
+        RCLCPP_ERROR(node_handle_->get_logger(), "Interrupted while waiting for the get_params_service_. Exiting.");
+        return result;
+      }
+      RCLCPP_INFO(node_handle_->get_logger(), "get_params_service_ not available, waiting again...");
+    }
+
+    auto result_async = get_params_service_->async_send_request(req);
+
+    if (rclcpp::spin_until_future_complete(node_handle_, result_async) ==
+      rclcpp::executor::FutureReturnCode::SUCCESS)
+    {
+      res = result_async.get();
+      for (unsigned int i = 0, end = res->params.keys.size(); i < end; ++i)
+             result[res->params.keys[i]] = res->params.values[i];
+       return result;
+    } else {
+      RCLCPP_ERROR(node_handle_->get_logger(), "Error while processing get_params_service_");
+      return result;
+    }
   }
 
 //   void setPlannerParams(const std::string& planner_id, const std::string& group,
