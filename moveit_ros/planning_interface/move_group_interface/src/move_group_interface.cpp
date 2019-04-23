@@ -346,22 +346,32 @@ public:
     }
   }
 
-//   void setPlannerParams(const std::string& planner_id, const std::string& group,
-//                         const std::map<std::string, std::string>& params, bool replace = false)
-//   {
-//     moveit_msgs::srv::SetPlannerParams::Request req;
-//     moveit_msgs::srv::SetPlannerParams::Response res;
-//     req.planner_config = planner_id;
-//     req.group = group;
-//     req.replace = replace;
-//     for (std::map<std::string, std::string>::const_iterator it = params.begin(), end = params.end(); it != end; ++it)
-//     {
-//       req.params.keys.push_back(it->first);
-//       req.params.values.push_back(it->second);
-//     }
-//     set_params_service_.call(req, res);
-//   }
-//
+  void setPlannerParams(const std::string& planner_id, const std::string& group,
+                        const std::map<std::string, std::string>& params, bool replace = false)
+  {
+    auto req = std::make_shared<moveit_msgs::srv::SetPlannerParams::Request>();
+    auto res = std::make_shared<moveit_msgs::srv::SetPlannerParams::Response>();
+
+    req->planner_config = planner_id;
+    req->group = group;
+    req->replace = replace;
+
+    for (std::map<std::string, std::string>::const_iterator it = params.begin(), end = params.end(); it != end; ++it)
+    {
+      req->params.keys.push_back(it->first);
+      req->params.values.push_back(it->second);
+    }
+
+    while (!set_params_service_->wait_for_service(std::chrono::seconds(1))) {
+      if (!rclcpp::ok()) {
+        RCLCPP_ERROR(node_handle_->get_logger(), "Interrupted while waiting for the set_params_service_. Exiting.");
+        return result;
+      }
+      RCLCPP_INFO(node_handle_->get_logger(), "set_params_service_ not available, waiting again...");
+    }
+    // set_params_service_.call(req, res);
+  }
+
 //   std::string getDefaultPlannerId(const std::string& group) const
 //   {
 //     std::stringstream param_name;
@@ -1428,20 +1438,20 @@ bool moveit::planning_interface::MoveGroupInterface::getInterfaceDescription(
 {
   return impl_->getInterfaceDescription(desc);
 }
-//
-// std::map<std::string, std::string> moveit::planning_interface::MoveGroupInterface::getPlannerParams(
-//     const std::string& planner_id, const std::string& group)
-// {
-//   return impl_->getPlannerParams(planner_id, group);
-// }
-//
-// void moveit::planning_interface::MoveGroupInterface::setPlannerParams(const std::string& planner_id,
-//                                                                       const std::string& group,
-//                                                                       const std::map<std::string, std::string>& params,
-//                                                                       bool replace)
-// {
-//   impl_->setPlannerParams(planner_id, group, params, replace);
-// }
+
+std::map<std::string, std::string> moveit::planning_interface::MoveGroupInterface::getPlannerParams(
+    const std::string& planner_id, const std::string& group)
+{
+  return impl_->getPlannerParams(planner_id, group);
+}
+
+void moveit::planning_interface::MoveGroupInterface::setPlannerParams(const std::string& planner_id,
+                                                                      const std::string& group,
+                                                                      const std::map<std::string, std::string>& params,
+                                                                      bool replace)
+{
+  impl_->setPlannerParams(planner_id, group, params, replace);
+}
 //
 // std::string moveit::planning_interface::MoveGroupInterface::getDefaultPlannerId(const std::string& group) const
 // {
