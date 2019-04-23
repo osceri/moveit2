@@ -290,21 +290,16 @@ public:
   bool getInterfaceDescription(moveit_msgs::msg::PlannerInterfaceDescription& desc)
   {
     auto req = std::make_shared<moveit_msgs::srv::QueryPlannerInterfaces::Request>();
-    auto res = query_service_->async_send_request(req);
+    using ServiceResponse = rclcpp::Client<moveit_msgs::srv::QueryPlannerInterfaces>::SharedFuture;
 
-    //TODO (anasarrak): Enable the following if and look at the behaviour
-    // if (rclcpp::spin_until_future_complete(node, result_future) !=
-    // rclcpp::executor::FutureReturnCode::SUCCESS)
-    // {
-    //   RCLCPP_ERROR(node_handle_->get_logger(), "service call failed");
-    //   return false;
-    // }
-    auto result = res.get();
-    if(!result->planner_interfaces.empty()){
-      desc = result->planner_interfaces.front();
-      return true;
-    }
-    return false;
+    auto res_callback = [&desc](ServiceResponse future){
+      auto result = future.get();
+      if(!result->planner_interfaces.empty()){
+        desc = result->planner_interfaces.front();
+        return true;
+      }
+      return false;
+    };
   }
 //
 //   std::map<std::string, std::string> getPlannerParams(const std::string& planner_id, const std::string& group = "")
