@@ -365,7 +365,6 @@ public:
     while (!set_params_service_->wait_for_service(std::chrono::seconds(1))) {
       if (!rclcpp::ok()) {
         RCLCPP_ERROR(node_handle_->get_logger(), "Interrupted while waiting for the set_params_service_. Exiting.");
-        return result;
       }
       RCLCPP_INFO(node_handle_->get_logger(), "set_params_service_ not available, waiting again...");
     }
