@@ -290,16 +290,28 @@ public:
   bool getInterfaceDescription(moveit_msgs::msg::PlannerInterfaceDescription& desc)
   {
     auto req = std::make_shared<moveit_msgs::srv::QueryPlannerInterfaces::Request>();
-    using ServiceResponse = rclcpp::Client<moveit_msgs::srv::QueryPlannerInterfaces>::SharedFuture;
+    auto res = std::make_shared<moveit_msgs::srv::QueryPlannerInterfaces::Response>();
 
-    auto res_callback = [&desc](ServiceResponse future){
-      auto result = future.get();
-      if(!result->planner_interfaces.empty()){
-        desc = result->planner_interfaces.front();
+    while (!query_service_->wait_for_service(std::chrono::seconds(1))) {
+      if (!rclcpp::ok()) {
+        RCLCPP_ERROR(node_handle_->get_logger(), "Interrupted while waiting for the query_service_. Exiting.");
+        return 0;
+      }
+      RCLCPP_INFO(node_handle_->get_logger(), "query_service_ not available, waiting again...");
+    }
+
+    auto result = query_service_->async_send_request(req);
+    if (rclcpp::spin_until_future_complete(node_handle_, result) ==
+      rclcpp::executor::FutureReturnCode::SUCCESS)
+    {
+      res = result.get();
+      if(!res->planner_interfaces.empty()){
+        desc = res->planner_interfaces.front();
         return true;
       }
+    } else {
       return false;
-    };
+    }
   }
 
   std::map<std::string, std::string> getPlannerParams(const std::string& planner_id, const std::string& group = "")
@@ -316,6 +328,8 @@ public:
           result[res->params.keys[i]] = res->params.values[i];
       return result;
     };
+
+    auto future_result = get_params_service_->async_send_request(req,res_callback);
   }
 
 //   void setPlannerParams(const std::string& planner_id, const std::string& group,
