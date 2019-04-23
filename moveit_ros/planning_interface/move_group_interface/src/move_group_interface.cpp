@@ -179,12 +179,12 @@ public:
     query_service_ =
         node_handle_->create_client<moveit_msgs::srv::QueryPlannerInterfaces>(move_group::QUERY_PLANNERS_SERVICE_NAME);
     // TODO (anasarrak): Fix query_service_ server and do the same for the follwing client service
-    // get_params_service_ =
-    //     node_handle_->create_service<moveit_msgs::srv::GetPlannerParams>(move_group::GET_PLANNER_PARAMS_SERVICE_NAME);
-    //
-    // set_params_service_ =
-    //     node_handle_->create_service<moveit_msgs::srv::SetPlannerParams>(move_group::SET_PLANNER_PARAMS_SERVICE_NAME);
-    //
+    get_params_service_ =
+        node_handle_->create_client<moveit_msgs::srv::GetPlannerParams>(move_group::GET_PLANNER_PARAMS_SERVICE_NAME);
+
+    set_params_service_ =
+        node_handle_->create_client<moveit_msgs::srv::SetPlannerParams>(move_group::SET_PLANNER_PARAMS_SERVICE_NAME);
+
     // cartesian_path_service_ =
     //     node_handle_->create_service<moveit_msgs::srv::GetCartesianPath>(move_group::CARTESIAN_PATH_SERVICE_NAME);
     //
