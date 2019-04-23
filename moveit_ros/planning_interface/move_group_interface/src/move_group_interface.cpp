@@ -301,22 +301,23 @@ public:
       return false;
     };
   }
-//
-//   std::map<std::string, std::string> getPlannerParams(const std::string& planner_id, const std::string& group = "")
-//   {
-//     moveit_msgs::srv::GetPlannerParams::Request req;
-//     moveit_msgs::srv::GetPlannerParams::Response res;
-//     req.planner_config = planner_id;
-//     req.group = group;
-//     std::map<std::string, std::string> result;
-//     if (get_params_service_.call(req, res))
-//     {
-//       for (unsigned int i = 0, end = res.params.keys.size(); i < end; ++i)
-//         result[res.params.keys[i]] = res.params.values[i];
-//     }
-//     return result;
-//   }
-//
+
+  std::map<std::string, std::string> getPlannerParams(const std::string& planner_id, const std::string& group = "")
+  {
+    auto req = std::make_shared<moveit_msgs::srv::GetPlannerParams::Request>();
+    using ServiceResponse = rclcpp::Client<moveit_msgs::srv::GetPlannerParams>::SharedFuture;
+    req->planner_config = planner_id;
+    req->group = group;
+
+    auto res_callback = [this](ServiceResponse future){
+    std::map<std::string, std::string> result;
+      auto res = future.get();
+        for (unsigned int i = 0, end = res->params.keys.size(); i < end; ++i)
+          result[res->params.keys[i]] = res->params.values[i];
+      return result;
+    };
+  }
+
 //   void setPlannerParams(const std::string& planner_id, const std::string& group,
 //                         const std::map<std::string, std::string>& params, bool replace = false)
 //   {
