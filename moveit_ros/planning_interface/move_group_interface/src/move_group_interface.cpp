@@ -883,38 +883,48 @@ public:
 //     }
 //   }
 //
-//   MoveItErrorCode execute(const Plan& plan, bool wait)
-//   {
-//     if (!execute_action_client_->isServerConnected())
-//     {
-//       return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::FAILURE);
-//     }
-//
-//     moveit_msgs::action::ExecuteTrajectoryGoal goal;
-//     goal.trajectory = plan.trajectory_;
-//
-//     execute_action_client_->sendGoal(goal);
-//     if (!wait)
-//     {
-//       return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::SUCCESS);
-//     }
-//
-//     if (!execute_action_client_->waitForResult())
-//     {
-//       ROS_INFO_STREAM_NAMED("move_group_interface", "ExecuteTrajectory action returned early");
-//     }
-//
-//     if (execute_action_client_->getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-//     {
-//       return MoveItErrorCode(execute_action_client_->getResult()->error_code);
-//     }
-//     else
-//     {
-//       ROS_INFO_STREAM_NAMED("move_group_interface", execute_action_client_->getState().toString()
-//                                                         << ": " << execute_action_client_->getState().getText());
-//       return MoveItErrorCode(execute_action_client_->getResult()->error_code);
-//     }
-//   }
+  MoveItErrorCode execute(const Plan& plan, bool wait)
+  {
+    if (!execute_action_client_->action_server_is_ready())
+    {
+      return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::FAILURE);
+    }
+    moveit_msgs::action::ExecuteTrajectory::Goal goal;
+
+    goal.trajectory = plan.trajectory_;
+
+    execute_action_client_->async_send_goal(goal);
+    if (!wait)
+    {
+      return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::SUCCESS);
+    }
+    auto goal_handle_future = execute_action_client_->async_send_goal(goal);
+    if (rclcpp::spin_until_future_complete(node_handle_, goal_handle_future) !=
+    rclcpp::executor::FutureReturnCode::SUCCESS)
+    {
+      RCLCPP_INFO(node_handle_->get_logger(), "ExecuteTrajectory action returned early");
+    }
+    auto result_future = goal_handle_future.get()->async_result();
+    rclcpp_action::ClientGoalHandle<moveit_msgs::action::ExecuteTrajectory>::Result result = result_future.get();
+
+    if (result.code == rclcpp_action::ResultCode::SUCCEEDED)
+    {
+      return MoveItErrorCode(result.response->error_code);
+    }
+    else
+    {
+      switch(result.code){
+        case rclcpp_action::ResultCode::ABORTED:
+          RCLCPP_ERROR(node_handle_->get_logger(), "ABORTED");
+        case rclcpp_action::ResultCode::CANCELED:
+          RCLCPP_ERROR(node_handle_->get_logger(), "CANCELED");
+        default:
+          RCLCPP_ERROR(node_handle_->get_logger(), "Unknown result code");
+      }
+      // RCLCPP_INFO(node_handle_->get_logger(), "%s : %s", result.code.c_str(), + execute_action_client_->getState().getText());
+      return MoveItErrorCode(result.response->error_code);
+    }
+  }
 //
 //   double computeCartesianPath(const std::vector<geometry_msgs::Pose>& waypoints, double step, double jump_threshold,
 //                               moveit_msgs::msg::RobotTrajectory& msg, const moveit_msgs::msg::Constraints& path_constraints,
