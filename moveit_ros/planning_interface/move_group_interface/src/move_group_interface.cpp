@@ -1509,17 +1509,17 @@ void moveit::planning_interface::MoveGroupInterface::setPlannerParams(const std:
 //   return impl_->move(true);
 // }
 //
-// moveit::planning_interface::MoveItErrorCode
-// moveit::planning_interface::MoveGroupInterface::asyncExecute(const Plan& plan)
-// {
-//   return impl_->execute(plan, false);
-// }
-//
-// moveit::planning_interface::MoveItErrorCode moveit::planning_interface::MoveGroupInterface::execute(const Plan& plan)
-// {
-//   return impl_->execute(plan, true);
-// }
-//
+moveit::planning_interface::MoveItErrorCode
+moveit::planning_interface::MoveGroupInterface::asyncExecute(const Plan& plan)
+{
+  return impl_->execute(plan, false);
+}
+
+moveit::planning_interface::MoveItErrorCode moveit::planning_interface::MoveGroupInterface::execute(const Plan& plan)
+{
+  return impl_->execute(plan, true);
+}
+
 moveit::planning_interface::MoveItErrorCode moveit::planning_interface::MoveGroupInterface::plan(Plan& plan)
 {
   return impl_->plan(plan);
