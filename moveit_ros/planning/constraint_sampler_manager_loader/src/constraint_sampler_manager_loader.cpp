@@ -45,7 +45,8 @@ namespace constraint_sampler_manager_loader
 class ConstraintSamplerManagerLoader::Helper
 {
 public:
-  Helper(const constraint_samplers::ConstraintSamplerManagerPtr& csm, const std::shared_ptr<rclcpp::Node> node) : node_(node)
+  Helper(const constraint_samplers::ConstraintSamplerManagerPtr& csm, const std::shared_ptr<rclcpp::Node> node)
+    : node_(node)
   {
     auto parameters_constraint_sampler = std::make_shared<rclcpp::SyncParametersClient>(node_);
 
@@ -61,7 +62,7 @@ public:
       }
       catch (pluginlib::PluginlibException& ex)
       {
-        RCLCPP_ERROR(node_->get_logger(),"Exception while creating constraint sampling plugin loader %s", ex.what());
+        RCLCPP_ERROR(node_->get_logger(), "Exception while creating constraint sampling plugin loader %s", ex.what());
         return;
       }
       boost::char_separator<char> sep(" ");
@@ -73,11 +74,12 @@ public:
           constraint_samplers::ConstraintSamplerAllocatorPtr csa =
               constraint_sampler_plugin_loader_->createUniqueInstance(*beg);
           csm->registerSamplerAllocator(csa);
-          RCLCPP_INFO(node_->get_logger(),"Loaded constraint sampling plugin %s", std::string(*beg).c_str());
+          RCLCPP_INFO(node_->get_logger(), "Loaded constraint sampling plugin %s", std::string(*beg).c_str());
         }
         catch (pluginlib::PluginlibException& ex)
         {
-          RCLCPP_ERROR(node_->get_logger(),"Exception while planning adapter plugin '%s': %s", std::string(*beg).c_str(), ex.what());
+          RCLCPP_ERROR(node_->get_logger(), "Exception while planning adapter plugin '%s': %s",
+                       std::string(*beg).c_str(), ex.what());
         }
       }
     }
@@ -89,12 +91,11 @@ private:
       constraint_sampler_plugin_loader_;
 };
 node_->get_logger(),
-ConstraintSamplerManagerLoader::ConstraintSamplerManagerLoader(
-    const constraint_samplers::ConstraintSamplerManagerPtr& csm,
-    const std::shared_ptr<rclcpp::Node> node)
+    ConstraintSamplerManagerLoader::ConstraintSamplerManagerLoader(
+        const constraint_samplers::ConstraintSamplerManagerPtr& csm, const std::shared_ptr<rclcpp::Node> node)
   : constraint_sampler_manager_(csm ? csm : constraint_samplers::ConstraintSamplerManagerPtr(
                                                 new constraint_samplers::ConstraintSamplerManager()))
-  , impl_(new Helper(constraint_sampler_manager_,node))
+  , impl_(new Helper(constraint_sampler_manager_, node))
 {
 }
 }  // namespace constraint_sampler_manager_loader
