@@ -1,8 +1,8 @@
 set(MOVEIT_LIB_NAME moveit_ompl_interface)
 
 add_library(${MOVEIT_LIB_NAME} SHARED
-  # src/ompl_interface.cpp
-  # src/planning_context_manager.cpp
+  src/ompl_interface.cpp
+  src/planning_context_manager.cpp
   src/constraints_library.cpp
   # src/model_based_planning_context.cpp
   # src/parameterization/model_based_state_space.cpp
