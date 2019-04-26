@@ -67,8 +67,7 @@ public:
     std::vector<std::string> result;
     request->components.components = request->components.WORLD_OBJECT_NAMES;
     auto res = planning_scene_service_->async_send_request(request);
-    if (rclcpp::spin_until_future_complete(node_, res) !=
-      rclcpp::executor::FutureReturnCode::SUCCESS)
+    if (rclcpp::spin_until_future_complete(node_, res) != rclcpp::executor::FutureReturnCode::SUCCESS)
     {
       return result;
     }
@@ -95,8 +94,7 @@ public:
     std::vector<std::string> result;
     request->components.components = request->components.WORLD_OBJECT_GEOMETRY;
     auto res = planning_scene_service_->async_send_request(request);
-    if (rclcpp::spin_until_future_complete(node_, res) !=
-      rclcpp::executor::FutureReturnCode::SUCCESS)
+    if (rclcpp::spin_until_future_complete(node_, res) != rclcpp::executor::FutureReturnCode::SUCCESS)
     {
       RCLCPP_WARN(node_->get_logger(), "Could not call planning scene service to get object names");
       return result;
@@ -149,8 +147,7 @@ public:
     std::map<std::string, geometry_msgs::msg::Pose> result;
     request->components.components = request->components.WORLD_OBJECT_GEOMETRY;
     auto res = planning_scene_service_->async_send_request(request);
-    if (rclcpp::spin_until_future_complete(node_, res) !=
-      rclcpp::executor::FutureReturnCode::SUCCESS)
+    if (rclcpp::spin_until_future_complete(node_, res) != rclcpp::executor::FutureReturnCode::SUCCESS)
     {
       RCLCPP_WARN(node_->get_logger(), "Could not call planning scene service to get object names");
       return result;
@@ -182,8 +179,7 @@ public:
     std::map<std::string, moveit_msgs::msg::CollisionObject> result;
     request->components.components = request->components.WORLD_OBJECT_GEOMETRY;
     auto res = planning_scene_service_->async_send_request(request);
-    if (rclcpp::spin_until_future_complete(node_, res) !=
-      rclcpp::executor::FutureReturnCode::SUCCESS)
+    if (rclcpp::spin_until_future_complete(node_, res) != rclcpp::executor::FutureReturnCode::SUCCESS)
     {
       RCLCPP_WARN(node_->get_logger(), "Could not call planning scene service to get object geometries");
       return result;
@@ -209,11 +205,9 @@ public:
     std::map<std::string, moveit_msgs::msg::AttachedCollisionObject> result;
     request->components.components = request->components.ROBOT_STATE_ATTACHED_OBJECTS;
     auto res = planning_scene_service_->async_send_request(request);
-    if (rclcpp::spin_until_future_complete(node_, res) !=
-      rclcpp::executor::FutureReturnCode::SUCCESS)
+    if (rclcpp::spin_until_future_complete(node_, res) != rclcpp::executor::FutureReturnCode::SUCCESS)
     {
-      RCLCPP_WARN(node_->get_logger(),
-                     "Could not call planning scene service to get attached object geometries");
+      RCLCPP_WARN(node_->get_logger(), "Could not call planning scene service to get attached object geometries");
       return result;
     }
 
@@ -236,8 +230,7 @@ public:
     auto response = std::make_shared<moveit_msgs::srv::ApplyPlanningScene::Response>();
     request->scene = planning_scene;
     auto res = apply_planning_scene_service_->async_send_request(request);
-    if (rclcpp::spin_until_future_complete(node_, res) !=
-      rclcpp::executor::FutureReturnCode::SUCCESS)
+    if (rclcpp::spin_until_future_complete(node_, res) != rclcpp::executor::FutureReturnCode::SUCCESS)
     {
       RCLCPP_WARN(node_->get_logger(), "Failed to call ApplyPlanningScene service");
       return false;
@@ -352,8 +345,9 @@ bool PlanningSceneInterface::applyCollisionObject(const moveit_msgs::msg::Collis
   return applyPlanningScene(ps);
 }
 
-bool PlanningSceneInterface::applyCollisionObjects(const std::vector<moveit_msgs::msg::CollisionObject>& collision_objects,
-                                                   const std::vector<moveit_msgs::msg::ObjectColor>& object_colors)
+bool PlanningSceneInterface::applyCollisionObjects(
+    const std::vector<moveit_msgs::msg::CollisionObject>& collision_objects,
+    const std::vector<moveit_msgs::msg::ObjectColor>& object_colors)
 {
   moveit_msgs::msg::PlanningScene ps;
   ps.robot_state.is_diff = true;
@@ -372,7 +366,8 @@ bool PlanningSceneInterface::applyCollisionObjects(const std::vector<moveit_msgs
   return applyPlanningScene(ps);
 }
 
-bool PlanningSceneInterface::applyAttachedCollisionObject(const moveit_msgs::msg::AttachedCollisionObject& collision_object)
+bool PlanningSceneInterface::applyAttachedCollisionObject(
+    const moveit_msgs::msg::AttachedCollisionObject& collision_object)
 {
   moveit_msgs::msg::PlanningScene ps;
   ps.robot_state.is_diff = true;
@@ -397,8 +392,9 @@ bool PlanningSceneInterface::applyPlanningScene(const moveit_msgs::msg::Planning
   return impl_->applyPlanningScene(ps);
 }
 
-void PlanningSceneInterface::addCollisionObjects(const std::vector<moveit_msgs::msg::CollisionObject>& collision_objects,
-                                                 const std::vector<moveit_msgs::msg::ObjectColor>& object_colors) const
+void PlanningSceneInterface::addCollisionObjects(
+    const std::vector<moveit_msgs::msg::CollisionObject>& collision_objects,
+    const std::vector<moveit_msgs::msg::ObjectColor>& object_colors) const
 {
   impl_->addCollisionObjects(collision_objects, object_colors);
 }
