@@ -48,7 +48,7 @@ using namespace std;
 
 namespace pr2_arm_kinematics
 {
-rclcpp::Logger LOGGER_PR2_ARM_KINEMATICS_PLUGIN = rclcpp::get_logger("pr2_arm_kinematics_plugin");
+static rclcpp::Logger LOGGER_PR2_ARM_KINEMATICS_PLUGIN = rclcpp::get_logger("pr2_arm_kinematics_plugin");
 
 bool PR2ArmIKSolver::getCount(int& count, const int& max_count, const int& min_count)
 {
