@@ -56,19 +56,22 @@ public:
   void initialize() override;
 
 private:
-  void executePathCallback(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle);
-  void executePath(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle,
-                   std::shared_ptr<moveit_msgs::action::ExecuteTrajectory::Result> action_res);
+  void executePathCallback(
+      const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle);
+  void executePath(
+      const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle,
+      std::shared_ptr<moveit_msgs::action::ExecuteTrajectory::Result> action_res);
   void preemptExecuteTrajectoryCallback();
-  void setExecuteTrajectoryState(MoveGroupState state,
-     const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle);
-  rclcpp_action::GoalResponse handle_trajectory_goal(const std::array<uint8_t, 16>& uuid,
-                                               std::shared_ptr<const moveit_msgs::action::ExecuteTrajectory::Goal> goal);
+  void setExecuteTrajectoryState(
+      MoveGroupState state,
+      const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle);
+  rclcpp_action::GoalResponse handle_trajectory_goal(
+      const std::array<uint8_t, 16>& uuid, std::shared_ptr<const moveit_msgs::action::ExecuteTrajectory::Goal> goal);
   rclcpp_action::CancelResponse handle_trajectory_cancel(
-     const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle);
+      const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle);
 
   void handle_trajectory_accept(
-     const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle);
+      const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle);
 
   std::shared_ptr<rclcpp_action::Server<moveit_msgs::action::ExecuteTrajectory>> execute_action_server_;
 };

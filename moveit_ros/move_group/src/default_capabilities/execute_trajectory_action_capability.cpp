@@ -52,8 +52,8 @@ void MoveGroupExecuteTrajectoryAction::initialize()
   // start the move action server
   execute_action_server_.reset();
   execute_action_server_ = rclcpp_action::create_server<moveit_msgs::action::ExecuteTrajectory>(
-      node_, EXECUTE_ACTION_NAME,
-      std::bind(&move_group::MoveGroupExecuteTrajectoryAction::handle_trajectory_goal, this, std::placeholders::_1, std::placeholders::_2),
+      node_, EXECUTE_ACTION_NAME, std::bind(&move_group::MoveGroupExecuteTrajectoryAction::handle_trajectory_goal, this,
+                                            std::placeholders::_1, std::placeholders::_2),
       std::bind(&move_group::MoveGroupExecuteTrajectoryAction::handle_trajectory_cancel, this, std::placeholders::_1),
       std::bind(&move_group::MoveGroupExecuteTrajectoryAction::handle_trajectory_accept, this, std::placeholders::_1));
   // TODO(anasarrak): Prempt for ros2 actions?
@@ -86,7 +86,8 @@ void move_group::MoveGroupExecuteTrajectoryAction::handle_trajectory_accept(
   std::thread(&move_group::MoveGroupExecuteTrajectoryAction::executePathCallback, this, goal_handle).detach();
 }
 
-void MoveGroupExecuteTrajectoryAction::executePathCallback(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle)
+void MoveGroupExecuteTrajectoryAction::executePathCallback(
+    const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle)
 {
   const auto goal = goal_handle->get_goal();
   auto action_res = std::make_shared<moveit_msgs::action::ExecuteTrajectory::Result>();
@@ -114,18 +115,19 @@ void MoveGroupExecuteTrajectoryAction::executePathCallback(const std::shared_ptr
     goal_handle->set_aborted(action_res);
   }
 
-  setExecuteTrajectoryState(IDLE,goal_handle);
+  setExecuteTrajectoryState(IDLE, goal_handle);
 }
 
-void MoveGroupExecuteTrajectoryAction::executePath(const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle,
-                                                   std::shared_ptr<moveit_msgs::action::ExecuteTrajectory::Result> action_res)
+void MoveGroupExecuteTrajectoryAction::executePath(
+    const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle,
+    std::shared_ptr<moveit_msgs::action::ExecuteTrajectory::Result> action_res)
 {
   RCLCPP_INFO(node_->get_logger(), "Execution request received");
-    const auto goal = goal_handle->get_goal();
+  const auto goal = goal_handle->get_goal();
   context_->trajectory_execution_manager_->clear();
   if (context_->trajectory_execution_manager_->push(goal->trajectory))
   {
-    setExecuteTrajectoryState(MONITOR,goal_handle);
+    setExecuteTrajectoryState(MONITOR, goal_handle);
     context_->trajectory_execution_manager_->execute();
     moveit_controller_manager::ExecutionStatus status = context_->trajectory_execution_manager_->waitForExecution();
     if (status == moveit_controller_manager::ExecutionStatus::SUCCEEDED)
@@ -144,7 +146,7 @@ void MoveGroupExecuteTrajectoryAction::executePath(const std::shared_ptr<rclcpp_
     {
       action_res->error_code.val = moveit_msgs::msg::MoveItErrorCodes::CONTROL_FAILED;
     }
-    RCLCPP_INFO(node_->get_logger(), "Execution completed: %s" , status.asString().c_str());
+    RCLCPP_INFO(node_->get_logger(), "Execution completed: %s", status.asString().c_str());
   }
   else
   {
@@ -157,8 +159,9 @@ void MoveGroupExecuteTrajectoryAction::preemptExecuteTrajectoryCallback()
   context_->trajectory_execution_manager_->stopExecution(true);
 }
 
-void MoveGroupExecuteTrajectoryAction::setExecuteTrajectoryState(MoveGroupState state,
-   const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle)
+void MoveGroupExecuteTrajectoryAction::setExecuteTrajectoryState(
+    MoveGroupState state,
+    const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle)
 {
   auto execute_feedback = std::shared_ptr<moveit_msgs::action::ExecuteTrajectory::Feedback>();
   execute_feedback->state = stateToStr(state);
