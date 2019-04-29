@@ -90,7 +90,6 @@ private:
   std::unique_ptr<pluginlib::ClassLoader<constraint_samplers::ConstraintSamplerAllocator> >
       constraint_sampler_plugin_loader_;
 };
-node_->get_logger(),
     ConstraintSamplerManagerLoader::ConstraintSamplerManagerLoader(
         const constraint_samplers::ConstraintSamplerManagerPtr& csm, const std::shared_ptr<rclcpp::Node> node)
   : constraint_sampler_manager_(csm ? csm : constraint_samplers::ConstraintSamplerManagerPtr(
