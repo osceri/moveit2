@@ -55,7 +55,6 @@
 
 namespace planning_scene_monitor
 {
-
 MOVEIT_CLASS_FORWARD(PlanningSceneMonitor);
 
 /**
@@ -419,10 +418,10 @@ protected:
   void configureDefaultPadding();
 
   /** @brief Callback for a new collision object msg*/
-  void collisionObjectCallback(const moveit_msgs::msg::CollisionObject::SharedPtr obj);
+  void collisionObjectCallback(const moveit_msgs::msg::CollisionObject::SharedPtr& obj);
 
   /** @brief Callback for a new collision object msg that failed to pass the TF filter */
-  void collisionObjectFailTFCallback(const moveit_msgs::msg::CollisionObject::SharedPtr obj,
+  void collisionObjectFailTFCallback(const moveit_msgs::msg::CollisionObject::SharedPtr& obj,
                                      tf2_ros::filter_failure_reasons::FilterFailureReason reason);
 
   /** @brief Callback for a new planning scene world*/
@@ -464,12 +463,13 @@ protected:
   planning_scene::PlanningSceneConstPtr scene_const_;
   planning_scene::PlanningScenePtr parent_scene_;  /// if diffs are monitored, this is the pointer to the parent scene
   boost::shared_mutex scene_update_mutex_;         /// mutex for stored scene
-  rclcpp::Time last_update_time_;                     /// Last time the state was updated
-  rclcpp::Time last_robot_motion_time_;               /// Last time the robot has moved
+  rclcpp::Time last_update_time_;                  /// Last time the state was updated
+  rclcpp::Time last_robot_motion_time_;            /// Last time the robot has moved
 
   std::shared_ptr<rclcpp::Node> node_;
-  
-  // TODO: (anasarrak) callbacks on ROS2? https://answers.ros.org/question/300874/how-do-you-use-callbackgroups-as-a-replacement-for-callbackqueues-in-ros2/
+
+  // TODO: (anasarrak) callbacks on ROS2?
+  // https://answers.ros.org/question/300874/how-do-you-use-callbackgroups-as-a-replacement-for-callbackqueues-in-ros2/
   // ros::CallbackQueue queue_;
   std::shared_ptr<rclcpp::executors::SingleThreadedExecutor> spinner_;
 
