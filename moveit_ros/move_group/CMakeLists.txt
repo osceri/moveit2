@@ -13,12 +13,12 @@ find_package(Boost REQUIRED)
 find_package(ament_cmake REQUIRED)
 find_package(moveit_core REQUIRED)
 find_package(moveit_ros_planning REQUIRED)
+find_package(pluginlib REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
-
 
 include_directories(include)
 include_directories(${rclcpp_INCLUDE_DIRS}
@@ -47,16 +47,18 @@ add_library(moveit_move_group_default_capabilities
   # src/default_capabilities/apply_planning_scene_service_capability.cpp
   # src/default_capabilities/clear_octomap_service_capability.cpp
 )
-# set_target_properties(moveit_move_group_default_capabilities PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
+set_target_properties(moveit_move_group_default_capabilities PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
 
-ament_target_dependencies(moveit_move_group_capabilities_base
-  rclcpp
-  Boost
-  moveit_core)
+# ament_target_dependencies(moveit_move_group_capabilities_base
+#   rclcpp
+#   Boost
+#   moveit_core)
+# ament_target_dependencies(moveit_move_group_default_capabilities moveit_move_group_capabilities_base
+#   rclcpp
+#   Boost)
+target_link_libraries(moveit_move_group_capabilities_base ${rclcpp_LIBRARIES} ${Boost_LIBRARIES})
 # target_link_libraries(move_group moveit_move_group_capabilities_base ${rclcpp_LIBRARIES} ${Boost_LIBRARIES})
-ament_target_dependencies(moveit_move_group_default_capabilities moveit_move_group_capabilities_base
-  rclcpp
-  Boost)
+target_link_libraries(moveit_move_group_default_capabilities moveit_move_group_capabilities_base ${rclcpp_LIBRARIES} ${Boost_LIBRARIES})
 # target_link_libraries(list_move_group_capabilities ${rclcpp_LIBRARIES} ${Boost_LIBRARIES})
 
 # install(TARGETS move_group list_move_group_capabilities moveit_move_group_capabilities_base moveit_move_group_default_capabilities
@@ -64,10 +66,10 @@ ament_target_dependencies(moveit_move_group_default_capabilities moveit_move_gro
 #   LIBRARY DESTINATION lib
 #   RUNTIME DESTINATION bin)
 #TODO (anasarrak): Rever back for the install that is above
-install(TARGETS moveit_move_group_capabilities_base
+install(TARGETS moveit_move_group_capabilities_base moveit_move_group_default_capabilities
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin)
+  RUNTIME DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY include/ DESTINATION include)
 
