@@ -150,10 +150,8 @@ public:
     if (wait_for_servers == std::chrono::duration<double>(0.0)){
       timeout_for_servers = std::chrono::time_point<std::chrono::system_clock>();  // wait for ever
     }
-    auto wait_for_servers_sec = std::chrono::duration_cast<std::chrono::seconds>(timeout_for_servers.time_since_epoch()).count();
-    double allotted_time = (double)wait_for_servers_sec + 1e-9*(double) wait_for_servers_sec;
-    // move_action_client_.reset(
-    //     new actionlib::SimpleActionClient<moveit_msgs::action::MoveGroupAction>(node_handle_, move_group::MOVE_ACTION, false));
+    long wait_for_servers_sec = std::chrono::duration_cast<std::chrono::nanoseconds>(timeout_for_servers.time_since_epoch()).count();
+    double allotted_time = 1.0e-9 * wait_for_servers_sec;
     //TODO(anasarrak): Review these action changes
     move_action_client_.reset();
     move_action_client_ = rclcpp_action::create_client<moveit_msgs::action::MoveGroup>(node_handle_, "move_action_client_");
@@ -195,7 +193,7 @@ public:
 
   template <typename T>
   void waitForAction(std::shared_ptr<rclcpp_action::Client<T> >& action, const std::string& name,
-     std::chrono::time_point<std::chrono::system_clock, std::chrono::duration<double, std::ratio<1, 1000000000>>>& timeout,
+     std::chrono::time_point<std::chrono::system_clock, std::chrono::duration<double>> timeout,
       double allotted_time)
   {
     RCLCPP_DEBUG(LOGGER, "Waiting for move_group action server (%s)...", name.c_str());
