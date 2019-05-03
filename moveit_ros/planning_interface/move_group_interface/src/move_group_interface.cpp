@@ -989,17 +989,17 @@ public:
 //       return -1.0;
 //     }
 //   }
-//
-//   void stop()
-//   {
-//     if (trajectory_event_publisher_)
-//     {
-//       std_msgs::String event;
-//       event.data = "stop";
-//       trajectory_event_publisher_.publish(event);
-//     }
-//   }
-//
+
+  void stop()
+  {
+    if (trajectory_event_publisher_)
+    {
+      std_msgs::msg::String event;
+      event.data = "stop";
+      trajectory_event_publisher_->publish(event);
+    }
+  }
+
 //   bool attachObject(const std::string& object, const std::string& link, const std::vector<std::string>& touch_links)
 //   {
 //     std::string l = link.empty() ? getEndEffectorLink() : link;
@@ -1629,12 +1629,12 @@ moveit::planning_interface::MoveItErrorCode moveit::planning_interface::MoveGrou
 //                                        avoid_collisions, error_code_tmp);
 //   }
 // }
-//
-// void moveit::planning_interface::MoveGroupInterface::stop()
-// {
-//   impl_->stop();
-// }
-//
+
+void moveit::planning_interface::MoveGroupInterface::stop()
+{
+  impl_->stop();
+}
+
 // void moveit::planning_interface::MoveGroupInterface::setStartState(const moveit_msgs::msg::RobotState& start_state)
 // {
 //   robot_state::RobotStatePtr rs;
