@@ -708,7 +708,14 @@ public:
     }
     else
     {
-      // TODO (anasarrak): Adapt for ros2
+      switch(result.code){
+        case rclcpp_action::ResultCode::ABORTED:
+          RCLCPP_ERROR(node_->get_logger(), "ABORTED");
+        case rclcpp_action::ResultCode::CANCELED:
+          RCLCPP_ERROR(node_->get_logger(), "CANCELED");
+        default:
+          RCLCPP_ERROR(node_->get_logger(), "Unknown result code");
+        }
       // RCLCPP_WARN(node_->get_logger(), "Fail: %s: %s",place_action_client_->getState().toString(),
       //                 place_action_client_->getState().getText());
       return MoveItErrorCode(result.response->error_code);
@@ -846,50 +853,60 @@ public:
       return MoveItErrorCode(result.response->error_code);
     }
   }
-//
-//   MoveItErrorCode move(bool wait)
-//   {
-//     if (!move_action_client_)
-//     {
-//       return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::FAILURE);
-//     }
-//     if (!move_action_client_->isServerConnected())
-//     {
-//       return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::FAILURE);
-//     }
-//
-//     moveit_msgs::action::MoveGroupGoal goal;
-//     constructGoal(goal);
-//     goal.planning_options.plan_only = false;
-//     goal.planning_options.look_around = can_look_;
-//     goal.planning_options.replan = can_replan_;
-//     goal.planning_options.replan_delay = replan_delay_;
-//     goal.planning_options.planning_scene_diff.is_diff = true;
-//     goal.planning_options.planning_scene_diff.robot_state.is_diff = true;
-//
-//     move_action_client_->sendGoal(goal);
-//     if (!wait)
-//     {
-//       return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::SUCCESS);
-//     }
-//
-//     if (!move_action_client_->waitForResult())
-//     {
-//       ROS_INFO_STREAM_NAMED("move_group_interface", "MoveGroup action returned early");
-//     }
-//
-//     if (move_action_client_->getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-//     {
-//       return MoveItErrorCode(move_action_client_->getResult()->error_code);
-//     }
-//     else
-//     {
-//       ROS_INFO_STREAM_NAMED("move_group_interface", move_action_client_->getState().toString()
-//                                                         << ": " << move_action_client_->getState().getText());
-//       return MoveItErrorCode(move_action_client_->getResult()->error_code);
-//     }
-//   }
-//
+
+  MoveItErrorCode move(bool wait)
+  {
+    if (!move_action_client_)
+    {
+      return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::FAILURE);
+    }
+    if (!move_action_client_->action_server_is_ready())
+    {
+      return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::FAILURE);
+    }
+
+    moveit_msgs::action::MoveGroup::Goal goal;
+    constructGoal(goal);
+    goal.planning_options.plan_only = false;
+    goal.planning_options.look_around = can_look_;
+    goal.planning_options.replan = can_replan_;
+    goal.planning_options.replan_delay = replan_delay_;
+    goal.planning_options.planning_scene_diff.is_diff = true;
+    goal.planning_options.planning_scene_diff.robot_state.is_diff = true;
+
+    auto goal_handle_future = move_action_client_->async_send_goal(goal);
+    if (!wait)
+    {
+      return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::SUCCESS);
+    }
+    auto result_future = goal_handle_future.get()->async_result();
+    rclcpp_action::ClientGoalHandle<moveit_msgs::action::MoveGroup>::Result result = result_future.get();
+    if (rclcpp::spin_until_future_complete(node_, goal_handle_future) !=
+    	  rclcpp::executor::FutureReturnCode::SUCCESS)
+    {
+      RCLCPP_INFO(node_->get_logger(), "MoveGroup action returned early");
+    }
+
+    if (result.code == rclcpp_action::ResultCode::SUCCEEDED)
+    {
+      return MoveItErrorCode(result.response->error_code);
+    }
+    else
+    {
+      switch(result.code){
+        case rclcpp_action::ResultCode::ABORTED:
+          RCLCPP_ERROR(node_->get_logger(), "ABORTED");
+        case rclcpp_action::ResultCode::CANCELED:
+          RCLCPP_ERROR(node_->get_logger(), "CANCELED");
+        default:
+          RCLCPP_ERROR(node_->get_logger(), "Unknown result code");
+        }
+      // RCLCPP_INFO(node_->get_logger(), move_action_client_->getState().toString()
+      //                                                   << ": " << move_action_client_->getState().getText());
+      return MoveItErrorCode(result.response->error_code);
+    }
+  }
+
   MoveItErrorCode execute(const Plan& plan, bool wait)
   {
     if (!execute_action_client_->action_server_is_ready())
@@ -1468,54 +1485,54 @@ void moveit::planning_interface::MoveGroupInterface::setPlannerParams(const std:
 {
   impl_->setPlannerParams(planner_id, group, params, replace);
 }
-//
-// std::string moveit::planning_interface::MoveGroupInterface::getDefaultPlannerId(const std::string& group) const
-// {
-//   return impl_->getDefaultPlannerId(group);
-// }
-//
-// void moveit::planning_interface::MoveGroupInterface::setPlannerId(const std::string& planner_id)
-// {
-//   impl_->setPlannerId(planner_id);
-// }
-//
-// const std::string& moveit::planning_interface::MoveGroupInterface::getPlannerId() const
-// {
-//   return impl_->getPlannerId();
-// }
-//
-// void moveit::planning_interface::MoveGroupInterface::setNumPlanningAttempts(unsigned int num_planning_attempts)
-// {
-//   impl_->setNumPlanningAttempts(num_planning_attempts);
-// }
-//
-// void moveit::planning_interface::MoveGroupInterface::setMaxVelocityScalingFactor(double max_velocity_scaling_factor)
-// {
-//   impl_->setMaxVelocityScalingFactor(max_velocity_scaling_factor);
-// }
-//
-// void moveit::planning_interface::MoveGroupInterface::setMaxAccelerationScalingFactor(
-//     double max_acceleration_scaling_factor)
-// {
-//   impl_->setMaxAccelerationScalingFactor(max_acceleration_scaling_factor);
-// }
-//
-// moveit::planning_interface::MoveItErrorCode moveit::planning_interface::MoveGroupInterface::asyncMove()
-// {
-//   return impl_->move(false);
-// }
-//
+
+std::string moveit::planning_interface::MoveGroupInterface::getDefaultPlannerId(const std::string& group) const
+{
+  return impl_->getDefaultPlannerId(group);
+}
+
+void moveit::planning_interface::MoveGroupInterface::setPlannerId(const std::string& planner_id)
+{
+  impl_->setPlannerId(planner_id);
+}
+
+const std::string& moveit::planning_interface::MoveGroupInterface::getPlannerId() const
+{
+  return impl_->getPlannerId();
+}
+
+void moveit::planning_interface::MoveGroupInterface::setNumPlanningAttempts(unsigned int num_planning_attempts)
+{
+  impl_->setNumPlanningAttempts(num_planning_attempts);
+}
+
+void moveit::planning_interface::MoveGroupInterface::setMaxVelocityScalingFactor(double max_velocity_scaling_factor)
+{
+  impl_->setMaxVelocityScalingFactor(max_velocity_scaling_factor);
+}
+
+void moveit::planning_interface::MoveGroupInterface::setMaxAccelerationScalingFactor(
+    double max_acceleration_scaling_factor)
+{
+  impl_->setMaxAccelerationScalingFactor(max_acceleration_scaling_factor);
+}
+
+moveit::planning_interface::MoveItErrorCode moveit::planning_interface::MoveGroupInterface::asyncMove()
+{
+  return impl_->move(false);
+}
+
 // actionlib::SimpleActionClient<moveit_msgs::action::MoveGroupAction>&
 // moveit::planning_interface::MoveGroupInterface::getMoveGroupClient() const
 // {
 //   return impl_->getMoveGroupClient();
 // }
-//
-// moveit::planning_interface::MoveItErrorCode moveit::planning_interface::MoveGroupInterface::move()
-// {
-//   return impl_->move(true);
-// }
-//
+
+moveit::planning_interface::MoveItErrorCode moveit::planning_interface::MoveGroupInterface::move()
+{
+  return impl_->move(true);
+}
+
 moveit::planning_interface::MoveItErrorCode
 moveit::planning_interface::MoveGroupInterface::asyncExecute(const Plan& plan)
 {
