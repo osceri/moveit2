@@ -40,8 +40,7 @@
 #include <moveit/ompl_interface/planning_context_manager.h>
 #include <moveit/ompl_interface/constraints_library.h>
 #include <moveit/constraint_samplers/constraint_sampler_manager.h>
-// TODO (anasarrak): add once is merged to master
-// #include <moveit/constraint_sampler_manager_loader/constraint_sampler_manager_loader.h>
+#include <moveit/constraint_sampler_manager_loader/constraint_sampler_manager_loader.h>
 #include <moveit/planning_interface/planning_interface.h>
 #include <moveit_msgs/msg/motion_plan_request.hpp>
 #include <moveit_msgs/msg/motion_plan_response.hpp>
@@ -59,7 +58,7 @@ class OMPLInterface
 public:
   /** \brief Initialize OMPL-based planning for a particular robot model. ROS configuration is read from the specified
    * NodeHandle */
-  OMPLInterface(const robot_model::RobotModelConstPtr& robot_model, const ros::NodeHandle& nh = ros::NodeHandle("~"));
+  OMPLInterface(const robot_model::RobotModelConstPtr& robot_model, const rclcpp::Node::SharedPtr& node);
 
   /** \brief Initialize OMPL-based planning for a particular robot model. ROS configuration is read from the specified
      NodeHandle. However,
@@ -67,7 +66,7 @@ public:
      */
   OMPLInterface(const robot_model::RobotModelConstPtr& robot_model,
                 const planning_interface::PlannerConfigurationMap& pconfig,
-                const ros::NodeHandle& nh = ros::NodeHandle("~"));
+                const rclcpp::Node::SharedPtr& node);
 
   virtual ~OMPLInterface();
 
@@ -176,7 +175,7 @@ protected:
                                                moveit_msgs::msg::MoveItErrorCodes* error_code, unsigned int* attempts,
                                                double* timeout) const;
 
-  ros::NodeHandle nh_;  /// The ROS node handle
+  rclcpp::Node::SharedPtr node_;  /// The ROS node handle
 
   /** \brief The kinematic model for which motion plans are computed */
   robot_model::RobotModelConstPtr robot_model_;
