@@ -693,7 +693,7 @@ public:
   /** \brief Get the move_group action client used by the \e MoveGroupInterface.
       The client can be used for querying the execution state of the trajectory and abort trajectory execution
       during asynchronous execution. */
-  rclcpp_action::ClientGoalHandle<moveit_msgs::action::MoveGroup>::SharedPtr getMoveGroupClient() const;
+  std::shared_ptr<rclcpp_action::Client<moveit_msgs::action::MoveGroup>>& getMoveGroupClient() const;
   /** \brief Plan and execute a trajectory that takes the group of joints declared in the constructor to the specified
      target.
       This call is always blocking (waits for the execution of the trajectory to complete) and requires an asynchronous
