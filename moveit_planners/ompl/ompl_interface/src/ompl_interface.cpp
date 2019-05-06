@@ -52,7 +52,7 @@ ompl_interface::OMPLInterface::OMPLInterface(const robot_model::RobotModelConstP
   , use_constraints_approximations_(true)
   , simplify_solutions_(true)
 {
-  RCLCPP_INFO(node_->get_logger(),"Initializing OMPL interface using ROS parameters");
+  RCLCPP_INFO(node_->get_logger(), "Initializing OMPL interface using ROS parameters");
   loadPlannerConfigurations();
   loadConstraintApproximations();
   loadConstraintSamplers();
@@ -69,7 +69,7 @@ ompl_interface::OMPLInterface::OMPLInterface(const robot_model::RobotModelConstP
   , use_constraints_approximations_(true)
   , simplify_solutions_(true)
 {
-  RCLCPP_INFO(node_->get_logger(),"Initializing OMPL interface using specified configuration");
+  RCLCPP_INFO(node_->get_logger(), "Initializing OMPL interface using specified configuration");
   setPlannerConfigurations(pconfig);
   loadConstraintApproximations();
   loadConstraintSamplers();
@@ -136,7 +136,7 @@ void ompl_interface::OMPLInterface::loadConstraintApproximations(const std::stri
   constraints_library_->loadConstraintApproximations(path);
   std::stringstream ss;
   constraints_library_->printConstraintApproximations(ss);
-  RCLCPP_INFO(node_->get_logger(),ss.str());
+  RCLCPP_INFO(node_->get_logger(), ss.str());
 }
 
 void ompl_interface::OMPLInterface::saveConstraintApproximations(const std::string& path)
@@ -154,7 +154,8 @@ bool ompl_interface::OMPLInterface::saveConstraintApproximations()
     saveConstraintApproximations(cpath);
     return true;
   }
-  RCLCPP_WARN(node_->get_logger(),"ROS param 'constraint_approximations' not found. Unable to save constraint approximations");
+  RCLCPP_WARN(node_->get_logger(),
+              "ROS param 'constraint_approximations' not found. Unable to save constraint approximations");
   return false;
 }
 
@@ -186,13 +187,15 @@ bool ompl_interface::OMPLInterface::loadPlannerConfiguration(
   auto planner_config_parameter = std::make_shared<rclcpp::SyncParametersClient>(node_);
   if (!planner_config_parameter->has_parameter("planner_configs/" + planner_id))
   {
-    RCLCPP_ERROR(node_->get_logger(),"Could not find the planner configuration '%s' on the param server", planner_id.c_str());
+    RCLCPP_ERROR(node_->get_logger(), "Could not find the planner configuration '%s' on the param server",
+                 planner_id.c_str());
     return false;
   }
-  //TODO (anasarrak): Adapt for ros2 parameters
+  // TODO (anasarrak): Adapt for ros2 parameters
   // if (xml_config.getType() != XmlRpc::XmlRpcValue::TypeStruct)
   // {
-  //   RCLCPP_ERROR(node_->get_logger(),"A planning configuration should be of type XmlRpc Struct type (for configuration '%s')",
+  //   RCLCPP_ERROR(node_->get_logger(),"A planning configuration should be of type XmlRpc Struct type (for
+  //   configuration '%s')",
   //             planner_id.c_str());
   //   return false;
   // }
@@ -238,8 +241,9 @@ void ompl_interface::OMPLInterface::loadPlannerConfigurations()
     {
       if (known_group_parameters->has_parameter(group_name + "/" + k))
       {
-        if(node_->get_parameter(group_name + "/" + k).get_type_name().compare("string") == 0){
-        std::string value = node_->get_parameter(group_name + "/" + k).get_value<std::string>();
+        if (node_->get_parameter(group_name + "/" + k).get_type_name().compare("string") == 0)
+        {
+          std::string value = node_->get_parameter(group_name + "/" + k).get_value<std::string>();
           if (!value.empty())
             specific_group_params[k] = value;
           continue;
@@ -294,22 +298,23 @@ void ompl_interface::OMPLInterface::loadPlannerConfigurations()
 
     if (known_group_parameters->has_parameter(group_name + "/planner_configs"))
     {
-      std::vector <std::string> config_names = node_->get_parameter(group_name + "/planner_configs").as_string_array();
+      std::vector<std::string> config_names = node_->get_parameter(group_name + "/planner_configs").as_string_array();
       auto config_type = node_->get_parameter(group_name + "/planner_configs").get_type_name();
       if (config_type.find("array") == std::string::npos)
       {
-        RCLCPP_ERROR(node_->get_logger(),"The planner_configs argument of a group configuration "
-                  "should be an array of strings (for group '%s')",
-                  group_name.c_str());
+        RCLCPP_ERROR(node_->get_logger(), "The planner_configs argument of a group configuration "
+                                          "should be an array of strings (for group '%s')",
+                     group_name.c_str());
         continue;
       }
 
       for (int j = 0; j < config_names.size(); ++j)
       {
         std::string type = typeid(config_names[j]).name();
-        if (type.find("string")==std::string::npos)
+        if (type.find("string") == std::string::npos)
         {
-          RCLCPP_ERROR(node_->get_logger(),"Planner configuration names must be of type string (for group '%s')", group_name.c_str());
+          RCLCPP_ERROR(node_->get_logger(), "Planner configuration names must be of type string (for group '%s')",
+                       group_name.c_str());
           continue;
         }
 
@@ -324,10 +329,11 @@ void ompl_interface::OMPLInterface::loadPlannerConfigurations()
 
   for (const std::pair<std::string, planning_interface::PlannerConfigurationSettings>& config : pconfig)
   {
-    RCLCPP_DEBUG(node_->get_logger(),"Parameters for configuration '%s'",config.first);
+    RCLCPP_DEBUG(node_->get_logger(), "Parameters for configuration '%s'", config.first);
 
-    for (const std::pair<std::string, std::string>& parameters : config.second.config){
-      RCLCPP_DEBUG(node_->get_logger(), "parameters - %s = %s",parameters.first, parameters.second);
+    for (const std::pair<std::string, std::string>& parameters : config.second.config)
+    {
+      RCLCPP_DEBUG(node_->get_logger(), "parameters - %s = %s", parameters.first, parameters.second);
     }
   }
 
@@ -336,5 +342,5 @@ void ompl_interface::OMPLInterface::loadPlannerConfigurations()
 
 void ompl_interface::OMPLInterface::printStatus()
 {
-  RCLCPP_INFO(node_->get_logger(),"OMPL ROS interface is running.");
+  RCLCPP_INFO(node_->get_logger(), "OMPL ROS interface is running.");
 }

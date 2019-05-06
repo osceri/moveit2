@@ -65,8 +65,7 @@ public:
       planner configurations are used as specified in \e pconfig instead of reading them from the ROS parameter server
      */
   OMPLInterface(const robot_model::RobotModelConstPtr& robot_model,
-                const planning_interface::PlannerConfigurationMap& pconfig,
-                const rclcpp::Node::SharedPtr& node);
+                const planning_interface::PlannerConfigurationMap& pconfig, const rclcpp::Node::SharedPtr& node);
 
   virtual ~OMPLInterface();
 
