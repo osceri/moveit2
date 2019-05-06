@@ -204,17 +204,18 @@ bool ompl_interface::OMPLInterface::loadPlannerConfiguration(
   planner_config.config = group_params;
 
   // read parameters specific for this configuration
-  for (std::pair<const std::string, XmlRpc::XmlRpcValue>& element : xml_config)
-  {
-    if (element.second.getType() == XmlRpc::XmlRpcValue::TypeString)
-      planner_config.config[element.first] = static_cast<std::string>(element.second);
-    else if (element.second.getType() == XmlRpc::XmlRpcValue::TypeDouble)
-      planner_config.config[element.first] = moveit::core::toString(static_cast<double>(element.second));
-    else if (element.second.getType() == XmlRpc::XmlRpcValue::TypeInt)
-      planner_config.config[element.first] = std::to_string(static_cast<int>(element.second));
-    else if (element.second.getType() == XmlRpc::XmlRpcValue::TypeBoolean)
-      planner_config.config[element.first] = std::to_string(static_cast<bool>(element.second));
-  }
+  // TODO (anasarrak): A substitution for that using ros2 parameters
+  // for (std::pair<const std::string, XmlRpc::XmlRpcValue>& element : xml_config)
+  // {
+  //   if (element.second.getType() == XmlRpc::XmlRpcValue::TypeString)
+  //     planner_config.config[element.first] = static_cast<std::string>(element.second);
+  //   else if (element.second.getType() == XmlRpc::XmlRpcValue::TypeDouble)
+  //     planner_config.config[element.first] = moveit::core::toString(static_cast<double>(element.second));
+  //   else if (element.second.getType() == XmlRpc::XmlRpcValue::TypeInt)
+  //     planner_config.config[element.first] = std::to_string(static_cast<int>(element.second));
+  //   else if (element.second.getType() == XmlRpc::XmlRpcValue::TypeBoolean)
+  //     planner_config.config[element.first] = std::to_string(static_cast<bool>(element.second));
+  // }
 
   return true;
 }
