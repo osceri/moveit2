@@ -235,7 +235,7 @@ void ompl_interface::OMPLInterface::loadPlannerConfigurations()
     std::map<std::string, std::string> specific_group_params;
     for (const std::string& k : KNOWN_GROUP_PARAMS)
     {
-      if (node_->get_parameter(group_name + "/" + k))
+      if (known_group_parameters->has_parameter(group_name + "/" + k))
       {
         if(node_->get_parameter(group_name + "/" + k).get_type_name().compare("string") == 0){
         std::string value = node_->get_parameter(group_name + "/" + k).get_value<std::string>();
@@ -293,6 +293,7 @@ void ompl_interface::OMPLInterface::loadPlannerConfigurations()
 
     if (known_group_parameters->has_parameter(group_name + "/planner_configs"))
     {
+      std::vector <std::string> config_names = node_->get_parameter(group_name + "/planner_configs").as_string_array();
       auto config_type = node_->get_parameter(group_name + "/planner_configs").get_type_name();
       if (config_type.find("array") == std::string::npos)
       {
@@ -304,7 +305,8 @@ void ompl_interface::OMPLInterface::loadPlannerConfigurations()
 
       for (int j = 0; j < config_names.size(); ++j)
       {
-        if (config_names[j].getType() != XmlRpc::XmlRpcValue::TypeString)
+        std::string type = typeid(config_names[j]).name();
+        if (type.find("string")==std::string::npos)
         {
           RCLCPP_ERROR(node_->get_logger(),"Planner configuration names must be of type string (for group '%s')", group_name.c_str());
           continue;
