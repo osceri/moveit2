@@ -42,7 +42,7 @@
 #include <moveit/utils/lexical_casts.h>
 #include <fstream>
 
-ompl_interface::OMPLInterface::OMPLInterface(const robot_model::RobotModelConstPtr& robot_model,
+ompl_interface::OMPLInterface::OMPLInterface(const std::shared_ptr<const robot_model::RobotModel>& robot_model,
                                              const rclcpp::Node::SharedPtr& node)
   : node_(node)
   , robot_model_(robot_model)
@@ -58,7 +58,7 @@ ompl_interface::OMPLInterface::OMPLInterface(const robot_model::RobotModelConstP
   loadConstraintSamplers();
 }
 
-ompl_interface::OMPLInterface::OMPLInterface(const robot_model::RobotModelConstPtr& robot_model,
+ompl_interface::OMPLInterface::OMPLInterface(const std::shared_ptr<const robot_model::RobotModel>& robot_model,
                                              const planning_interface::PlannerConfigurationMap& pconfig,
                                              const rclcpp::Node::SharedPtr& node)
   : node_(node)
