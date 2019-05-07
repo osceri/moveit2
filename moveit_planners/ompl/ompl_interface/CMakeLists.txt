@@ -1,9 +1,9 @@
 set(MOVEIT_LIB_NAME moveit_ompl_interface)
 
 add_library(${MOVEIT_LIB_NAME} SHARED
-  src/ompl_interface.cpp
+  # src/ompl_interface.cpp
   # src/planning_context_manager.cpp
-  # src/constraints_library.cpp
+  src/constraints_library.cpp
   # src/model_based_planning_context.cpp
   # src/parameterization/model_based_state_space.cpp
   # src/parameterization/model_based_state_space_factory.cpp
@@ -27,15 +27,15 @@ target_link_libraries(${MOVEIT_LIB_NAME} ${OMPL_LIBRARIES} ${rclcpp_LIBRARIES} $
 set_target_properties(${MOVEIT_LIB_NAME} PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 set_target_properties(${MOVEIT_LIB_NAME} PROPERTIES LINK_FLAGS "${OpenMP_CXX_FLAGS}")
 
-add_executable(moveit_ompl_planner src/ompl_planner.cpp)
-target_link_libraries(moveit_ompl_planner
-  ${MOVEIT_LIB_NAME}
-  ${moveit_msgs_LIBRARIES}
-  ${moveit_ros_planning_LIBRARIES}
-  ${tf2_ros_LIBRARIES}
-)
+# add_executable(moveit_ompl_planner src/ompl_planner.cpp)
+# target_link_libraries(moveit_ompl_planner
+#   ${MOVEIT_LIB_NAME}
+#   ${moveit_msgs_LIBRARIES}
+#   ${moveit_ros_planning_LIBRARIES}
+#   ${tf2_ros_LIBRARIES}
+# )
 
-set_target_properties(moveit_ompl_planner PROPERTIES LINK_FLAGS "${OpenMP_CXX_FLAGS}")
+# set_target_properties(moveit_ompl_planner PROPERTIES LINK_FLAGS "${OpenMP_CXX_FLAGS}")
 
 # TODO (anasarrak)
 # add_executable(moveit_generate_state_database src/generate_state_database.cpp)
@@ -43,11 +43,11 @@ set_target_properties(moveit_ompl_planner PROPERTIES LINK_FLAGS "${OpenMP_CXX_FL
 # set_target_properties(moveit_generate_state_database PROPERTIES LINK_FLAGS "${OpenMP_CXX_FLAGS}")
 # set_target_properties(moveit_generate_state_database PROPERTIES OUTPUT_NAME "generate_state_database")
 
-# add_library(moveit_ompl_planner_plugin SHARED src/ompl_planner_manager.cpp)
-# set_target_properties(moveit_ompl_planner_plugin PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
-# target_link_libraries(moveit_ompl_planner_plugin ${MOVEIT_LIB_NAME} ${rclcpp_LIBRARIES} ${Boost_LIBRARIES})
+add_library(moveit_ompl_planner_plugin SHARED src/ompl_planner_manager.cpp)
+set_target_properties(moveit_ompl_planner_plugin PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
+target_link_libraries(moveit_ompl_planner_plugin ${MOVEIT_LIB_NAME} ${rclcpp_LIBRARIES} ${Boost_LIBRARIES})
 
-install(TARGETS ${MOVEIT_LIB_NAME} moveit_ompl_planner #moveit_ompl_planner_plugin moveit_generate_state_database
+install(TARGETS ${MOVEIT_LIB_NAME} moveit_ompl_planner_plugin #moveit_ompl_planner moveit_generate_state_database
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME})
 
