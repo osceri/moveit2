@@ -21,7 +21,9 @@ ament_target_dependencies(${MOVEIT_LIB_NAME}
   urdfdom_headers
   visualization_msgs
   tf2_eigen
-  Boost)
+  Boost
+  geometric_shapes
+)
 
 # unit tests
 if(BUILD_TESTING)
