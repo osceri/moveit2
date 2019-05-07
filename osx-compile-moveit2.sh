@@ -8,7 +8,7 @@ cd /tmp
 source /tmp/ros2-osx/setup.bash
 mkdir -p /tmp/ros2_ws/src
 cp -r $dir /tmp/ros2_ws/src/moveit2
-cd /tmp/ros2_ws && wget https://raw.githubusercontent.com/AcutronicRobotics/moveit2/constraint_sampler_manager_loader_osx/moveit2.repos
+cd /tmp/ros2_ws && wget https://raw.githubusercontent.com/AcutronicRobotics/moveit2/master/moveit2.repos
 vcs import src < moveit2.repos
 rm -rf src/moveit_msgs src/octomap_msgs src/object_recognition_msgs
 export OPENSSL_ROOT_DIR="/usr/local/opt/openssl"
