@@ -1,15 +1,15 @@
 set(MOVEIT_LIB_NAME moveit_ompl_interface)
 
 add_library(${MOVEIT_LIB_NAME} SHARED
-  # src/ompl_interface.cpp
+  src/ompl_interface.cpp
   # src/planning_context_manager.cpp
   # src/constraints_library.cpp
   src/model_based_planning_context.cpp
   src/parameterization/model_based_state_space.cpp
-  # src/parameterization/model_based_state_space_factory.cpp
-  # src/parameterization/joint_space/joint_model_state_space.cpp
-  # src/parameterization/joint_space/joint_model_state_space_factory.cpp
-  # src/parameterization/work_space/pose_model_state_space.cpp
+  src/parameterization/model_based_state_space_factory.cpp
+  src/parameterization/joint_space/joint_model_state_space.cpp
+  src/parameterization/joint_space/joint_model_state_space_factory.cpp
+  src/parameterization/work_space/pose_model_state_space.cpp
   # src/parameterization/work_space/pose_model_state_space_factory.cpp
   # src/detail/threadsafe_state_storage.cpp
   # src/detail/state_validity_checker.cpp
