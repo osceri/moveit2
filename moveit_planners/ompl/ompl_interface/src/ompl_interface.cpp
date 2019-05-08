@@ -183,9 +183,8 @@ bool ompl_interface::OMPLInterface::loadPlannerConfiguration(
     const std::map<std::string, std::string>& group_params,
     planning_interface::PlannerConfigurationSettings& planner_config)
 {
-  // XmlRpc::XmlRpcValue xml_config;
   auto planner_config_parameter = std::make_shared<rclcpp::SyncParametersClient>(node_);
-  auto planner_config_param_prefix = manage_controllers_parameters->list_parameters({"planner_configs"},10);
+  auto planner_config_param_prefix = planner_config_parameter->list_parameters({"planner_configs"},10);
 
   if (!planner_config_parameter->has_parameter("planner_configs/" + planner_id))
   {
@@ -209,7 +208,7 @@ bool ompl_interface::OMPLInterface::loadPlannerConfiguration(
   planner_config.config = group_params;
 
   // read parameters specific for this configuration
-    for (auto & name : parameters_and_prefixes.names) {
+    for (auto & name : planner_config_param_prefix.names) {
       std::string type = node_->get_parameter(name).get_type_name();
       std::istringstream iss(name);
       std::vector<std::string> indexes;
@@ -219,20 +218,20 @@ bool ompl_interface::OMPLInterface::loadPlannerConfiguration(
           indexes.push_back(index);
       }
       if(type.find("string") != std::string::npos){
-        auto s_index  = node->get_parameter(name).as_string();
-        planner_config.config[index[2]] = static_cast<std::string>(s_index);
+        auto s_index  = node_->get_parameter(name).as_string();
+        planner_config.config[indexes[2]] = static_cast<std::string>(s_index);
       }
       if(type.find("double") != std::string::npos){
-        auto d_index  = node->get_parameter(name).as_double();
-        planner_config.config[index[2]] = moveit::core::toString(static_cast<double>(d_index));
+        auto d_index  = node_->get_parameter(name).as_double();
+        planner_config.config[indexes[2]] = moveit::core::toString(static_cast<double>(d_index));
       }
       if(type.find("int") != std::string::npos){
-        auto i_index  = node->get_parameter(name).as_int();
-        planner_config.config[index[2]] = std::to_string(static_cast<int>(i_index));
+        auto i_index  = node_->get_parameter(name).as_int();
+        planner_config.config[indexes[2]] = std::to_string(static_cast<int>(i_index));
       }
       if(type.find("boolean") != std::string::npos){
-        auto b_index  = node->get_parameter(name).as_bool();
-        planner_config.config[index[2]] = std::to_string(static_cast<bool>(b_index));
+        auto b_index  = node_->get_parameter(name).as_bool();
+        planner_config.config[indexes[2]] = std::to_string(static_cast<bool>(b_index));
       }
   }
 
