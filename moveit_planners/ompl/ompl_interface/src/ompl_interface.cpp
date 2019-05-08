@@ -183,8 +183,9 @@ bool ompl_interface::OMPLInterface::loadPlannerConfiguration(
     const std::map<std::string, std::string>& group_params,
     planning_interface::PlannerConfigurationSettings& planner_config)
 {
-  // XmlRpc::XmlRpcValue xml_config;
   auto planner_config_parameter = std::make_shared<rclcpp::SyncParametersClient>(node_);
+  auto planner_config_param_prefix = planner_config_parameter->list_parameters({"planner_configs"},10);
+
   if (!planner_config_parameter->has_parameter("planner_configs/" + planner_id))
   {
     RCLCPP_ERROR(node_->get_logger(), "Could not find the planner configuration '%s' on the param server",
@@ -207,18 +208,32 @@ bool ompl_interface::OMPLInterface::loadPlannerConfiguration(
   planner_config.config = group_params;
 
   // read parameters specific for this configuration
-  // TODO (anasarrak): A substitution for that using ros2 parameters
-  // for (std::pair<const std::string, XmlRpc::XmlRpcValue>& element : xml_config)
-  // {
-  //   if (element.second.getType() == XmlRpc::XmlRpcValue::TypeString)
-  //     planner_config.config[element.first] = static_cast<std::string>(element.second);
-  //   else if (element.second.getType() == XmlRpc::XmlRpcValue::TypeDouble)
-  //     planner_config.config[element.first] = moveit::core::toString(static_cast<double>(element.second));
-  //   else if (element.second.getType() == XmlRpc::XmlRpcValue::TypeInt)
-  //     planner_config.config[element.first] = std::to_string(static_cast<int>(element.second));
-  //   else if (element.second.getType() == XmlRpc::XmlRpcValue::TypeBoolean)
-  //     planner_config.config[element.first] = std::to_string(static_cast<bool>(element.second));
-  // }
+    for (auto & name : planner_config_param_prefix.names) {
+      std::string type = node_->get_parameter(name).get_type_name();
+      std::istringstream iss(name);
+      std::vector<std::string> indexes;
+      std::string index;
+      while (std::getline(iss, index, '.')) {
+      if (!index.empty())
+          indexes.push_back(index);
+      }
+      if(type.find("string") != std::string::npos){
+        auto s_index  = node_->get_parameter(name).as_string();
+        planner_config.config[indexes[2]] = static_cast<std::string>(s_index);
+      }
+      if(type.find("double") != std::string::npos){
+        auto d_index  = node_->get_parameter(name).as_double();
+        planner_config.config[indexes[2]] = moveit::core::toString(static_cast<double>(d_index));
+      }
+      if(type.find("int") != std::string::npos){
+        auto i_index  = node_->get_parameter(name).as_int();
+        planner_config.config[indexes[2]] = std::to_string(static_cast<int>(i_index));
+      }
+      if(type.find("boolean") != std::string::npos){
+        auto b_index  = node_->get_parameter(name).as_bool();
+        planner_config.config[indexes[2]] = std::to_string(static_cast<bool>(b_index));
+      }
+  }
 
   return true;
 }
