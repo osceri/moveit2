@@ -16,6 +16,7 @@ target_link_libraries(${MOVEIT_LIB_NAME}
   moveit_rdf_loader
   moveit_kinematics_plugin_loader
   moveit_collision_plugin_loader
+  ${moveit_ros_planning_LIBRARIES}
 )
 
 install(TARGETS ${MOVEIT_LIB_NAME}
