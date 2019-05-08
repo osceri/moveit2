@@ -31,7 +31,9 @@ add_library(moveit_move_group_capabilities_base
 )
 set_target_properties(moveit_move_group_capabilities_base PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
 
-# add_executable(move_group src/move_group.cpp)
+pluginlib_export_plugin_description_file(move_group default_capabilities_plugin_description.xml)
+
+add_executable(move_group src/move_group.cpp)
 
 # add_executable(list_move_group_capabilities src/list_capabilities.cpp)
 
