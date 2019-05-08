@@ -1,9 +1,5 @@
-cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.5)
 project(moveit_planners_ompl)
-
-if(NOT WIN32)
-  add_definitions(-std=c++11)
-endif()
 
 # At least C++11 required for OMPL
 add_compile_options(-std=c++14)
@@ -20,6 +16,7 @@ find_package(rclcpp REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(ompl REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 # generate_dynamic_reconfigure_options("ompl_interface/cfg/OMPLDynamicReconfigure.cfg")
 
@@ -28,7 +25,7 @@ include_directories(ompl_interface/include
                     ${rclcpp_INCLUDE_DIRS}
                     ${OMPL_INCLUDE_DIRS}
                     ${srdfdom_INCLUDE_DIRS}
-                    ${moveit_msgs_INCLUDE_DIRS})
+)
 
 add_subdirectory(ompl_interface)
 

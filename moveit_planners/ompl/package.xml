@@ -27,7 +27,6 @@
   <depend version_gte="1.11.2">pluginlib</depend>
 
   <test_depend>moveit_resources</test_depend>
-  <!-- <test_depend>rosunit</test_depend> -->
 
   <export>
     <build_type>ament_cmake</build_type>
