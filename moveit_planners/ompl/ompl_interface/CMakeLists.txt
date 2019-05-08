@@ -3,9 +3,9 @@ set(MOVEIT_LIB_NAME moveit_ompl_interface)
 add_library(${MOVEIT_LIB_NAME} SHARED
   # src/ompl_interface.cpp
   # src/planning_context_manager.cpp
-  src/constraints_library.cpp
-  # src/model_based_planning_context.cpp
-  # src/parameterization/model_based_state_space.cpp
+  # src/constraints_library.cpp
+  src/model_based_planning_context.cpp
+  src/parameterization/model_based_state_space.cpp
   # src/parameterization/model_based_state_space_factory.cpp
   # src/parameterization/joint_space/joint_model_state_space.cpp
   # src/parameterization/joint_space/joint_model_state_space_factory.cpp
@@ -23,17 +23,9 @@ set_target_properties(${MOVEIT_LIB_NAME} PROPERTIES VERSION "${${PROJECT_NAME}_V
 
 find_package(OpenMP REQUIRED)
 
-target_link_libraries(${MOVEIT_LIB_NAME}
-  ${OMPL_LIBRARIES}
-  ${rclcpp_LIBRARIES}
-  ${Boost_LIBRARIES}
-)
-
-target_include_directories(${MOVEIT_LIB_NAME} PUBLIC
-  ${EIGEN3_INCLUDE_DIR}
-  ${moveit_ros_planning_INCLUDE_DIRS}
-)
-
+target_link_libraries(${MOVEIT_LIB_NAME} ${OMPL_LIBRARIES} ${rclcpp_LIBRARIES} ${Boost_LIBRARIES})
+include_directories(${moveit_core_INCLUDE_DIRS})
+include_directories(SYSTEM ${EIGEN3_INCLUDE_DIRS})
 set_target_properties(${MOVEIT_LIB_NAME} PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 set_target_properties(${MOVEIT_LIB_NAME} PROPERTIES LINK_FLAGS "${OpenMP_CXX_FLAGS}")
 
