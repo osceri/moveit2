@@ -62,13 +62,13 @@ set(THIS_PACKAGE_INCLUDE_LIBRARIES
 
 set(THIS_PACKAGE_INCLUDE_DEPENDENCIES
       moveit_ros_planning
-      moveit_ros_warehouse
-      moveit_ros_manipulation
+      # moveit_ros_warehouse
+      # moveit_ros_manipulation
       moveit_ros_move_group
       geometry_msgs
       moveit_msgs
       tf2_geometry_msgs
-      EIGEN3
+      # EIGEN3
 )
 
 include_directories(${THIS_PACKAGE_INCLUDE_DIRS}
@@ -85,9 +85,9 @@ ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDENCIES})
 
 # add_subdirectory(py_bindings_tools)
 add_subdirectory(common_planning_interface_objects)
-# add_subdirectory(planning_scene_interface)
+add_subdirectory(planning_scene_interface)
 add_subdirectory(move_group_interface)
 # add_subdirectory(robot_interface)
-# add_subdirectory(test)
+add_subdirectory(test)
 
 ament_package()
