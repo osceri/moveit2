@@ -42,7 +42,8 @@
 
 const std::string ompl_interface::PoseModelStateSpace::PARAMETERIZATION_TYPE = "PoseModel";
 
-rclcpp::Logger LOGGER_POSE_MODEL_STATE_SPACE = rclcpp::get_logger("moveit_planner_ompl").get_child("pose_model_state_space");
+rclcpp::Logger LOGGER_POSE_MODEL_STATE_SPACE =
+    rclcpp::get_logger("moveit_planner_ompl").get_child("pose_model_state_space");
 
 ompl_interface::PoseModelStateSpace::PoseModelStateSpace(const ModelBasedStateSpaceSpecification& spec)
   : ModelBasedStateSpace(spec)
@@ -57,10 +58,11 @@ ompl_interface::PoseModelStateSpace::PoseModelStateSpace(const ModelBasedStateSp
     for (const auto& it : m)
       poses_.emplace_back(it.first, it.second);
   }
-  if (poses_.empty()){
+  if (poses_.empty())
+  {
     RCLCPP_ERROR(LOGGER_POSE_MODEL_STATE_SPACE, "No kinematics solvers specified. Unable to construct a "
-                                              "PoseModelStateSpace");
-          }
+                                                "PoseModelStateSpace");
+  }
   else
     std::sort(poses_.begin(), poses_.end());
   setName(getName() + "_" + PARAMETERIZATION_TYPE);
