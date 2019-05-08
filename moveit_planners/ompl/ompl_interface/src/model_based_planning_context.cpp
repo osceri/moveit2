@@ -60,7 +60,7 @@
 #include "ompl/base/objectives/MaximizeMinClearanceObjective.h"
 
 rclcpp::Logger LOGGER_MODEL_BASED_PLANNING_CONTEXT =
-    rclcpp::get_logger("model_based_planning_context");
+    rclcpp::get_logger("moveit_planner_ompl").get_child("model_based_planning_context");
 
 ompl_interface::ModelBasedPlanningContext::ModelBasedPlanningContext(const std::string& name,
                                                                      const ModelBasedPlanningContextSpecification& spec)

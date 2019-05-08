@@ -37,7 +37,7 @@
 #include <moveit/ompl_interface/parameterization/model_based_state_space.h>
 #include <utility>
 
-rclcpp::Logger LOGGER_MODEL_BASED_STATE_SPACE = rclcpp::get_logger("model_based_state_space");
+rclcpp::Logger LOGGER_MODEL_BASED_STATE_SPACE = rclcpp::get_logger("moveit_planner_ompl").get_child("model_based_state_space");
 
 ompl_interface::ModelBasedStateSpace::ModelBasedStateSpace(ModelBasedStateSpaceSpecification spec)
   : ompl::base::StateSpace(), spec_(std::move(spec))
