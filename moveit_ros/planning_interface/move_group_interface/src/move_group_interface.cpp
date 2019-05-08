@@ -154,23 +154,23 @@ public:
     double allotted_time = 1.0e-9 * wait_for_servers_sec;
     //TODO(anasarrak): Review these action changes
     move_action_client_.reset();
-    move_action_client_ = rclcpp_action::create_client<moveit_msgs::action::MoveGroup>(node_, "move_action_client_");
+    move_action_client_ = rclcpp_action::create_client<moveit_msgs::action::MoveGroup>(node_, move_group::MOVE_ACTION);
 
     waitForAction(move_action_client_, move_group::MOVE_ACTION, timeout_for_servers, allotted_time);
 
     pick_action_client_.reset();
-    pick_action_client_ = rclcpp_action::create_client<moveit_msgs::action::Pickup>(node_, "pick_action_client_");
+    pick_action_client_ = rclcpp_action::create_client<moveit_msgs::action::Pickup>(node_, "pickup");
 
     //TODO(anasarrak): Hardcoded, revert back when move_group_pick_place_capability is ported to ROS2
     waitForAction(pick_action_client_, /*move_group::PICKUP_ACTION*/"pickup", timeout_for_servers, allotted_time);
 
     place_action_client_.reset();
-    place_action_client_ = rclcpp_action::create_client<moveit_msgs::action::Place>(node_, "place_action_client_");
+    place_action_client_ = rclcpp_action::create_client<moveit_msgs::action::Place>(node_, "place");
     //TODO(anasarrak): Hardcoded, revert back when move_group_pick_place_capability is ported to ROS2
     waitForAction(place_action_client_, /*move_group::PLACE_ACTION*/"place", timeout_for_servers, allotted_time);
 
     execute_action_client_.reset();
-    execute_action_client_ = rclcpp_action::create_client<moveit_msgs::action::ExecuteTrajectory>(node_, "execute_action_client_");
+    execute_action_client_ = rclcpp_action::create_client<moveit_msgs::action::ExecuteTrajectory>(node_, "execute_trajectory");
 
     waitForAction(execute_action_client_, move_group::EXECUTE_ACTION_NAME, timeout_for_servers, allotted_time);
 

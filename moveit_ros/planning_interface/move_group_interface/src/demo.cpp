@@ -110,13 +110,11 @@ int main(int argc, char** argv)
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("move_group_interface_demo");
 
-
   moveit::planning_interface::MoveGroupInterface::Options options("manipulator", "robot_description", node);
 
   moveit::planning_interface::MoveGroupInterface group(options);
   rclcpp::executors::MultiThreadedExecutor executor;
   executor.add_node(node);
-  // auto future_handle = std::async(std::launch::async, spin, &executor);
   std::thread executor_thread(std::bind(&rclcpp::executors::MultiThreadedExecutor::spin, &executor));
 
   demoPlace(group);
