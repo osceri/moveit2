@@ -39,7 +39,7 @@ pluginlib_export_plugin_description_file(move_group default_capabilities_plugin_
 
 add_library(moveit_move_group_default_capabilities
   src/default_capabilities/move_action_capability.cpp
-  # src/default_capabilities/plan_service_capability.cpp
+  src/default_capabilities/plan_service_capability.cpp
   src/default_capabilities/execute_trajectory_action_capability.cpp
   src/default_capabilities/query_planners_service_capability.cpp
   src/default_capabilities/kinematics_service_capability.cpp
