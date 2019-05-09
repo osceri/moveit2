@@ -38,7 +38,7 @@
 #define MOVEIT_MOVE_GROUP_STATE_VALIDATION_SERVICE_CAPABILITY_
 
 #include <moveit/move_group/move_group_capability.h>
-#include <moveit_msgs/GetStateValidity.h>
+#include <moveit_msgs/srv/get_state_validity.hpp>
 
 namespace move_group
 {
@@ -50,9 +50,11 @@ public:
   void initialize() override;
 
 private:
-  bool computeService(moveit_msgs::srv::GetStateValidity::Request& req, moveit_msgs::srv::GetStateValidity::Response& res);
+  void computePlanService(const std::shared_ptr<rmw_request_id_t> request_header,
+       const std::shared_ptr<moveit_msgs::srv::GetStateValidity::Request> request,
+       const std::shared_ptr<moveit_msgs::srv::GetStateValidity::Response> response);
 
-  ros::ServiceServer validity_service_;
+  std::shared_ptr<rclcpp::Service<moveit_msgs::srv::GetStateValidity>> validity_service_;
 };
 }
 
