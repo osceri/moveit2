@@ -33,11 +33,16 @@ add_library(moveit_move_group_capabilities_base
 )
 set_target_properties(moveit_move_group_capabilities_base PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
 
-pluginlib_export_plugin_description_file(move_group default_capabilities_plugin_description.xml)
+pluginlib_export_plugin_description_file(moveit_ros_move_group default_capabilities_plugin_description.xml)
 
 # add_executable(move_group src/move_group.cpp)
 
-# add_executable(list_move_group_capabilities src/list_capabilities.cpp)
+add_executable(list_move_group_capabilities src/list_capabilities.cpp)
+ament_target_dependencies(list_move_group_capabilities
+  pluginlib
+  Boost
+  rclcpp
+)
 
 add_library(moveit_move_group_default_capabilities
   src/default_capabilities/move_action_capability.cpp
@@ -81,7 +86,7 @@ target_link_libraries(moveit_move_group_default_capabilities moveit_move_group_c
 #   LIBRARY DESTINATION lib
 #   RUNTIME DESTINATION bin)
 #TODO (anasarrak): Rever back for the install that is above
-install(TARGETS moveit_move_group_capabilities_base moveit_move_group_default_capabilities
+install(TARGETS moveit_move_group_capabilities_base moveit_move_group_default_capabilities list_move_group_capabilities
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME})
