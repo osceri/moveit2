@@ -72,7 +72,7 @@ static const char* DEFAULT_CAPABILITIES[] = {
 class MoveGroupExe
 {
 public:
-  MoveGroupExe(const planning_scene_monitor::PlanningSceneMonitorPtr& psm, bool debug, std::shared_ptr<rclcpp::Node> node ) : node_(node)
+  MoveGroupExe(const planning_scene_monitor::PlanningSceneMonitorPtr& psm, bool debug, std::shared_ptr<rclcpp::Node>& node ) : node_(node)
   {
     auto allow_trajectory_execution_parameters = std::make_shared<rclcpp::SyncParametersClient>(node_);
     // if the user wants to be able to disable execution of paths, they can just set this ROS param to false
@@ -229,13 +229,13 @@ int main(int argc, char** argv)
     planning_scene_monitor->publishDebugInformation(debug);
 
     mge.status();
+    rclcpp::spin(node);
 
   }
   else{
     RCLCPP_ERROR(LOGGER_MOVE_GROUP,"Planning scene not configured");
   }
 
-  rclcpp::spin(node);
 
   return 0;
 }
