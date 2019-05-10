@@ -43,9 +43,9 @@ ament_target_dependencies(moveit_move_group_capabilities_base
 target_link_libraries(moveit_move_group_capabilities_base
 )
 
-pluginlib_export_plugin_description_file(moveit_ros_move_group default_capabilities_plugin_description.xml)
 
-# add_executable(move_group src/move_group.cpp)
+
+pluginlib_export_plugin_description_file(moveit_ros_move_group default_capabilities_plugin_description.xml)
 
 add_executable(list_move_group_capabilities src/list_capabilities.cpp)
 ament_target_dependencies(list_move_group_capabilities
@@ -72,6 +72,8 @@ set_target_properties(moveit_move_group_default_capabilities PROPERTIES VERSION 
 # ament_target_dependencies(moveit_move_group_default_capabilities moveit_move_group_capabilities_base
 #   rclcpp
 #   Boost)
+
+add_executable(move_group src/move_group.cpp)
 ament_target_dependencies(move_group moveit_move_group_capabilities_base
   rclcpp
   Boost
@@ -79,6 +81,9 @@ ament_target_dependencies(move_group moveit_move_group_capabilities_base
   tinyxml_vendor
   class_loader
   tf2_ros
+  tf2
+  moveit_ros_planning
+  moveit_core
 )
 target_link_libraries(move_group
   moveit_move_group_capabilities_base
@@ -92,7 +97,7 @@ target_link_libraries(moveit_move_group_default_capabilities moveit_move_group_c
 #   LIBRARY DESTINATION lib
 #   RUNTIME DESTINATION bin)
 #TODO (anasarrak): Rever back for the install that is above
-install(TARGETS moveit_move_group_capabilities_base moveit_move_group_default_capabilities list_move_group_capabilities
+install(TARGETS moveit_move_group_capabilities_base moveit_move_group_default_capabilities list_move_group_capabilities move_group
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME})

@@ -80,7 +80,7 @@ public:
     if (allow_trajectory_execution_parameters->has_parameter({"allow_trajectory_execution"}))
       allow_trajectory_execution = node_->get_parameter("allow_trajectory_execution").as_bool();
 
-    context_.reset(new MoveGroupContext(psm, allow_trajectory_execution, debug));
+    context_.reset(new MoveGroupContext(psm, node, allow_trajectory_execution, debug));
 
     // start the capabilities
     configureCapabilities();
@@ -200,45 +200,45 @@ int main(int argc, char** argv)
   rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
   // On ROS2 the passed value is a shared Clock
   std::shared_ptr<tf2_ros::Buffer> tf_buffer = std::make_shared<tf2_ros::Buffer>(clock);
-  std::shared_ptr<tf2_ros::TransformListener> tfl = std::make_shared<tf2_ros::TransformListener>(*tf_buffer, node);
+  std::shared_ptr<tf2_ros::TransformListener> tfl = std::make_shared<tf2_ros::TransformListener>(*tf_buffer);
   while (!shutdown_req)
   {
-  planning_scene_monitor::PlanningSceneMonitorPtr planning_scene_monitor(
-      new planning_scene_monitor::PlanningSceneMonitor(ROBOT_DESCRIPTION, tf_buffer));
+    planning_scene_monitor::PlanningSceneMonitorPtr planning_scene_monitor(
+        new planning_scene_monitor::PlanningSceneMonitor(ROBOT_DESCRIPTION, node, tf_buffer));
 
-  if (planning_scene_monitor->getPlanningScene())
-  {
-    bool debug = false;
-    for (int i = 1; i < argc; ++i)
-      if (strncmp(argv[i], "--debug", 7) == 0)
-      {
-        debug = true;
-        break;
+    if (planning_scene_monitor->getPlanningScene())
+    {
+      bool debug = false;
+      for (int i = 1; i < argc; ++i)
+        if (strncmp(argv[i], "--debug", 7) == 0)
+        {
+          debug = true;
+          break;
+        }
+      if (debug){
+        RCLCPP_INFO(LOGGER_MOVE_GROUP,"MoveGroup debug mode is ON");
+        }
+      else{
+        RCLCPP_INFO(LOGGER_MOVE_GROUP,"MoveGroup debug mode is OFF");
       }
-    if (debug){
-      RCLCPP_INFO(LOGGER_MOVE_GROUP,"MoveGroup debug mode is ON");
-      }
-    else{
-      RCLCPP_INFO(LOGGER_MOVE_GROUP,"MoveGroup debug mode is OFF");
+      printf(MOVEIT_CONSOLE_COLOR_CYAN "Starting planning scene monitors...\n" MOVEIT_CONSOLE_COLOR_RESET);
+      planning_scene_monitor->startSceneMonitor();
+      planning_scene_monitor->startWorldGeometryMonitor();
+      planning_scene_monitor->startStateMonitor();
+      printf(MOVEIT_CONSOLE_COLOR_CYAN "Planning scene monitors started.\n" MOVEIT_CONSOLE_COLOR_RESET);
+
+      move_group::MoveGroupExe mge(planning_scene_monitor, debug, node);
+
+      planning_scene_monitor->publishDebugInformation(debug);
+
+      mge.status();
+
     }
-    printf(MOVEIT_CONSOLE_COLOR_CYAN "Starting planning scene monitors...\n" MOVEIT_CONSOLE_COLOR_RESET);
-    planning_scene_monitor->startSceneMonitor();
-    planning_scene_monitor->startWorldGeometryMonitor();
-    planning_scene_monitor->startStateMonitor();
-    printf(MOVEIT_CONSOLE_COLOR_CYAN "Planning scene monitors started.\n" MOVEIT_CONSOLE_COLOR_RESET);
+    else{
+      RCLCPP_ERROR(LOGGER_MOVE_GROUP,"Planning scene not configured");
+    }
 
-    move_group::MoveGroupExe mge(planning_scene_monitor, debug, node);
-
-    planning_scene_monitor->publishDebugInformation(debug);
-
-    mge.status();
-
-  }
-  else{
-    RCLCPP_ERROR(LOGGER_MOVE_GROUP,"Planning scene not configured");
-  }
-
-  executor.spin_node_some(node);
+    executor.spin_node_some(node);
 
   }
   return 0;
