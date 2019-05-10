@@ -331,16 +331,17 @@ bool planning_pipeline::PlanningPipeline::generatePlan(const planning_scene::Pla
     }
   }
 
-  // display solution path if needed
-  if (display_computed_motion_plans_ && solved)
-  {
-    moveit_msgs::msg::DisplayTrajectory disp;
-    disp.model_id = robot_model_->getName();
-    disp.trajectory.resize(1);
-    res.trajectory_->getRobotTrajectoryMsg(disp.trajectory[0]);
-    robot_state::robotStateToRobotStateMsg(res.trajectory_->getFirstWayPoint(), disp.trajectory_start);
-    display_path_publisher_->publish(disp);
-  }
+  // TODO (ahcorde): lol
+  // // display solution path if needed
+  // if (display_computed_motion_plans_ && solved)
+  // {
+  //   moveit_msgs::msg::DisplayTrajectory disp;
+  //   disp.model_id = robot_model_->getName();
+  //   disp.trajectory.resize(1);
+  //   res.trajectory_->getRobotTrajectoryMsg(disp.trajectory[0]);
+  //   robot_state::robotStateToRobotStateMsg(res.trajectory_->getFirstWayPoint(), disp.trajectory_start, true);
+  //   display_path_publisher_->publish(disp);
+  // }
 
   return solved && valid;
 }

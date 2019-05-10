@@ -7,7 +7,13 @@ ament_target_dependencies(${MOVEIT_LIB_NAME}
   urdf
   pluginlib
   rclcpp
-  Boost)
+  Boost
+  moveit_core
+)
+
+target_link_libraries(${MOVEIT_LIB_NAME}
+  ${moveit_core_LIBRARIES}
+)
 
 install(TARGETS ${MOVEIT_LIB_NAME}
   ARCHIVE DESTINATION lib
