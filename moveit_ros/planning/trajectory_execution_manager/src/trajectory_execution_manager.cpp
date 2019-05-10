@@ -144,6 +144,7 @@ void TrajectoryExecutionManager::initialize()
   {
     std::string controller;
 
+    manage_controllers_parameters = std::make_shared<rclcpp::SyncParametersClient>(node_, "dummy_joint_states");
 
     if(!manage_controllers_parameters->has_parameter({"moveit_controller_manager"})){
       const std::vector<std::string>& classes = controller_manager_loader_->getDeclaredClasses();
@@ -177,7 +178,7 @@ void TrajectoryExecutionManager::initialize()
   reloadControllerInformation();
   event_topic_subscriber_ = node_->create_subscription<std_msgs::msg::String>(
     EXECUTION_EVENT_TOPIC, std::bind(&TrajectoryExecutionManager::receiveEvent, this, std::placeholders::_1));
-    
+
   reconfigure_impl_ = new DynamicReconfigureImpl(this);
 
   if (manage_controllers_){
