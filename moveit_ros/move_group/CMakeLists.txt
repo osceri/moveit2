@@ -21,17 +21,27 @@ find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(class_loader REQUIRED)
+find_package(orocos_kdl REQUIRED)
 
 include_directories(include)
 include_directories(${rclcpp_INCLUDE_DIRS}
                     ${Boost_INCLUDE_DIRS}
                     ${moveit_core_INCLUDE_DIRS})
 
-add_library(moveit_move_group_capabilities_base
-  # src/move_group_context.cpp
+add_library(moveit_move_group_capabilities_base SHARED
+  src/move_group_context.cpp
   src/move_group_capability.cpp
 )
 set_target_properties(moveit_move_group_capabilities_base PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
+ament_target_dependencies(moveit_move_group_capabilities_base
+  rclcpp
+  Boost
+  orocos_kdl
+  moveit_ros_planning
+)
+
+target_link_libraries(moveit_move_group_capabilities_base
+)
 
 pluginlib_export_plugin_description_file(moveit_ros_move_group default_capabilities_plugin_description.xml)
 
@@ -58,14 +68,10 @@ add_library(moveit_move_group_default_capabilities
 )
 set_target_properties(moveit_move_group_default_capabilities PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
 
-# ament_target_dependencies(moveit_move_group_capabilities_base
-#   rclcpp
-#   Boost
-#   moveit_core)
+
 # ament_target_dependencies(moveit_move_group_default_capabilities moveit_move_group_capabilities_base
 #   rclcpp
 #   Boost)
-target_link_libraries(moveit_move_group_capabilities_base ${rclcpp_LIBRARIES} ${Boost_LIBRARIES})
 ament_target_dependencies(move_group moveit_move_group_capabilities_base
   rclcpp
   Boost
