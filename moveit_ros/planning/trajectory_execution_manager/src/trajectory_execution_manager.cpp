@@ -144,7 +144,6 @@ void TrajectoryExecutionManager::initialize()
   {
     std::string controller;
 
-    manage_controllers_parameters = std::make_shared<rclcpp::SyncParametersClient>(node_);
 
     if(!manage_controllers_parameters->has_parameter({"moveit_controller_manager"})){
       const std::vector<std::string>& classes = controller_manager_loader_->getDeclaredClasses();
