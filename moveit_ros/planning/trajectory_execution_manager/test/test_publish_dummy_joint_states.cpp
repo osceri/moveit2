@@ -32,6 +32,7 @@ int main(int argc, char * argv[])
   qos.durability = RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL;
 
   node->declare_parameter("robot_description_kinematics.manipulator.kinematics_solver", "kdl_kinematics_plugin/KDLKinematicsPlugin");
+  node->declare_parameter("moveit_controller_manager", "moveit_simple_controller_manager/MoveItSimpleControllerManager");
 
   auto robot_description_semantic_pub = node->create_publisher<std_msgs::msg::String>(
     "robot_description_semantic", qos);
