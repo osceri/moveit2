@@ -156,23 +156,23 @@ public:
     move_action_client_.reset();
     move_action_client_ = rclcpp_action::create_client<moveit_msgs::action::MoveGroup>(node_, move_group::MOVE_ACTION);
 
-    waitForAction(move_action_client_, move_group::MOVE_ACTION, timeout_for_servers, allotted_time);
+    waitForAction(move_action_client_, move_group::MOVE_ACTION, timeout_for_servers, allotted_time, node_);
 
     pick_action_client_.reset();
     pick_action_client_ = rclcpp_action::create_client<moveit_msgs::action::Pickup>(node_, "pickup");
-
-    //TODO(anasarrak): Hardcoded, revert back when move_group_pick_place_capability is ported to ROS2
-    waitForAction(pick_action_client_, /*move_group::PICKUP_ACTION*/"pickup", timeout_for_servers, allotted_time);
-
+    //
+    // //TODO(anasarrak): Hardcoded, revert back when move_group_pick_place_capability is ported to ROS2
+    // waitForAction(pick_action_client_, /*move_group::PICKUP_ACTION*/"pickup", timeout_for_servers, allotted_time, node_);
+    //
     place_action_client_.reset();
     place_action_client_ = rclcpp_action::create_client<moveit_msgs::action::Place>(node_, "place");
-    //TODO(anasarrak): Hardcoded, revert back when move_group_pick_place_capability is ported to ROS2
-    waitForAction(place_action_client_, /*move_group::PLACE_ACTION*/"place", timeout_for_servers, allotted_time);
+    // //TODO(anasarrak): Hardcoded, revert back when move_group_pick_place_capability is ported to ROS2
+    // waitForAction(place_action_client_, /*move_group::PLACE_ACTION*/"place", timeout_for_servers, allotted_time, node_);
 
     execute_action_client_.reset();
     execute_action_client_ = rclcpp_action::create_client<moveit_msgs::action::ExecuteTrajectory>(node_, "execute_trajectory");
 
-    waitForAction(execute_action_client_, move_group::EXECUTE_ACTION_NAME, timeout_for_servers, allotted_time);
+    waitForAction(execute_action_client_, move_group::EXECUTE_ACTION_NAME, timeout_for_servers, allotted_time, node_);
 
     query_service_ =
         node_->create_client<moveit_msgs::srv::QueryPlannerInterfaces>(move_group::QUERY_PLANNERS_SERVICE_NAME);
@@ -194,7 +194,7 @@ public:
   template <typename T>
   void waitForAction(std::shared_ptr<rclcpp_action::Client<T> >& action, const std::string& name,
      std::chrono::time_point<std::chrono::system_clock, std::chrono::duration<double>> timeout,
-      double allotted_time)
+      double allotted_time, std::shared_ptr<rclcpp::Node>& node)
   {
     RCLCPP_DEBUG(LOGGER_MOVE_GROUP_INTERFACE, "Waiting for move_group action server (%s)...", name.c_str());
     auto d = std::chrono::duration<double>(0.001);
@@ -207,7 +207,8 @@ public:
         rclcpp::sleep_for(period);
         // explicit ros::spinOnce on the callback queue used by NodeHandle that manages the action client
         //TODO (anasarrak): Handle this for ros2, is it needed? remove the WARN
-        RCLCPP_WARN_ONCE(LOGGER_MOVE_GROUP_INTERFACE, "Action server is not ready");
+        RCLCPP_WARN_ONCE(LOGGER_MOVE_GROUP_INTERFACE, "Action server is not ready no timeout %s", name.c_str());
+        rclcpp::spin_some(node);
         // ros::CallbackQueue* queue = dynamic_cast<ros::CallbackQueue*>(node_.getCallbackQueue());
         // if (queue)
         // {
@@ -228,7 +229,7 @@ public:
         // explicit ros::spinOnce on the callback queue used by NodeHandle that manages the action client
         // ros::CallbackQueue* queue = dynamic_cast<ros::CallbackQueue*>(node_.getCallbackQueue());
         //TODO (anasarrak): Handle this for ros2, is it needed? remove the WARN
-        RCLCPP_WARN_ONCE(LOGGER_MOVE_GROUP_INTERFACE, "Action server is not ready");
+        RCLCPP_WARN_ONCE(LOGGER_MOVE_GROUP_INTERFACE, "Action server is not ready timeout");
         // if (queue)
         // {
         //   queue->callAvailable();
