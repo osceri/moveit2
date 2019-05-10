@@ -48,7 +48,7 @@ class MoveGroupCartesianPathService : public MoveGroupCapability
 public:
   MoveGroupCartesianPathService();
 
-  void initialize() override;
+  void initialize(std::shared_ptr<rclcpp::Node>& node) override;
 
 private:
 

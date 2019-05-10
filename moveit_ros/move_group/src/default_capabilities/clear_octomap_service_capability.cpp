@@ -41,8 +41,9 @@ move_group::ClearOctomapService::ClearOctomapService() : MoveGroupCapability("Cl
 {
 }
 
-void move_group::ClearOctomapService::initialize()
+void move_group::ClearOctomapService::initialize(std::shared_ptr<rclcpp::Node>& node)
 {
+  this->node_ = node;
   service_ = node_->create_service<std_srvs::srv::Empty>(
       CLEAR_OCTOMAP_SERVICE_NAME, std::bind(&ClearOctomapService::clearOctomap, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3) );
 }

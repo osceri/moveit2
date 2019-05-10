@@ -44,8 +44,9 @@ move_group::MoveGroupKinematicsService::MoveGroupKinematicsService() : MoveGroup
 {
 }
 
-void move_group::MoveGroupKinematicsService::initialize()
+void move_group::MoveGroupKinematicsService::initialize(std::shared_ptr<rclcpp::Node>& node)
 {
+  this->node_ = node;
   fk_service_ = node_->create_service<moveit_msgs::srv::GetPositionFK>(
         FK_SERVICE_NAME, std::bind(&MoveGroupKinematicsService::computeFKService, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3) );
   ik_service_ = node_->create_service<moveit_msgs::srv::GetPositionIK>(

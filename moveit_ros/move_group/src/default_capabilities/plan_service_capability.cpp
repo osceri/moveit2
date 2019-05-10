@@ -42,8 +42,9 @@ move_group::MoveGroupPlanService::MoveGroupPlanService() : MoveGroupCapability("
 {
 }
 
-void move_group::MoveGroupPlanService::initialize()
+void move_group::MoveGroupPlanService::initialize(std::shared_ptr<rclcpp::Node>& node)
 {
+  this->node_ = node;
   plan_service_ = node_->create_service<moveit_msgs::srv::GetMotionPlan>(
         PLANNER_SERVICE_NAME, std::bind(&MoveGroupPlanService::computePlanService, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3) );
 }

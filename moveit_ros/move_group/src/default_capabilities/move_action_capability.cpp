@@ -48,12 +48,13 @@ move_group::MoveGroupMoveAction::MoveGroupMoveAction()
 {
 }
 
-void move_group::MoveGroupMoveAction::initialize()
+void move_group::MoveGroupMoveAction::initialize(std::shared_ptr<rclcpp::Node>& node)
 {
+  this->node_ = node;
   // start the move action server
   move_action_server_.reset();
   move_action_server_ = rclcpp_action::create_server<moveit_msgs::action::MoveGroup>(
-      node_, MOVE_ACTION,
+      node, MOVE_ACTION,
       std::bind(&move_group::MoveGroupMoveAction::handle_move_goal, this, std::placeholders::_1, std::placeholders::_2),
       std::bind(&move_group::MoveGroupMoveAction::handle_move_cancel, this, std::placeholders::_1),
       std::bind(&move_group::MoveGroupMoveAction::handle_move_accept, this, std::placeholders::_1));

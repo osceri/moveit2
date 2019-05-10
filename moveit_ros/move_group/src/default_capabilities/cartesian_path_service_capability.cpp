@@ -48,8 +48,9 @@ move_group::MoveGroupCartesianPathService::MoveGroupCartesianPathService()
 {
 }
 
-void move_group::MoveGroupCartesianPathService::initialize()
+void move_group::MoveGroupCartesianPathService::initialize(std::shared_ptr<rclcpp::Node>& node)
 {
+  this->node_ = node;
   cartesian_path_service_ = node_->create_service<moveit_msgs::srv::GetCartesianPath>(
         CARTESIAN_PATH_SERVICE_NAME, std::bind(&MoveGroupCartesianPathService::computeService, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3) );
 

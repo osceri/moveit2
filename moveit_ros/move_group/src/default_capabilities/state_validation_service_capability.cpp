@@ -45,8 +45,9 @@ move_group::MoveGroupStateValidationService::MoveGroupStateValidationService()
 {
 }
 
-void move_group::MoveGroupStateValidationService::initialize()
+void move_group::MoveGroupStateValidationService::initialize(std::shared_ptr<rclcpp::Node>& node)
 {
+  this->node_ = node;
   validity_service_ = node_->create_service<moveit_msgs::srv::GetStateValidity>(
         STATE_VALIDITY_SERVICE_NAME, std::bind(&MoveGroupStateValidationService::computePlanService, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3) );
 }

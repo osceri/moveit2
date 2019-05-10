@@ -47,8 +47,9 @@ MoveGroupExecuteTrajectoryAction::MoveGroupExecuteTrajectoryAction() : MoveGroup
 {
 }
 
-void MoveGroupExecuteTrajectoryAction::initialize()
+void MoveGroupExecuteTrajectoryAction::initialize(std::shared_ptr<rclcpp::Node>& node)
 {
+  this->node_ = node;
   // start the move action server
   execute_action_server_.reset();
   execute_action_server_ = rclcpp_action::create_server<moveit_msgs::action::ExecuteTrajectory>(

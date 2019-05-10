@@ -47,7 +47,7 @@ class MoveGroupStateValidationService : public MoveGroupCapability
 public:
   MoveGroupStateValidationService();
 
-  void initialize() override;
+  void initialize(std::shared_ptr<rclcpp::Node>& node) override;
 
 private:
   void computePlanService(const std::shared_ptr<rmw_request_id_t> request_header,

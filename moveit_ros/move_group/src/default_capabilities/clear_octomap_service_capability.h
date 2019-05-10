@@ -47,7 +47,7 @@ class ClearOctomapService : public MoveGroupCapability
 public:
   ClearOctomapService();
 
-  void initialize() override;
+  void initialize(std::shared_ptr<rclcpp::Node>& node) override;
 
 private:
   void clearOctomap(const std::shared_ptr<rmw_request_id_t> request_header,

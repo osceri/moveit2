@@ -42,8 +42,9 @@ move_group::MoveGroupGetPlanningSceneService::MoveGroupGetPlanningSceneService()
 {
 }
 
-void move_group::MoveGroupGetPlanningSceneService::initialize()
+void move_group::MoveGroupGetPlanningSceneService::initialize(std::shared_ptr<rclcpp::Node>& node)
 {
+  this->node_ = node;
   get_scene_service_ = node_->create_service<moveit_msgs::srv::GetPlanningScene>(
       GET_PLANNING_SCENE_SERVICE_NAME, std::bind(&MoveGroupGetPlanningSceneService::getPlanningSceneService, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3) );
 }

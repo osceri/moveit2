@@ -48,7 +48,7 @@ class MoveGroupKinematicsService : public MoveGroupCapability
 public:
   MoveGroupKinematicsService();
 
-  void initialize() override;
+  void initialize(std::shared_ptr<rclcpp::Node>& node) override;
 
 private:
 
