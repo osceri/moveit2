@@ -54,7 +54,7 @@ ament_target_dependencies(list_move_group_capabilities
   rclcpp
 )
 
-add_library(moveit_move_group_default_capabilities
+add_library(moveit_move_group_default_capabilities SHARED
   src/default_capabilities/move_action_capability.cpp
   src/default_capabilities/plan_service_capability.cpp
   src/default_capabilities/execute_trajectory_action_capability.cpp
@@ -67,11 +67,12 @@ add_library(moveit_move_group_default_capabilities
   src/default_capabilities/clear_octomap_service_capability.cpp
 )
 set_target_properties(moveit_move_group_default_capabilities PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
-
-
-# ament_target_dependencies(moveit_move_group_default_capabilities moveit_move_group_capabilities_base
-#   rclcpp
-#   Boost)
+target_link_libraries(moveit_move_group_default_capabilities
+  moveit_move_group_capabilities_base
+  ${rclcpp_LIBRARIES}
+  ${Boost_LIBRARIES}
+  ${std_srvs_LIBRARIES}
+)
 
 add_executable(move_group src/move_group.cpp)
 ament_target_dependencies(move_group moveit_move_group_capabilities_base
@@ -89,14 +90,6 @@ target_link_libraries(move_group
   moveit_move_group_capabilities_base
 )
 
-target_link_libraries(moveit_move_group_default_capabilities moveit_move_group_capabilities_base ${rclcpp_LIBRARIES} ${Boost_LIBRARIES})
-# target_link_libraries(list_move_group_capabilities ${rclcpp_LIBRARIES} ${Boost_LIBRARIES})
-
-# install(TARGETS move_group list_move_group_capabilities moveit_move_group_capabilities_base moveit_move_group_default_capabilities
-#   ARCHIVE DESTINATION lib
-#   LIBRARY DESTINATION lib
-#   RUNTIME DESTINATION bin)
-#TODO (anasarrak): Rever back for the install that is above
 install(TARGETS moveit_move_group_capabilities_base moveit_move_group_default_capabilities list_move_group_capabilities move_group
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
