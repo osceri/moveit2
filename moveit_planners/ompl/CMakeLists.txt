@@ -29,10 +29,8 @@ include_directories(ompl_interface/include
 
 add_subdirectory(ompl_interface)
 
-install(FILES ompl_interface_plugin_description.xml
-  DESTINATION share/${PROJECT_NAME})
+pluginlib_export_plugin_description_file(moveit_core ompl_interface_plugin_description.xml)
 
-# ament_export_libraries(moveit_ompl_interface) enable once is available
 ament_export_include_directories(include)
 ament_export_dependencies(moveit_core)
 ament_export_dependencies(ompl)

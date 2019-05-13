@@ -175,7 +175,7 @@ bool ompl_interface::OMPLInterface::loadConstraintApproximations()
 void ompl_interface::OMPLInterface::loadConstraintSamplers()
 {
   constraint_sampler_manager_loader_.reset(
-      new constraint_sampler_manager_loader::ConstraintSamplerManagerLoader(constraint_sampler_manager_));
+      new constraint_sampler_manager_loader::ConstraintSamplerManagerLoader(node_, constraint_sampler_manager_));
 }
 
 bool ompl_interface::OMPLInterface::loadPlannerConfiguration(
