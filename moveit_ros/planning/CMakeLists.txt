@@ -60,6 +60,7 @@ set(libraries
   moveit_plan_execution
   moveit_planning_scene_monitor
   moveit_collision_plugin_loader
+  moveit_constraint_sampler_manager_loader
 )
 
 
