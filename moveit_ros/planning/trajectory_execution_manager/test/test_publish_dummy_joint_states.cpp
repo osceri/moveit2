@@ -33,6 +33,7 @@ int main(int argc, char * argv[])
 
   node->declare_parameter("robot_description_kinematics.manipulator.kinematics_solver", "kdl_kinematics_plugin/KDLKinematicsPlugin");
   node->declare_parameter("moveit_controller_manager", "moveit_simple_controller_manager/MoveItSimpleControllerManager");
+  node->declare_parameter("planning_plugin", "ompl_interface/OMPLPlanner");
 
   auto robot_description_semantic_pub = node->create_publisher<std_msgs::msg::String>(
     "robot_description_semantic", qos);
