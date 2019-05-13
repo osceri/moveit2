@@ -52,11 +52,11 @@ planning_pipeline::PlanningPipeline::PlanningPipeline(const robot_model::RobotMo
                                                       const std::string& adapter_plugins_param_name)
   : node_(node), robot_model_(model)
 {
-  auto planner_plugin_params = std::make_shared<rclcpp::SyncParametersClient>(node);
+  auto planner_plugin_params = std::make_shared<rclcpp::SyncParametersClient>(node, "dummy_joint_states");
 
   std::string planner;
   if(planner_plugin_params->has_parameter({planner_plugin_param_name}))
-      planner_plugin_name_ = node_->get_parameter(planner_plugin_param_name).get_value<std::string>();
+      planner_plugin_name_ = planner_plugin_params->get_parameter(planner_plugin_param_name, std::string("ompl_interface/OMPLPlanner"));
 
   std::string adapters;
   if (planner_plugin_params->has_parameter({adapter_plugins_param_name}))
@@ -115,7 +115,7 @@ void planning_pipeline::PlanningPipeline::configure()
   try
   {
     planner_instance_ = planner_plugin_loader_->createUniqueInstance(planner_plugin_name_);
-    if (!planner_instance_->initialize(robot_model_, node_->get_namespace()))
+    if (!planner_instance_->initialize(robot_model_, node_))
       throw std::runtime_error("Unable to initialize planning plugin");
     RCLCPP_INFO(node_->get_logger(),"Using planning interface '%s'", planner_instance_->getDescription().c_str());
   }
