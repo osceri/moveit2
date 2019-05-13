@@ -288,6 +288,7 @@ void move_group::MoveGroupMoveAction::setMoveState(
     const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::MoveGroup>> goal_handle)
 {
   move_state_ = state;
+  auto move_feedback_ = std::make_shared<moveit_msgs::action::MoveGroup::Feedback>();
   move_feedback_->state = stateToStr(state);
   goal_handle->publish_feedback(move_feedback_);
 }
