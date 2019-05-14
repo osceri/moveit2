@@ -38,6 +38,7 @@ install(TARGETS ${PROJECT_NAME} LIBRARY DESTINATION lib)
 install(FILES moveit_simple_controller_manager_plugin_description.xml
         DESTINATION share/${PROJECT_NAME}
 )
+pluginlib_export_plugin_description_file(moveit_core moveit_simple_controller_manager_plugin_description.xml)
 install(DIRECTORY include/${PROJECT_NAME}/
        DESTINATION include/${PROJECT_NAME}
        )
