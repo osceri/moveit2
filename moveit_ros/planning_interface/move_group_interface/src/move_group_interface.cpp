@@ -855,19 +855,12 @@ public:
 //
   MoveItErrorCode plan(Plan& plan)
   {
-
-    printf("ALEX plan\n");
-
-
     if (!move_action_client_)
     {
-      printf("ALEX move_action_client_ Error!\n");
-
       return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::FAILURE);
     }
     if (!move_action_client_->action_server_is_ready())
     {
-      printf("ALEX move_action_client_ Error action_server_is_ready!\n");
       return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::FAILURE);
     }
 
@@ -884,22 +877,21 @@ public:
     goal.planning_options.planning_scene_diff.is_diff = true;
     goal.planning_options.planning_scene_diff.robot_state.is_diff = true;
 
+    bool is_result_ready = false;
+    rclcpp_action::ResultCode code_error;
+
     auto send_goal_options = rclcpp_action::Client<moveit_msgs::action::MoveGroup>::SendGoalOptions();
-    // send_goal_options.result_callback =
-    //   [&](const rclcpp_action::ClientGoalHandle<moveit_msgs::action::MoveGroup>::WrappedResult & result) mutable
-    //   {
-    //     printf("lol\n");
-    //     plan.trajectory_ = result.result->planned_trajectory;
-    //     plan.start_state_ = result.result->trajectory_start;
-    //     plan.planning_time_ = result.result->planning_time;
-    //     return MoveItErrorCode(result.result->error_code);
-    //
-    //     // if (rclcpp_action::ResultCode::SUCCEEDED == result.code &&
-    //     //   result.result->sequence.size() == 5u)
-    //     // {
-    //     //   result_callback_received = true;
-    //     // }
-    //   };
+    send_goal_options.result_callback =
+      [&is_result_ready, &plan, &code_error](const rclcpp_action::ClientGoalHandle<moveit_msgs::action::MoveGroup>::WrappedResult & result) mutable
+      {
+        if (rclcpp_action::ResultCode::SUCCEEDED == result.code){
+          plan.trajectory_ = result.result->planned_trajectory;
+          plan.start_state_ = result.result->trajectory_start;
+          plan.planning_time_ = result.result->planning_time;
+        }
+        code_error = result.code;
+        is_result_ready = true;
+      };
 
     auto goal_handle_future = move_action_client_->async_send_goal(goal, send_goal_options);
 
@@ -909,17 +901,10 @@ public:
       RCLCPP_ERROR(node_->get_logger(), "plan: send goal call failed :(");
       return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::FAILURE);
     }
-    RCLCPP_ERROR(node_->get_logger(), "plan: send goal call ok :)");
-
     auto goal_handle = goal_handle_future.get();
-    RCLCPP_ERROR(node_->get_logger(), "plan: goal_handle_future.get();");
-    printf("goal_handle->is_feedback_aware() %d\n", goal_handle->is_feedback_aware());
-
-    rclcpp::spin_some(node_);
 
     if(!goal_handle)
     {
-      printf("MoveGroup action returned early!\n");
       RCLCPP_INFO(node_->get_logger(), "plan: Goal was rejected by server");
       return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::FAILURE);
     }
@@ -928,53 +913,18 @@ public:
       RCLCPP_INFO(node_->get_logger(), "plan: was not accepted!");
     }
 
-    RCLCPP_ERROR(node_->get_logger(), "plan: async_result;");
-    rclcpp::spin_some(node_);
-
-    // Wait for the server to be done with the goal
-    // auto result_future = goal_handle->async_result();
-
-    auto result_future = move_action_client_->async_get_result(goal_handle);
-    RCLCPP_ERROR(node_->get_logger(), "plan: async_result ok!");
-
-
-    std::future_status status;
-    do {
+    while(!is_result_ready){
+      std::this_thread::sleep_for( std::chrono::milliseconds(100) );
       rclcpp::spin_some(node_);
-      status = result_future.wait_for(std::chrono::seconds(0));
-    } while (std::future_status::ready != status);
+    }
 
-    RCLCPP_INFO(node_->get_logger(), "plan: Waiting for result");
-    // if (rclcpp::spin_until_future_complete(node_, result_future) !=
-    //  rclcpp::executor::FutureReturnCode::SUCCESS)
-    // {
-    //  RCLCPP_ERROR(node_->get_logger(), "plan: get result call failed :(");
-    //  return 1;
-    // }
-
-    //
-    // printf("ALEX async_result!\n");
-    // auto result = goal_handle.get()->async_result().get();
-    // printf("ALEX async_result ok!\n");
-    //
-
-    auto result = result_future.get();
-
-
-    if (result.code == rclcpp_action::ResultCode::SUCCEEDED)
+    if (code_error == rclcpp_action::ResultCode::SUCCEEDED)
     {
-      plan.trajectory_ = result.result->planned_trajectory;
-      plan.start_state_ = result.result->trajectory_start;
-      plan.planning_time_ = result.result->planning_time;
-      return MoveItErrorCode(result.result->error_code);
+      return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::SUCCESS);
     }
     else
     {
-      // RCLCPP_WARN(node_->get_logger(), "Fail: %s : %s",move_action_client_->getState().toString().c_str(),
-      //                                                         move_action_client_->getState().getText().c_str());
-      //TODO(anasarrak): restore the above logger
-      RCLCPP_WARN(node_->get_logger(),"Failed to plan");
-      return MoveItErrorCode(result.result->error_code);
+      return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::FAILURE);
     }
   }
 
@@ -1046,22 +996,44 @@ public:
     {
       return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::SUCCESS);
     }
+
+    bool is_result_ready = false;
+    rclcpp_action::ClientGoalHandle<moveit_msgs::action::MoveGroup>::WrappedResult result_tmp;
+    auto send_goal_options = rclcpp_action::Client<moveit_msgs::action::MoveGroup>::SendGoalOptions();
+    send_goal_options.result_callback =
+      [&is_result_ready, &result_tmp](const rclcpp_action::ClientGoalHandle<moveit_msgs::action::MoveGroup>::WrappedResult & result) mutable
+      {
+        result_tmp = result;
+        is_result_ready = true;
+      };
+
     auto goal_handle_future = execute_action_client_->async_send_goal(goal);
     if (rclcpp::spin_until_future_complete(node_, goal_handle_future) !=
     rclcpp::executor::FutureReturnCode::SUCCESS)
     {
       RCLCPP_INFO(node_->get_logger(), "ExecuteTrajectory action returned early");
     }
-    auto result_future = goal_handle_future.get()->async_result();
-    auto result = result_future.get();
 
-    if (result.code == rclcpp_action::ResultCode::SUCCEEDED)
+    auto goal_handle = goal_handle_future.get();
+
+    if(!goal_handle)
     {
-      return MoveItErrorCode(result.result->error_code);
+      RCLCPP_INFO(node_->get_logger(), "plan: Goal was rejected by server");
+      return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::FAILURE);
+    }
+
+    while(!is_result_ready){
+      std::this_thread::sleep_for( std::chrono::milliseconds(100) );
+      rclcpp::spin_some(node_);
+    }
+
+    if (result_tmp.code == rclcpp_action::ResultCode::SUCCEEDED)
+    {
+      return MoveItErrorCode(result_tmp.result->error_code);
     }
     else
     {
-      switch(result.code){
+      switch(result_tmp.code){
         case rclcpp_action::ResultCode::ABORTED:
           RCLCPP_ERROR(node_->get_logger(), "ABORTED");
         case rclcpp_action::ResultCode::CANCELED:
@@ -1070,7 +1042,7 @@ public:
           RCLCPP_ERROR(node_->get_logger(), "Unknown result code");
       }
       // RCLCPP_INFO(node_->get_logger(), "%s : %s", result.code.c_str(), + execute_action_client_->getState().getText());
-      return MoveItErrorCode(result.result->error_code);
+      return MoveItErrorCode(result_tmp.result->error_code);
     }
   }
 //
