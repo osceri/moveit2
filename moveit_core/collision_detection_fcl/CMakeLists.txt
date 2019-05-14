@@ -37,8 +37,6 @@ install(TARGETS ${MOVEIT_LIB_NAME} collision_detector_fcl_plugin
           ARCHIVE DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include)
 
-install(FILES ../collision_detector_fcl_description.xml DESTINATION share/${PROJECT_NAME})
-
 if(BUILD_TESTING)
   find_package(moveit_resources REQUIRED)
   include_directories(${moveit_resources_INCLUDE_DIRS})

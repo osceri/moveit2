@@ -149,6 +149,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   visualization_msgs
   Boost
 )
+pluginlib_export_plugin_description_file(moveit_core collision_detector_fcl_description.xml)
 
 # to run: catkin_make -DENABLE_COVERAGE_TESTING=ON package_name_coverage
 if(BUILD_TESTING AND ENABLE_COVERAGE_TESTING)
