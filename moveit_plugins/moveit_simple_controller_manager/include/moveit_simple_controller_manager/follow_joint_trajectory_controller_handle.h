@@ -53,9 +53,10 @@ class FollowJointTrajectoryControllerHandle
     : public ActionBasedControllerHandle<control_msgs::action::FollowJointTrajectory>
 {
 public:
-  FollowJointTrajectoryControllerHandle(const std::string& name, const std::string& action_ns)
-    : ActionBasedControllerHandle<control_msgs::action::FollowJointTrajectory>(name, action_ns)
+  FollowJointTrajectoryControllerHandle(const std::string& name, std::shared_ptr<rclcpp::Node>& node)
+    : ActionBasedControllerHandle<control_msgs::action::FollowJointTrajectory>(name, node)
   {
+    printf("FollowJointTrajectoryControllerHandle::FollowJointTrajectoryControllerHandle \n");
   }
 
   bool sendTrajectory(const moveit_msgs::msg::RobotTrajectory& trajectory) override;

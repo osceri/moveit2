@@ -75,8 +75,8 @@ template <typename T>
 class ActionBasedControllerHandle : public ActionBasedControllerHandleBase
 {
 public:
-  ActionBasedControllerHandle(const std::string& name, const std::string& ns)
-    : ActionBasedControllerHandleBase(name), node_(rclcpp::Node::make_shared(ns)), done_(true), namespace_(ns)
+  ActionBasedControllerHandle(const std::string& name, std::shared_ptr<rclcpp::Node>& node)
+    : ActionBasedControllerHandleBase(name), node_(node), done_(true)
   {
     auto trajectory_execution_params = std::make_shared<rclcpp::SyncParametersClient>(node_);
     controller_action_client_.reset();

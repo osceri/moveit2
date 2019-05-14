@@ -53,8 +53,8 @@ class GripperControllerHandle : public ActionBasedControllerHandle<control_msgs:
    rclcpp::Logger LOGGER_GRIPPER_CONTROL_HANDLE = rclcpp::get_logger("moveit_simple_controller_manager").get_child("GripperController");
 public:
   /* Topics will map to name/ns/goal, name/ns/result, etc */
-  GripperControllerHandle(const std::string& name, const std::string& ns)
-    : ActionBasedControllerHandle<control_msgs::action::GripperCommand>(name, ns)
+  GripperControllerHandle(const std::string& name, std::shared_ptr<rclcpp::Node>& node)
+    : ActionBasedControllerHandle<control_msgs::action::GripperCommand>(name, node)
     , allow_failure_(false)
     , parallel_jaw_gripper_(false)
   {
