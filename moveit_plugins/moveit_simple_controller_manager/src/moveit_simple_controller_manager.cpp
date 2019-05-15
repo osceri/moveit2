@@ -222,7 +222,7 @@ public:
     std::vector<std::string> joints;
     std::string name = "follow_joint_trajectory";
     for(int i = 0; i < 6; i++){
-      joints.push_back(std::string("motor") + std::to_string(i));
+      joints.push_back(std::string("motor") + std::to_string(i+1));
     }
     ActionBasedControllerHandleBasePtr new_handle;
     RCLCPP_INFO(LOGGER_MOVEIT_SIMPLE_CONTROLLER_MANAGER, "FollowJointTrajectoryControllerHandle");

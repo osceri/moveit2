@@ -51,18 +51,39 @@ bool FollowJointTrajectoryControllerHandle::sendTrajectory(const moveit_msgs::ms
     RCLCPP_WARN(LOGGER_MOVEIT_SIMPLE_CONTROLLER_MANAGER, "%s cannot execute multi-dof trajectories.", name_.c_str());
   }
 
-  if (done_)
+  if (done_){
     RCLCPP_DEBUG(LOGGER_MOVEIT_SIMPLE_CONTROLLER_MANAGER, "sending trajectory to %s", name_.c_str());
-  else
+  }else{
     RCLCPP_DEBUG(LOGGER_MOVEIT_SIMPLE_CONTROLLER_MANAGER, "sending continuation for the currently executed trajectory to %s", name_.c_str());
-
+  }
   control_msgs::action::FollowJointTrajectory::Goal goal = goal_template_;
   goal.trajectory = trajectory.joint_trajectory;
   //TODO (anasarrak)
-  // controller_action_client_->sendGoal(
-  //     goal, std::bind(&FollowJointTrajectoryControllerHandle::controllerDoneCallback, this, _1, _2),
-  //     std::bind(&FollowJointTrajectoryControllerHandle::controllerActiveCallback, this),
-  //     std::bind(&FollowJointTrajectoryControllerHandle::controllerFeedbackCallback, this, _1));
+
+  bool is_result_ready = false;
+  rclcpp_action::ResultCode code_error;
+
+  using namespace std::placeholders;
+
+  auto send_goal_options = rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions();
+  send_goal_options.result_callback = std::bind(&FollowJointTrajectoryControllerHandle::controllerDoneCallback, this, _1);
+  send_goal_options.goal_response_callback = std::bind(&FollowJointTrajectoryControllerHandle::controllerActiveCallback, this, _1);
+  send_goal_options.feedback_callback =  std::bind(&FollowJointTrajectoryControllerHandle::controllerFeedbackCallback, this, _1, _2);
+  auto goal_handle_future = controller_action_client_->async_send_goal(goal, send_goal_options);
+
+  std::future_status status;
+  do {
+    status = goal_handle_future.wait_for(std::chrono::seconds(0));
+  } while (std::future_status::ready != status);
+
+  auto goal_handle = goal_handle_future.get();
+
+  if(!goal_handle)
+  {
+    RCLCPP_INFO(node_->get_logger(), "plan: Goal was rejected by server");
+    return false;
+  }
+
   done_ = false;
   last_exec_ = moveit_controller_manager::ExecutionStatus::RUNNING;
   return true;
@@ -201,29 +222,34 @@ control_msgs::msg::JointTolerance& FollowJointTrajectoryControllerHandle::getTol
   return *it;
 }
 
-void FollowJointTrajectoryControllerHandle::controllerDoneCallback(
-    const rclcpp_action::ResultCode& state, const std::shared_ptr<const control_msgs::action::FollowJointTrajectory::Result>& result)
+void FollowJointTrajectoryControllerHandle::controllerDoneCallback(const rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>::WrappedResult& result)
 {
   // Output custom error message for FollowJointTrajectoryResult if necessary
-  if (!result)
-    RCLCPP_WARN(LOGGER_MOVEIT_SIMPLE_CONTROLLER_MANAGER, "Controller %s done, no result returned", name_.c_str());
-  else if (result->error_code == control_msgs::action::FollowJointTrajectory::Result::SUCCESSFUL)
+  if (result.result->error_code == control_msgs::action::FollowJointTrajectory::Result::SUCCESSFUL)
     RCLCPP_INFO(LOGGER_MOVEIT_SIMPLE_CONTROLLER_MANAGER, "Controller %s successfully finished", name_.c_str());
   else
     RCLCPP_WARN(LOGGER_MOVEIT_SIMPLE_CONTROLLER_MANAGER, "Controller %s failed with error %d: %s",
                                                     name_.c_str(),
-                                                    errorCodeToMessage(result->error_code),
-                                                    result->error_string.c_str());
-  finishControllerExecution(state);
+                                                    errorCodeToMessage(result.result->error_code),
+                                                    result.result->error_string.c_str());
+  finishControllerExecution(result.code);
 }
 
-void FollowJointTrajectoryControllerHandle::controllerActiveCallback()
+void FollowJointTrajectoryControllerHandle::controllerActiveCallback(std::shared_future<rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>::SharedPtr> future)
 {
+  auto goal_handle = future.get();
+  if (!goal_handle) {
+    RCLCPP_ERROR(LOGGER_MOVEIT_SIMPLE_CONTROLLER_MANAGER, "Goal was rejected by server");
+  } else {
+    RCLCPP_INFO(LOGGER_MOVEIT_SIMPLE_CONTROLLER_MANAGER, "Goal accepted by server, waiting for result");
+  }
+
   RCLCPP_DEBUG(LOGGER_MOVEIT_SIMPLE_CONTROLLER_MANAGER, "%s started execution", name_.c_str());
 }
 
 void FollowJointTrajectoryControllerHandle::controllerFeedbackCallback(
-    const std::shared_ptr<const control_msgs::action::FollowJointTrajectory::Feedback>& feedback)
+    rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>::SharedPtr,
+    const std::shared_ptr<const control_msgs::action::FollowJointTrajectory::Feedback> feedback)
 {
 }
 

@@ -70,12 +70,13 @@ protected:
   static control_msgs::msg::JointTolerance& getTolerance(std::vector<control_msgs::msg::JointTolerance>& tolerances,
                                                     const std::string& name);
 
-  void controllerDoneCallback(const rclcpp_action::ResultCode& state,
-                              const std::shared_ptr<const control_msgs::action::FollowJointTrajectory::Result>& result);
+  void controllerDoneCallback(const rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>::WrappedResult& result);
 
-  void controllerActiveCallback();
+  void controllerActiveCallback(std::shared_future<rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>::SharedPtr> future);
 
-  void controllerFeedbackCallback(const std::shared_ptr<const control_msgs::action::FollowJointTrajectory::Feedback>& feedback);
+  void controllerFeedbackCallback(
+      rclcpp_action::ClientGoalHandle<control_msgs::action::FollowJointTrajectory>::SharedPtr,
+      const std::shared_ptr<const control_msgs::action::FollowJointTrajectory::Feedback> feedback);
 
   control_msgs::action::FollowJointTrajectory::Goal goal_template_;
 };

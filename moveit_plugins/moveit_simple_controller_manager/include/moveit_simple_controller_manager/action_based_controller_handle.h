@@ -84,13 +84,11 @@ public:
 
     unsigned int attempts = 0;
     rclcpp::Rate rate(std::chrono::milliseconds(1000));
-    double timeout;
+    double timeout = 0.0;
     if (trajectory_execution_params->has_parameter({"trajectory_execution/controller_connection_timeout"}))
     {
-      timeout = node_->get_parameter("trajectory_execution/controller_connection_timeout").as_double();
+      timeout = trajectory_execution_params->get_parameter("trajectory_execution/controller_connection_timeout", 15.0);
     }
-
-    node_->set_parameters({rclcpp::Parameter("trajectory_execution/controller_connection_timeout", 15.0)});
 
     if (timeout == 0.0)
     {
