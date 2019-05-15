@@ -89,17 +89,13 @@ add_subdirectory(kinematics_plugin_loader)
 add_subdirectory(robot_model_loader)
 add_subdirectory(constraint_sampler_manager_loader)
 add_subdirectory(planning_pipeline)
-# add_subdirectory(planning_request_adapter_plugins)
+add_subdirectory(planning_request_adapter_plugins)
 add_subdirectory(planning_scene_monitor)
 # add_subdirectory(planning_components_tools)
 add_subdirectory(trajectory_execution_manager)
 add_subdirectory(plan_execution)
 
-install(
-  FILES
-    planning_request_adapters_plugin_description.xml
-  DESTINATION
-    share)
+pluginlib_export_plugin_description_file(moveit_core planning_request_adapters_plugin_description.xml)
 
 ament_export_include_directories(include)
 ament_export_libraries(${libraries})
