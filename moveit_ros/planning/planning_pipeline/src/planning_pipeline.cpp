@@ -67,6 +67,7 @@ planning_pipeline::PlanningPipeline::PlanningPipeline(const robot_model::RobotMo
     for (boost::tokenizer<boost::char_separator<char> >::iterator beg = tok.begin(); beg != tok.end(); ++beg)
       adapter_plugin_names_.push_back(*beg);
   }
+  adapter_plugin_names_.push_back("default_planner_request_adapters/AddTimeParameterization");
 
   configure();
 }
