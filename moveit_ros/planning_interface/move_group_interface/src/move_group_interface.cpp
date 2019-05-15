@@ -991,11 +991,11 @@ public:
 
     goal.trajectory = plan.trajectory_;
 
-    execute_action_client_->async_send_goal(goal);
-    if (!wait)
-    {
-      return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::SUCCESS);
-    }
+    // execute_action_client_->async_send_goal(goal);
+    // if (!wait)
+    // {
+    //   return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::SUCCESS);
+    // }
 
     bool is_result_ready = false;
     rclcpp_action::ClientGoalHandle<moveit_msgs::action::MoveGroup>::WrappedResult result_tmp;
@@ -1012,6 +1012,10 @@ public:
     rclcpp::executor::FutureReturnCode::SUCCESS)
     {
       RCLCPP_INFO(node_->get_logger(), "ExecuteTrajectory action returned early");
+    }
+    if (!wait)
+    {
+      return MoveItErrorCode(moveit_msgs::msg::MoveItErrorCodes::SUCCESS);
     }
 
     auto goal_handle = goal_handle_future.get();
