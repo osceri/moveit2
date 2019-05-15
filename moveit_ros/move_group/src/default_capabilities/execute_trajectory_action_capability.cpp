@@ -165,8 +165,11 @@ void MoveGroupExecuteTrajectoryAction::setExecuteTrajectoryState(
     const std::shared_ptr<rclcpp_action::ServerGoalHandle<moveit_msgs::action::ExecuteTrajectory>> goal_handle)
 {
   auto execute_feedback = std::shared_ptr<moveit_msgs::action::ExecuteTrajectory::Feedback>();
-  execute_feedback->state = stateToStr(state);
-  goal_handle->publish_feedback(execute_feedback);
+  printf("setExecuteTrajectoryState %s\n", stateToStr(state).c_str());
+  // TODO (ahcorde)
+  // execute_feedback->state = stateToStr(state);
+  // goal_handle->publish_feedback(execute_feedback);
+  printf("publish_feedbacked\n");
 }
 
 }  // namespace move_group
