@@ -181,7 +181,82 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
   - [ ] Add gitlfs?
 </details>
 
-## Continuous Integration Status
+## Install and test MoveIt 2
+
+Note that moveit2 is a work in progress. Limited effort has been allocated to provide instructions on how to reproduce the available work.
+
+<details><summary>Install and test options</summary>
+
+### From sources
+
+#### Ubuntu 18.04
+
+##### Install  ros2 dashing pre-release
+
+Follow [this](https://discourse.ros.org/t/ros-2-dashing-diademata-call-for-testing-and-package-releases/8819) to install ros2 dashing pre-release
+
+**NOTE**: Remove tf2 if you installed it from sources
+```
+sudo apt-get purge ros-dashing-tf2*
+```
+##### Compile moveit2 and dependencies:
+
+```bash
+mkdir -p ~/moveit2_ws/src
+cd ~/moveit2_ws/src
+git clone https://github.com/AcutronicRobotics/moveit2 -b master_compile
+cd ~/moveit2_ws
+vcs import src < src/moveit2/moveit2.repos
+colcon build --merge-install --cmake-args -DBUILD_TESTING=FALSE
+```
+
+
+#### OS X 10.14 (**DEPRECATED**)
+Refer to [https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install/osx](https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install/osx) (outdated)
+
+
+### Using the CI infrastructure
+Moveit uses a Docker-based CI infrastructure to run tests and validate commits. Such infrastructure adapted for MoveIt 2 is available at https://github.com/acutronicrobotics/moveit_ci.git.
+
+Using the CI infrastructure, one can get access to MoveIt 2 current status and test its capabilities
+
+#### Using the CI infrastructure in Ubuntu
+**Note:** You need to have docker installed on your system.
+
+```bash
+cd ~ && git clone https://github.com/AcutronicRobotics/moveit2
+cd ~/moveit2
+git clone -q -b ros2 --depth=1 https://github.com/acutronicrobotics/moveit_ci.git .moveit_ci
+export MOVEIT_CI_TRAVIS_TIMEOUT=85  # Travis grants us 90 min, but we add a safety margin of 5 min
+export ROS_DISTRO=crystal
+export ROS_REPO=acutronicrobotics
+export UPSTREAM_WORKSPACE=moveit.rosinstall
+export TEST_BLACKLIST="moveit_ros_perception tf2_ros"  # mesh_filter_test fails due to broken Mesa OpenGL
+export CXXFLAGS="-Wall -Wextra -Wwrite-strings -Wunreachable-code -Wpointer-arith -Wredundant-decls -Wno-unused-parameter -Wno-unused-but-set-parameter -Wno-unused-function"
+.moveit_ci/travis.sh
+```
+
+#### Using the CI infrastructure in OS X
+TODO
+
+### Using a Docker container (**DEPRECATED**)
+An attempt to provide an environment whereto build the existing moveit2 repository is available at https://github.com/AcutronicRobotics/moveit2/tree/local-build/.docker/local-build.
+
+```bash
+# from https://github.com/AcutronicRobotics/moveit2/tree/local-build/.docker/local-build
+# Build it
+docker build -t local-build --build-arg=<branch> .
+# or docker build -t local-build .
+
+# Run it
+docker run -it local-build
+# inside of the container, compile the moveit2 code
+colcon build --merge-install #Inside of the docker container
+```
+
+</details>
+
+## Continuous Integration
 [![Build Status](https://travis-ci.org/AcutronicRobotics/moveit2.svg?branch=master)](https://travis-ci.org/AcutronicRobotics/moveit2)
 
 ## Docker Containers
