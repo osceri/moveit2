@@ -50,7 +50,7 @@ repositories:
   image_common:
     type: git
     url: https://github.com/ros-perception/image_common
-    version: crystal
+    version: ros2
   angles:
     type: git
     url: https://github.com/ros/angles
