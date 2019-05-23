@@ -1500,8 +1500,13 @@ bool TrajectoryExecutionManager::executePart(std::size_t part_index)
     {
       if (execution_duration_monitoring_)
       {
-        if (!handles[i]->waitForExecution(expected_trajectory_duration))
-          if (!execution_complete_ && (rclcpp::Clock().now().nanoseconds() - current_time.stamp.nanosec) > expected_trajectory_duration.nanoseconds())
+        if (!handles[i]->waitForExecution(expected_trajectory_duration)){
+
+          auto time_now = rclcpp::Clock().now();
+
+          rclcpp::Duration elapsed = time_now - current_time.stamp;
+
+          if (!execution_complete_ && (elapsed) > expected_trajectory_duration)
           {
             RCLCPP_ERROR(node_->get_logger(), "Controller is taking too long to execute trajectory (the expected upper "
                                    "bound for the trajectory execution was %lf seconds). Stopping trajectory.",
@@ -1515,6 +1520,7 @@ bool TrajectoryExecutionManager::executePart(std::size_t part_index)
             result = false;
             break;
           }
+        }
       }
       else
         handles[i]->waitForExecution();
