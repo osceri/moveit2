@@ -20,7 +20,7 @@ matrix:
 #      osx_image: xcode10.1
 
 before_script:
-  #  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source .travis.${TRAVIS_OS_NAME}.env; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source .travis.${TRAVIS_OS_NAME}.env; fi
   #- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source .travis.${TRAVIS_OS_NAME}.env; fi
   #- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash ./osx-dependencies.sh; fi
   #- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then mkdir /tmp/moveit2; fi
