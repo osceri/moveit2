@@ -41,7 +41,6 @@
 
 int main(int argc, char** argv)
 {
-
   rclcpp::init(argc, argv);
 
   auto node = std::make_shared<rclcpp::Node>("list_planning_adapter_plugins");
@@ -75,6 +74,6 @@ int main(int argc, char** argv)
       std::cout << " \t\t  " << ad->getDescription() << std::endl;
     std::cout << std::endl << std::endl;
   }
-
+  rclcpp::shutdown();
   return 0;
 }
