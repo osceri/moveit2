@@ -17,10 +17,6 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
 
 ### Progress
 
-- [x] Install instructions
-  - [x] [Ubuntu 18.04](https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install/ubuntu)
-  - [x] [OS X 10.14](https://acutronicrobotics.com/docs/products/robots/mara/moveit2/install/osx)
-
 <details><summary>Update/setup infrastructure for development</summary>
 
 - [x] Upgrade continuous integration for ROS 2.0
