@@ -858,7 +858,7 @@ void VisibilityConstraint::getMarkers(const robot_state::RobotState& state,
   shapes::constructMarkerFromShape(m, mk);
   delete m;
   mk.header.frame_id = robot_model_->getModelFrame();
-  mk.header.stamp = stamp;
+  mk.header.stamp = rclcpp::Clock().now();
   mk.ns = "constraints";
   mk.id = 1;
   mk.action = visualization_msgs::msg::Marker::ADD;
