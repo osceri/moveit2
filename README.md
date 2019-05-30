@@ -177,37 +177,44 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
   - [ ] Add gitlfs?
 </details>
 
-## Install and test MoveIt 2
+## Install and Test MoveIt 2
 
-Note that moveit2 is a work in progress. Limited effort has been allocated to provide instructions on how to reproduce the available work.
+Note that MoveIt 2 is a work in progress. Limited effort has been allocated to provide instructions on how to reproduce the available work.
 
 <details><summary>Install and test options</summary>
 
-### From sources
+### Build From Source
 
 #### Ubuntu 18.04
 
 ##### Install  ros2 dashing pre-release
 
-Follow [this](https://discourse.ros.org/t/ros-2-dashing-diademata-call-for-testing-and-package-releases/8819) to install ros2 dashing pre-release
+Follow [this](https://discourse.ros.org/t/ros-2-dashing-diademata-call-for-testing-and-package-releases/8819) to install ROS 2 Dashing pre-release
 
-**NOTE**: Remove tf2 if you installed it from sources
+##### Temporary Build Steps
+
+Remove tf2 if you installed it from sources
 ```
 sudo apt-get purge ros-dashing-tf2*
 ```
+Manually install OMPL:
+```
+sudo apt-get install libompl-dev
+```
 
-Install additional dependencies
+##### Compile MoveIt 2 and Dependencies:
+
+Install additional build dependencies:
 ```bash
 sudo apt-get install python-vcstool python3-colcon-*
 ```
 
-##### Compile moveit2 and dependencies:
-
+Download and build MoveIt:
 ```bash
 mkdir -p ~/moveit2_ws/src
 cd ~/moveit2_ws/src
 git clone https://github.com/AcutronicRobotics/moveit2 -b master_compile
-cd ~/moveit2_ws
+cd ...
 vcs import src < src/moveit2/moveit2.repos
 colcon build --merge-install --cmake-args -DBUILD_TESTING=FALSE
 ```
