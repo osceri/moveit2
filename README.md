@@ -206,14 +206,14 @@ sudo apt-get install libompl-dev
 
 Install additional build dependencies:
 ```bash
-sudo apt-get install python-vcstool python3-colcon-*
+sudo apt-get install python-vcstool python3-colcon-common-extensions
 ```
 
 Download and build MoveIt:
 ```bash
 mkdir -p ~/moveit2_ws/src
 cd ~/moveit2_ws/src
-git clone https://github.com/AcutronicRobotics/moveit2 -b master_compile
+git clone https://github.com/AcutronicRobotics/moveit2 -b master
 cd ..
 vcs import src < src/moveit2/moveit2.repos
 colcon build --merge-install --cmake-args -DBUILD_TESTING=FALSE
