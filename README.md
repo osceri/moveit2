@@ -214,7 +214,7 @@ Download and build MoveIt:
 mkdir -p ~/moveit2_ws/src
 cd ~/moveit2_ws/src
 git clone https://github.com/AcutronicRobotics/moveit2 -b master_compile
-cd ...
+cd ..
 vcs import src < src/moveit2/moveit2.repos
 colcon build --merge-install --cmake-args -DBUILD_TESTING=FALSE
 ```
