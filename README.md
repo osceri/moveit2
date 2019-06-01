@@ -139,13 +139,19 @@ The MoveIt! Motion Planning Framework **for ROS 2.0**
     - [x] moveit_simple_controller_manager
 </details>
 
-<details><summary>New features in ROS 2.0</summary>
+<details><summary>New features in ROS 2.0 (<b>not started</b>)</summary>
 
-- [ ] New features in ROS 2.0
-  - [ ] Migrate plugin architecture to ROS2 nodelets
+- [ ] New features in ROS 2.0 (see [last survey for more insights](https://moveit.ros.org/assets/pdfs/2019/moveit_2019_survey.pdf))
+  - [ ] Realtime support
+  - [ ] Lifecycle management of the ROS nodes%
+  - [ ] Replacing plugins with ROS 2 components
+  - [ ] Security support
+  - [ ] Improved namespace handling
+  - [ ] Windows support
 </details>
 
-<details><summary>Documentation</summary>
+<details><summary>Documentation (<b>not started</b>)</summary>
+
 - [ ] Documentation
   - [ ] Tutorials for MoveIt2
   - [ ] Create tutorial on using ros1/ros2 bridge to support ros1 hardware drivers
