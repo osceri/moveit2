@@ -28,7 +28,7 @@ make install
 # Environmental variables
 export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:/usr/local/opt/qt
 export PATH=$PATH:/usr/local/opt/qt/bin
-export LIBRARY_PATH="/usr/local/opt/tinyxml2/lib/:/usr/local/lib/"
+export LIBRARY_PATH="/usr/local/opt/tinyxml2/lib/:/usr/local/lib/:/usr/local/Cellar/assimp/4.1.0/lib/"
 
 # Build
 cd /tmp/ros2_ws
