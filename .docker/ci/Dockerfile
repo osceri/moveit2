@@ -42,6 +42,10 @@ RUN \
          ros-$ROS_DISTRO-message-filters \
          ros-$ROS_DISTRO-rclcpp-action \
          ros-$ROS_DISTRO-resource-retriever \
+         ros-$ROS_DISTRO-rviz-common \
+         ros-$ROS_DISTRO-rviz-default-plugins \
+         ros-$ROS_DISTRO-rviz-ogre-vendor \
+         ros-$ROS_DISTRO-rviz-rendering \
          libompl-dev \
       && rm -rf /var/lib/apt/lists/*
       # && mkdir -p $ROS_WS/src \
