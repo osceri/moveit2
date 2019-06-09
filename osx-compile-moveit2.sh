@@ -25,6 +25,9 @@ cmake .
 make
 make install
 
+# Dependencies
+brew install ompl
+
 # Environmental variables
 export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:/usr/local/opt/qt
 export PATH=$PATH:/usr/local/opt/qt/bin
