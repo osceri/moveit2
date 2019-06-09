@@ -14,7 +14,10 @@ ament_target_dependencies(${MOVEIT_LIB_NAME}
   Boost
   class_loader  
   pluginlib)
-    
+
+target_link_libraries(${MOVEIT_LIB_NAME}
+  moveit_planning_scene_monitor
+)    
 
 install(TARGETS ${MOVEIT_LIB_NAME}
   ARCHIVE DESTINATION lib
