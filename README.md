@@ -278,6 +278,3 @@ colcon build --merge-install #Inside of the docker container
 
 ## Docker Containers
 https://cloud.docker.com/u/acutronicrobotics/repository/docker/acutronicrobotics/moveit2
-
-## ROS Buildfarm
-Debian releases of MoveIt2 will not be available during the alpha development stage. Check back May 2019.
