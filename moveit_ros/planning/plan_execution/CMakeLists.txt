@@ -7,10 +7,14 @@ set_target_properties(${MOVEIT_LIB_NAME} PROPERTIES VERSION "${${PROJECT_NAME}_V
 ament_target_dependencies(${MOVEIT_LIB_NAME}
   moveit_planning_pipeline
   moveit_trajectory_execution_manager
+  moveit_core
+  moveit_planning_scene
   moveit_planning_scene_monitor
   rclcpp
   Boost
-  )
+  class_loader  
+  pluginlib)
+    
 
 install(TARGETS ${MOVEIT_LIB_NAME}
   ARCHIVE DESTINATION lib
