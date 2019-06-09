@@ -17,6 +17,7 @@ ament_target_dependencies(${MOVEIT_LIB_NAME}
 
 target_link_libraries(${MOVEIT_LIB_NAME}
   moveit_planning_scene_monitor
+  moveit_trajectory_execution_manager
 )    
 
 install(TARGETS ${MOVEIT_LIB_NAME}

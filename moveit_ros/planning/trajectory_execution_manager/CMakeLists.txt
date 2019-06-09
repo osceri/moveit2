@@ -13,9 +13,9 @@ ament_target_dependencies(${MOVEIT_LIB_NAME}
   pluginlib
 )
 target_link_libraries(${MOVEIT_LIB_NAME}
-  moveit_planning_scene_monitor 
-  moveit_robot_state
-  moveit_planning_scene
+  moveit_planning_scene_monitor   
+  ${moveit_robot_state_LIBRARIES}
+  ${moveit_planning_scene_LIBRARIES}  
 )
 
 install(TARGETS ${MOVEIT_LIB_NAME}
