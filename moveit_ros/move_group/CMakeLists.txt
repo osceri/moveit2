@@ -16,6 +16,8 @@ find_package(class_loader REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(moveit_ros_planning REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(rclcpp REQUIRED)
 
 include_directories(include)
 
@@ -51,6 +53,15 @@ ament_target_dependencies(moveit_move_group_default_capabilities
   Boost
   std_srvs
   moveit_core
+  class_loader
+  rclcpp_action
+  moveit_ros_planning  
+)
+
+target_link_libraries(moveit_move_group_default_capabilities
+  moveit_move_group_capabilities_base
+  ${rclcpp_LIBRARIES}
+  ${rclcpp_action_LIBRARIES}
 )
 
 add_executable(list_move_group_capabilities
