@@ -101,12 +101,6 @@ PR2ArmIKSolver::PR2ArmIKSolver(const urdf::ModelInterface& robot_model, const st
     active_ = true;
 }
 
-void PR2ArmIKSolver::updateInternalDataStructures()
-{
-  // TODO: move (re)allocation of any internal data structures here
-  // to react to changes in chain
-}
-
 int PR2ArmIKSolver::CartToJnt(const KDL::JntArray& q_init, const KDL::Frame& p_in, KDL::JntArray& q_out)
 {
   const bool verbose = false;
@@ -171,7 +165,6 @@ int PR2ArmIKSolver::cartToJntSearch(const KDL::JntArray& q_in, const KDL::Frame&
   double initial_guess = q_init(free_angle_);
 
   rclcpp::Time start_time = rclcpp::Clock().now();
-  rclcpp::Time time;
   double loop_time = 0;
   int count = 0;
 
@@ -193,8 +186,7 @@ int PR2ArmIKSolver::cartToJntSearch(const KDL::JntArray& q_in, const KDL::Frame&
     q_init(free_angle_) = initial_guess + search_discretization_angle_ * count;
     if (verbose)
       RCLCPP_WARN(LOGGER_PR2_ARM_KINEMATICS_PLUGIN, "%d, %f", count, q_init(free_angle_));
-    time = rclcpp::Clock().now();
-    loop_time = time.seconds() - start_time.seconds();
+    loop_time = rclcpp::Clock().now().seconds() - start_time.seconds();
   }
   if (loop_time >= timeout)
   {
