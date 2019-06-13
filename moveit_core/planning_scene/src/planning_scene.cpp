@@ -1078,7 +1078,6 @@ bool PlanningScene::loadGeometryFromStream(std::istream& in, const Eigen::Isomet
         if (!s)
         {
           RCLCPP_ERROR(LOGGER, "Failed to load shape from scene file");
-          delete s;
           return false;
         }
         double x, y, z, rx, ry, rz, rw;
