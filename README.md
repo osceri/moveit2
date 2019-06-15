@@ -195,20 +195,9 @@ Note that MoveIt 2 is a work in progress. Limited effort has been allocated to p
 
 #### Ubuntu 18.04
 
-##### Install  ros2 dashing pre-release
+##### Install  ROS 2 Dashing Diademata
 
-Follow [this](https://discourse.ros.org/t/ros-2-dashing-diademata-call-for-testing-and-package-releases/8819) to install ROS 2 Dashing pre-release
-
-##### Temporary Build Steps
-
-Remove tf2 if you installed it from sources
-```
-sudo apt-get purge ros-dashing-tf2*
-```
-Manually install OMPL:
-```
-sudo apt-get install libompl-dev
-```
+Follow [this](https://index.ros.org/doc/ros2/Installation/Dashing/Linux-Install-Debians/) to install ROS 2 Dashing
 
 ##### Compile MoveIt 2 and Dependencies:
 
@@ -217,14 +206,30 @@ Install additional build dependencies:
 sudo apt-get install python-vcstool python3-colcon-common-extensions
 ```
 
-Download and build MoveIt:
+Download and build MoveIt2:
 ```bash
 mkdir -p ~/moveit2_ws/src
 cd ~/moveit2_ws/src
 git clone https://github.com/AcutronicRobotics/moveit2 -b master
 cd ..
 vcs import src < src/moveit2/moveit2.repos
-colcon build --merge-install --cmake-args -DBUILD_TESTING=FALSE
+export ROS_DISTRO=dashing
+rosdep update && rosdep install -q -y --from-paths . --ignore-src --rosdistro ${ROS_DISTRO}
+colcon build --merge-install
+```
+
+### Using a Docker container
+
+```bash
+docker run -it ros:dashing
+mkdir -p ~/moveit2_ws/src
+cd ~/moveit2_ws/src
+git clone https://github.com/AcutronicRobotics/moveit2 -b master
+cd ..
+vcs import src < src/moveit2/moveit2.repos
+apt update
+rosdep update && rosdep install -q -y --from-paths . --ignore-src --rosdistro ${ROS_DISTRO} --as-root=apt:false || true
+colcon build --merge-install
 ```
 
 
@@ -245,26 +250,11 @@ cd ~ && git clone https://github.com/AcutronicRobotics/moveit2
 cd ~/moveit2
 git clone -q -b dashing --depth=1 https://github.com/acutronicrobotics/moveit2_ci.git .moveit2_ci
 source .travis.linux.env
-.moveit_ci/travis.sh
+.moveit2_ci/travis.sh
 ```
 
 #### Using the CI infrastructure in OS X
 TODO
-
-### Using a Docker container (**DEPRECATED**)
-An attempt to provide an environment whereto build the existing moveit2 repository is available at https://github.com/AcutronicRobotics/moveit2/tree/local-build/.docker/local-build.
-
-```bash
-# from https://github.com/AcutronicRobotics/moveit2/tree/local-build/.docker/local-build
-# Build it
-docker build -t local-build --build-arg=<branch> .
-# or docker build -t local-build .
-
-# Run it
-docker run -it local-build
-# inside of the container, compile the moveit2 code
-colcon build --merge-install #Inside of the docker container
-```
 
 </details>
 
