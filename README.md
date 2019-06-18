@@ -206,7 +206,10 @@ Install additional build dependencies:
 sudo apt-get install python-vcstool python3-colcon-common-extensions
 ```
 
+**Warning:**`--symlink-install` flag is not compatible for now: https://github.com/AcutronicRobotics/moveit2/issues/112, https://github.com/AcutronicRobotics/moveit2/issues/104
+
 Download and build MoveIt2:
+
 ```bash
 mkdir -p ~/moveit2_ws/src
 cd ~/moveit2_ws/src
@@ -221,7 +224,9 @@ colcon build --merge-install
 ### Using a Docker container
 
 ```bash
+# Host machine
 docker run -it ros:dashing
+# Inside of the docker image
 mkdir -p ~/moveit2_ws/src
 cd ~/moveit2_ws/src
 git clone https://github.com/AcutronicRobotics/moveit2 -b master
