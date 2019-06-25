@@ -217,7 +217,7 @@ git clone https://github.com/AcutronicRobotics/moveit2 -b master
 cd ..
 vcs import src < src/moveit2/moveit2.repos
 export ROS_DISTRO=dashing
-source opt/ros/dashing/setup.bash
+source /opt/ros/dashing/setup.bash
 rosdep update && rosdep install -q -y --from-paths . --ignore-src --rosdistro ${ROS_DISTRO}
 colcon build --merge-install
 ```
