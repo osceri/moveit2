@@ -37,8 +37,6 @@
 #include <moveit/constraint_samplers/constraint_sampler_tools.h>
 #include <moveit/constraint_samplers/constraint_sampler_manager.h>
 
-rclcpp::Logger LOGGER_CONTRAINT_SAMPLERS_TOOLS = rclcpp::get_logger("moveit").get_child("constraint_samplers");
-
 void constraint_samplers::visualizeDistribution(const moveit_msgs::msg::Constraints& constr,
                                                 const planning_scene::PlanningSceneConstPtr& scene,
                                                 const std::string& group, const std::string& link_name,
@@ -107,7 +105,7 @@ void constraint_samplers::visualizeDistribution(const ConstraintSamplerPtr& samp
       continue;
     const Eigen::Vector3d& pos = ks.getGlobalLinkTransform(lm).translation();
     visualization_msgs::msg::Marker mk;
-    mk.header.stamp = rclcpp::Clock().now();
+    mk.header.stamp = rclcpp::Clock(RCL_ROS_TIME).now();
     mk.header.frame_id = sampler->getJointModelGroup()->getParentModel().getModelFrame();
     mk.ns = "constraint_samples";
     mk.id = i;

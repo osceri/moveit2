@@ -1075,7 +1075,6 @@ void CollisionRobotDistanceField::addLinkBodyDecompositions(
     link_body_decomposition_vector_.push_back(bd);
     link_body_decomposition_index_map_[link_models[i]->getName()] = link_body_decomposition_vector_.size() - 1;
   }
-  // RCLCPP_DEBUG_FUNCTION(LOGGER_COLLISION_ROBOT_DISTANCE_FIELD, __FUNCTION__," Finished ");
   RCLCPP_DEBUG(LOGGER_COLLISION_ROBOT_DISTANCE_FIELD, " Finished ");
 }
 
