@@ -28,6 +28,7 @@ pkg_check_modules(LIBFCL REQUIRED fcl)
 find_library(LIBFCL_LIBRARIES_FULL ${LIBFCL_LIBRARIES} ${LIBFCL_LIBRARY_DIRS})
 set(LIBFCL_LIBRARIES "${LIBFCL_LIBRARIES_FULL}")
 
+find_package(angles REQUIRED)
 find_package(octomap REQUIRED)
 find_package(urdfdom REQUIRED)
 find_package(urdf REQUIRED)
@@ -170,9 +171,15 @@ include_directories(${THIS_PACKAGE_INCLUDE_DIRS}
 										${rcutils_INCLUDE_DIRS}
                     ${rmw_implementation_INCLUDE_DIRS}
                     ${Boost_INCLUDE_DIRS}
+                    ${angles_INCLUDE_DIRS}
+                    ${eigen_stl_containers_INCLUDE_DIRS}
+                    ${geometric_shapes_INCLUDE_DIRS}
+                    ${kdl_parser_INCLUDE_DIRS}
                     ${urdfdom_INCLUDE_DIRS}
                     ${urdfdom_headers_INCLUDE_DIRS}
                     ${OCTOMAP_INCLUDE_DIRS}
+                    ${random_numbers_INCLUDE_DIRS}
+                    ${srdfdom_INCLUDE_DIRS}
 										${moveit_msgs_INCLUDE_DIRS})
 
 

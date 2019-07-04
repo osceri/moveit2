@@ -24,6 +24,7 @@
   <build_depend>angles</build_depend>
   <build_depend>assimp</build_depend>
   <build_depend>boost</build_depend>
+  <build_depend>common_interfaces</build_depend>
   <build_depend>eigen</build_depend>
   <build_depend>eigen_stl_containers</build_depend>
   <build_depend>libfcl-dev</build_depend>
@@ -37,6 +38,7 @@
   <build_depend>moveit_msgs</build_depend>
   <build_depend>octomap</build_depend>
   <build_depend>octomap_msgs</build_depend>
+  <build_depend>pluginlib</build_depend>
   <build_depend>random_numbers</build_depend>
   <!-- <build_depend>roslib</build_depend> -->
   <!-- <build_depend>rostime</build_depend> -->
@@ -57,6 +59,7 @@
   <exec_depend>moveit_resources</exec_depend>
   <exec_depend>assimp</exec_depend>
   <exec_depend>boost</exec_depend>
+  <exec_depend>common_interfaces</exec_depend>
   <exec_depend>eigen</exec_depend>
   <exec_depend>eigen_stl_containers</exec_depend>
   <exec_depend>libfcl-dev</exec_depend>
@@ -70,6 +73,7 @@
   <exec_depend>moveit_msgs</exec_depend>
   <exec_depend>octomap</exec_depend>
   <exec_depend>octomap_msgs</exec_depend>
+  <exec_depend>pluginlib</exec_depend>
   <exec_depend>random_numbers</exec_depend>
   <!-- <exec_depend>rostime</exec_depend> -->
   <!-- <exec_depend>rosconsole</exec_depend> -->
