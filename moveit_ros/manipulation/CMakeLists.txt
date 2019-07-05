@@ -12,6 +12,7 @@ find_package(moveit_core REQUIRED)
 find_package(moveit_msgs REQUIRED)
 find_package(moveit_ros_planning REQUIRED)
 find_package(moveit_ros_move_group REQUIRED)
+find_package(message_filters REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(tf2_eigen REQUIRED)
 find_package(pluginlib REQUIRED)
@@ -26,8 +27,12 @@ include_directories(pick_place/include)
 include_directories(move_group_pick_place_capability/include)
 
 include_directories(${rclcpp_INCLUDE_DIRS}
+                    ${rclcpp_action_INCLUDE_DIRS}
                     ${Boost_INCLUDE_DIRS}
-                    ${moveit_core_INCLUDE_DIRS})
+                    ${message_filters_INCLUDE_DIRS}
+                    ${moveit_core_INCLUDE_DIRS}
+                    ${moveit_ros_planning_INCLUDE_DIRS}
+                    ${moveit_ros_move_group_INCLUDE_DIRS})
 include_directories(SYSTEM
                     ${EIGEN3_INCLUDE_DIRS})
 

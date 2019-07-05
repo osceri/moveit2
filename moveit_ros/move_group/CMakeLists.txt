@@ -22,8 +22,9 @@ find_package(std_srvs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
+find_package(message_filters REQUIRED)
 
-include_directories(include)
+include_directories(include ${message_filters_INCLUDE_DIRS})
 
 add_library(moveit_move_group_capabilities_base SHARED
   src/move_group_context.cpp
