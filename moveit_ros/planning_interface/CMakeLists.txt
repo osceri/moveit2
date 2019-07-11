@@ -15,7 +15,8 @@ find_package(moveit_msgs REQUIRED)
 # TODO: uncomment this as submodules become available
 find_package(moveit_ros_planning REQUIRED)
 # find_package(moveit_ros_warehouse REQUIRED)
-# find_package(moveit_ros_manipulation REQUIRED)
+find_package(moveit_ros_manipulation REQUIRED)
+find_package(message_filters REQUIRED)
 find_package(moveit_ros_move_group REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2 REQUIRED)
@@ -63,7 +64,7 @@ set(THIS_PACKAGE_INCLUDE_LIBRARIES
 set(THIS_PACKAGE_INCLUDE_DEPENDENCIES
       moveit_ros_planning
       # moveit_ros_warehouse
-      # moveit_ros_manipulation
+      moveit_ros_manipulation
       moveit_ros_move_group
       geometry_msgs
       moveit_msgs
@@ -73,7 +74,10 @@ set(THIS_PACKAGE_INCLUDE_DEPENDENCIES
 
 include_directories(${THIS_PACKAGE_INCLUDE_DIRS}
                     ${Boost_INCLUDE_DIRS}
-                    ${catkin_INCLUDE_DIRS})
+                    ${message_filters_INCLUDE_DIRS}
+                    ${moveit_ros_planning_INCLUDE_DIRS}
+                    ${moveit_ros_move_group_INCLUDE_DIRS}
+                    ${moveit_ros_manipulation_INCLUDE_DIRS})
 
 include_directories(SYSTEM
                     ${EIGEN3_INCLUDE_DIRS}

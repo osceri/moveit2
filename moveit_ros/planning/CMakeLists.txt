@@ -76,6 +76,8 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
 include_directories(${THIS_PACKAGE_INCLUDE_DIRS}
                     ${rclcpp_INCLUDE_DIRS}
                     ${Boost_INCLUDE_DIRS}
+                    ${pluginlib_INCLUDE_DIRS}
+                    ${srdfdom_INCLUDE_DIRS}
                     ${moveit_core_INCLUDE_DIRS}
 )
 include_directories(SYSTEM
