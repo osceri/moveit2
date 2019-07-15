@@ -25,7 +25,7 @@ repositories:
     version: master
   octomap:
     type: git
-    url: https://github.com/AcutronicRobotics/octomap
+    url: https://github.com/Octomap/octomap
     version: ros2
   octomap_msgs:
     type: git
